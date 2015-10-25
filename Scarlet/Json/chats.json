@@ -1,0 +1,29 @@
+{
+    "message": [
+        {
+            "identifier": "1",
+            "date": 1445427815,
+            "message": "Coucou",
+            "profile_id": "1"
+        },
+        {
+            "identifier": "2",
+            "date": 1445427815,
+            "message": "Coucou",
+            "profile_id": "2"
+        },
+        {
+            "identifier": "3",
+            "date": 1445427815,
+            "message": "Ca va?",
+            "profile_id": "1"
+        },
+        {
+            "identifier": "4",
+            "date": 1445427815,
+            "message": "Tu fais quoi?",
+            "profile_id": "1"
+        }
+    ],
+    "response_code": 0
+}

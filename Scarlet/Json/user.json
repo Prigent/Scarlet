@@ -1,0 +1,32 @@
+{
+    "user": 
+        {
+            "identifier": "1",
+            "name": "Roudaut",
+            "firstname": "Prigent",
+            "birthdate": 490201148,
+            "occupation": "Dev iOS",
+            "about": "Vive apple, vive les pommes :)",
+            "friends": [
+                "2"
+            ],
+            "interests": [
+                "nature",
+                "pommes"
+            ],
+            "picture": [
+                "http://www.ouest-france.fr/sites/default/files/styles/image-640x360/public/2014/03/24/le-quintet-seasons-devoile-sa-pop-rock-printaniere.jpg?itok=qz8aw406", "http://soocurious.com/fr/wp-content/gallery/les-images-de-la-semaine-2015/image-singe-telephone.jpg"
+            ],
+             "age_min": 20,
+			 "age_max": 30,
+			 "lookingfor": 1,
+ 			 "friendRequest": [
+ 			 {
+				"identifier": "1",
+				"date": 1445427815,
+ 				"status":3,
+ 				"profile_id": "3",
+			}]
+        },
+    "response_code": 0
+}

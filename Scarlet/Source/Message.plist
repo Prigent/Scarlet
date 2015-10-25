@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>menu.message</string>
+		<key>entityName</key>
+		<string>Message</string>
+		<key>sortProperty</key>
+		<string>identifier</string>
+		<key>cellIdentifier</key>
+		<string>MessageCell</string>
+		<key>sortOrder</key>
+		<false/>
+	</dict>
+</array>
+</plist>
