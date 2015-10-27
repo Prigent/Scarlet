@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "BaseViewController.h"
 @class Demand;
-@interface DemandViewController : UIViewController
+@interface DemandViewController : BaseViewController
 
 @property (strong, nonatomic) Demand * mDemand;
 
