@@ -13,6 +13,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "Profile.h"
 #import "Picture.h"
+#import "ProfileMenuCell.h"
 
 @interface ProfileViewController ()
 
@@ -107,24 +108,88 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if(self.mUser != nil)
+    {
+        return 3;
+    }
     return 1;
 }
+
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"DetailProfileCell"];
+   
     Profile* lCurrentProfile = self.mProfile;
     if(self.mUser != nil)
     {
         lCurrentProfile = (Profile*)self.mUser;
+        
+        NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
+                                           components:NSCalendarUnitYear
+                                           fromDate:lCurrentProfile.birthdate
+                                           toDate:[NSDate date]
+                                           options:0];
+        NSInteger age = [ageComponents year];
+        
+        ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
+        switch (indexPath.row) {
+            case 0:
+                cell.mTitleLabel.text = [NSString stringWithFormat:@"%@, %ld", lCurrentProfile.firstName,age];
+                cell.mSubTitle.text = lCurrentProfile.occupation;
+                break;
+            case 1:
+                cell.mTitleLabel.text = @"Friends";
+                cell.mSubTitle.text = [NSString stringWithFormat:@"%ld", [lCurrentProfile.friends count]];
+                break;
+            case 2:
+                cell.mTitleLabel.text = @"Parameters";
+                cell.mSubTitle.text = @"Notifications, account and others";
+                break;
+            default:
+                break;
+        }
+        return cell;
     }
-    
-    NSObject* obj = lCurrentProfile;
-    if([cell respondsToSelector:@selector(configure:)])
+    else
     {
-        [cell performSelector:@selector(configure:) withObject:obj];
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"DetailProfileCell"];
+        NSObject* obj = lCurrentProfile;
+        if([cell respondsToSelector:@selector(configure:)])
+        {
+            [cell performSelector:@selector(configure:) withObject:obj];
+        }
+        
+        return cell;
     }
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BaseViewController *viewController = nil;
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    switch (indexPath.row) {
+        case 0:     viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+            break;
+        case 1:     viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+            break;
+        case 2:     viewController = [[UIStoryboard storyboardWithName:@"Parameter" bundle:nil] instantiateInitialViewController];
+            break;
+        default:
+            break;
+    }
+
     
-    return cell;
+    [self.navigationController pushViewController:viewController animated:true];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(self.mUser != nil)
+    {
+        return 64;
+    }
+    return 114;
 }
 /*
 #pragma mark - Navigation

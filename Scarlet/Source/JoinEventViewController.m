@@ -1,29 +1,26 @@
 //
-//  ParameterViewController.m
+//  JoinEventViewController.m
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 22/10/2015.
+//  Created by Prigent ROUDAUT on 26/10/2015.
 //  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
 //
 
-#import "ParameterViewController.h"
+#import "JoinEventViewController.h"
 #import "WSParser.h"
 
-@interface ParameterViewController ()
+
+@interface JoinEventViewController ()
 
 @end
 
-@implementation ParameterViewController
+@implementation JoinEventViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
--(void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[self navigationController] setNavigationBarHidden:false animated:YES];
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -32,7 +29,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -42,36 +39,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44;
+    return 84;
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Notifications";
+    return @"Choose your friends";
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NotificationCell"];
+    UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
     if([cell respondsToSelector:@selector(configure:)])
     {
         [cell performSelector:@selector(configure:) withObject:[WSParser getProfiles]];
     }
     return cell;
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)sendRequest:(id)sender {
+    [self.navigationController popToRootViewControllerAnimated:true];
 }
-*/
-
-
 
 @end

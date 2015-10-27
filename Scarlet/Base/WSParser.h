@@ -15,4 +15,6 @@
 +(Profile*) addProfile:(NSDictionary*) dicProfile;
 +(Event*) addEvent:(NSDictionary*) dicEvent;
 +(Message*) addMessage:(NSDictionary*) dicMessage;
++(NSArray*) getProfiles;
 @end
+

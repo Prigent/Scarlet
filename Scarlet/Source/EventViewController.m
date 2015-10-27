@@ -61,6 +61,9 @@
     
 }
 
+- (IBAction)joinScarlet:(id)sender {
+    [self performSegueWithIdentifier:@"showJoin" sender:self];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

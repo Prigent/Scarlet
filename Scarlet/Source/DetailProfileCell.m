@@ -24,7 +24,13 @@
 
 -(void) configure:(Profile*) profile
 {
-    self.mNameLabel.text = [NSString stringWithFormat:@"%@ %@", profile.name, profile.firstName];
+    NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
+                                       components:NSCalendarUnitYear
+                                       fromDate:profile.birthdate
+                                       toDate:[NSDate date]
+                                       options:0];
+    NSInteger age = [ageComponents year];
+     self.mNameLabel.text = [NSString stringWithFormat:@"%@, %ld", profile.firstName,age];
     
     self.mOccupationLabel.text = profile.occupation;
     self.mAboutLabel.text = profile.about;

@@ -11,6 +11,8 @@
 @interface ShareAppContext : NSObject
 
 + (ShareAppContext *)sharedInstance;
+
+@property (nonatomic) BOOL firstStarted;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSOperationQueue* queue;
 @property (strong, nonatomic) NSString* userIdentifier;

@@ -37,6 +37,17 @@
     }];
     
     [self.mMapView setShowsUserLocation:true];
+    
+    
+    if([ShareAppContext sharedInstance].firstStarted == false)
+    {
+        BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+        [self.navigationController pushViewController:viewController animated:false];
+    }
+    
+    
+    
+    
 }
 -(void) viewWillAppear:(BOOL)animated
 {

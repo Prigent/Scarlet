@@ -49,4 +49,9 @@
 }
 */
 
+- (IBAction)createEvent:(id)sender {
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+    [self.navigationController pushViewController:viewController animated:true];
+}
 @end

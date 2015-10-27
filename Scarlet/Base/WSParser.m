@@ -74,6 +74,9 @@
     profile.occupation = [dicProfile valueForKey:@"occupation"];
     profile.about = [dicProfile valueForKey:@"about"];
     
+    profile.birthdate = [NSDate dateWithTimeIntervalSince1970:[[dicProfile valueForKey:@"birthdate"] integerValue]];
+    
+    
     for(NSString* lFileName in [dicProfile valueForKey:@"picture"])
     {
         [profile addPicturesObject:[self addPicture:lFileName]];
@@ -172,6 +175,15 @@
     Picture* picture = [NSEntityDescription insertNewObjectForEntityForName:@"Picture" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     picture.filename = filename;
     return picture;
+}
+
++(NSArray*) getProfiles
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Profile" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    return anArray;
 }
 
 
