@@ -15,28 +15,28 @@
                           "date": 1445427815,
                           "status": 3,
                           "leader_id":  "3",
-                          "partner": []
+                          "partners": []
                           }]
-		},
-        {
- 			"identifier": "2",
- 			"date":1445427815,
- 			"chat_id": "2",             
-			"mood": "pas cool",
- 			"lat": 48.879469,
- 			"long": 2.333524,
- 			"address":  "paris madelaine",
- 			"leader_id": "3",
- 			"partners":  ["1", "2"],
- 			"demands": [
- 				{
- 					"identifier": "1",
- 					"date": 1445427815,
-					"status": 3,
- 					"leader_id":  "3",
- 					"partner": ["1"]
-				}
-			]
+              },
+              {
+              "identifier": "2",
+              "date":1445427815,
+              "chat_id": "2",
+              "mood": "pas cool",
+              "lat": 48.879469,
+              "long": 2.333524,
+              "address":  "paris madelaine",
+              "leader_id": "3",
+              "partners":  ["1", "2"],
+              "demands": [
+                          {
+                          "identifier": "1",
+                          "date": 1445427815,
+                          "status": 3,
+                          "leader_id":  "4",
+                          "partners": []
+                          }
+                          ]
               },
               {
               "identifier": "3",
@@ -48,6 +48,18 @@
               "address":  "paris madelaine",
               "leader_id": "2",
               "partners":  ["3"],
+              "demands": []
+              },
+              {
+              "identifier": "10",
+              "date":1445427815,
+              "chat_id": "3",
+              "mood": "nice",
+              "lat": 48.809469,
+              "long": 2.323524,
+              "address":  "paris In",
+              "leader_id": "4",
+              "partners":  ["2","3"],
               "demands": []
               }
 

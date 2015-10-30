@@ -46,7 +46,9 @@ typedef void(^KIImagePagerImageRequestBlock)(UIImage*image, NSError * error);
 
 
 @interface KIImagePager : UIView
-
+{
+    BOOL isInit;
+}
 // Delegate and Datasource
 @property (weak) IBOutlet id <KIImagePagerDataSource> dataSource;
 @property (weak) IBOutlet id <KIImagePagerDelegate> delegate;

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 @interface FriendViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource>
+
+
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonBottom;
 

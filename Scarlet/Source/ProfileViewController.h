@@ -10,11 +10,11 @@
 #import "BaseViewController.h"
 #import "KIImagePager.h"
 
-@class User,Profile;
+@class Profile;
 @interface ProfileViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
 }
+@property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet KIImagePager *mImagePager;
-@property (strong, nonatomic) User* mUser;
 @property (strong, nonatomic) Profile* mProfile;
 @end

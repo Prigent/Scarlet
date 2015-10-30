@@ -150,6 +150,28 @@
 }
 
 
+- (void)getMyEventsCompletion:(void (^)(NSError* error)) onCompletion
+{
+    //NSString* base= nil;
+    //AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    //[manager GET:base parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        NSDictionary* reponseObject = [self getDataFromFile:@"myevents.json"];
+        
+        NSArray* lAllEvents= [reponseObject valueForKey:@"event"];
+        for(NSDictionary * lDicEvent in lAllEvents)
+        {
+            [WSParser addEvent:lDicEvent];
+        }
+        onCompletion(nil);
+    }
+    /*failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+     onCompletion(nil);
+     }];*/
+}
+
+
 - (void)getProfilsCompletion:(void (^)(NSError* error)) onCompletion
 {
     //NSString* base= nil;

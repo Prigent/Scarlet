@@ -14,5 +14,7 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mMapView;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonMap;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonList;
+@property (weak, nonatomic) IBOutlet UISearchBar *mSearchField;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mTableLayoutTop;
 
 @end

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-@interface MyProfileViewController : BaseViewController
+#import "RACollectionViewReorderableTripletLayout.h"
 
+@class User;
+@interface MyProfileViewController : BaseViewController<RACollectionViewDelegateReorderableTripletLayout, RACollectionViewReorderableTripletLayoutDataSource, UIActionSheetDelegate>
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray *photosArray;
+@property (strong, nonatomic) User* mUser;
 @end

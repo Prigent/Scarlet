@@ -130,10 +130,12 @@
     demand.date = [NSDate dateWithTimeIntervalSince1970:[[dicDemand valueForKey:@"date"] integerValue]];
     demand.leader = [self getProfile:[dicDemand valueForKey:@"leader_id"]];
     demand.status =[dicDemand valueForKey:@"status"];
+    
     for(NSString* lProfileIdentifier in [dicDemand valueForKey:@"partners"])
     {
         [demand addPartnersObject:[self getProfile:lProfileIdentifier]];
     }
+    
     return demand;
 }
 
@@ -192,9 +194,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:name inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     [fetchRequest setEntity:entity];
-    
-    NSLog(@"identifier ==  %@", identifier);
-    
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
     [fetchRequest setPredicate:predicate];
     

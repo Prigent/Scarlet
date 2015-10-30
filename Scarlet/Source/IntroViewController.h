@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 #import "KIImagePager.h"
 @interface IntroViewController : UIViewController<FBSDKLoginButtonDelegate>
 @property (weak, nonatomic) IBOutlet KIImagePager *mImagePager;

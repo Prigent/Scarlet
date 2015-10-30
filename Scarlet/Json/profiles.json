@@ -15,8 +15,8 @@
                 "pommes"
             ],
             "picture": [
-                "http://www.ouest-france.fr/sites/default/files/styles/image-640x360/public/2014/03/24/le-quintet-seasons-devoile-sa-pop-rock-printaniere.jpg?itok=qz8aw406"
-            ]
+                            "http://www.ouest-france.fr/sites/default/files/styles/image-640x360/public/2014/03/24/le-quintet-seasons-devoile-sa-pop-rock-printaniere.jpg?itok=qz8aw406", "http://soocurious.com/fr/wp-content/gallery/les-images-de-la-semaine-2015/image-singe-telephone.jpg","http://www.adweek.com/agencyspy/wp-content/uploads/sites/7/2015/06/steve-jobs.jpg","http://carrieresgagnantes.com/wp-content/uploads/2012/02/101804162-594x335.jpg"
+                            ]
         },
         {
             "identifier": "2",
@@ -52,7 +52,23 @@
                 "http://www.inst-jeanvigo.eu/wp-content/uploads/2015/03/toto.jpg",
                 "http://www.blaguemarrante.com/images/categorie/toto.png"
             ]
-        }
+                },
+                {
+                "identifier": "4",
+                "name": "Paul",
+                "firstname": "Lennn",
+                "birthdate": 510201148,
+                "occupation": "Hipster",
+                "about": "paris paris paris ...",
+                "friends": [],
+                "interests": [
+                              "homme",
+                              "concombre"
+                              ],
+                "picture": [
+                            "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/8/22/1377166166803/Give-teeth-a-chance-John--011.jpg"
+                            ]
+                }
     ],
     "response_code": 0
 }

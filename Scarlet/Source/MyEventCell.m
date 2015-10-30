@@ -55,25 +55,52 @@
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"EEEE, dd/MM/yyyy\nHH:mm"];
     _mDate.text = [format stringFromDate:event.date];
-
+    _mStatusLabel.text = @"";
+    
     if([event.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
         _mStatusLabel.text = @"Leader";
+        return;
     }
-    else
+
+    NSPredicate *predPart = [NSPredicate predicateWithFormat:@"identifier == %@",[ShareAppContext sharedInstance].userIdentifier];
+    NSArray *matchesPart = [[event.partners allObjects] filteredArrayUsingPredicate:predPart];
+    if([matchesPart count]>0)
     {
-        Demand* demand;
-        switch ([demand.status integerValue]) {
-            case 1: _mStatusLabel.text = @"accepted";break;
-            case 2: _mStatusLabel.text = @"rejected";break;
-            case 3: _mStatusLabel.text = @"waiting"; break;
-            default:break;
+        _mStatusLabel.text = @"Partner";
+        return;
+    }
+
+    
+    for(Demand * lDemand in event.demands)
+    {
+        if([lDemand.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+        {
+            switch ([lDemand.status integerValue]) {
+                case 1: _mStatusLabel.text = @"accepted";break;
+                case 2: _mStatusLabel.text = @"rejected";break;
+                case 3: _mStatusLabel.text = @"waiting"; break;
+                default:break;
+            }
+            return;
+        }
+        
+        for(Profile* lProfile in lDemand.partners)
+        {
+            if([lProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+            {
+                switch ([lDemand.status integerValue]) {
+                    case 1: _mStatusLabel.text = @"accepted";break;
+                    case 2: _mStatusLabel.text = @"rejected";break;
+                    case 3: _mStatusLabel.text = @"waiting"; break;
+                    default:break;
+                }
+                return;
+            }
         }
     }
-        
-        
     
-    
+
 
 }
 

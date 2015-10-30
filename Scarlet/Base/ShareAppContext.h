@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <MapKit/MapKit.h>
+
 @interface ShareAppContext : NSObject
 
 + (ShareAppContext *)sharedInstance;
@@ -16,6 +18,8 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSOperationQueue* queue;
 @property (strong, nonatomic) NSString* userIdentifier;
+@property (strong, nonatomic) CLLocationManager* locationManager;
+
 + (BOOL)isConnected;
 + (BOOL)isOnline;
 @end

@@ -37,6 +37,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.mSearchField resignFirstResponder];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_mSearchField resignFirstResponder];
+}
 /*
 #pragma mark - Navigation
 

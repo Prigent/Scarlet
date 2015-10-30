@@ -24,6 +24,7 @@
     // Override point for customization after application launch.
     [Fabric with:@[[Crashlytics class]]];
     [ShareAppContext sharedInstance].managedObjectContext = [self managedObjectContext];
+
     return YES;
 }
 

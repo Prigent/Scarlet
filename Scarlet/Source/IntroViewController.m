@@ -43,6 +43,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 {
     if(error == nil)
     {
+        NSLog(@"result %@", result.token.tokenString);
         [ShareAppContext sharedInstance].userIdentifier = @"1";
         [self performSegueWithIdentifier:@"showTabView" sender:self];
     }

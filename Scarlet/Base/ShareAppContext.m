@@ -18,6 +18,11 @@
     if (self)
     {
         self.queue = [[NSOperationQueue alloc] init];
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
     }
     return self;
 }

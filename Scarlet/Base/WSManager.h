@@ -24,7 +24,7 @@
 - (void)getEventsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getProfilsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getMessagesForChat:(Chat*) chat completion:(void (^)(NSError* error)) onCompletion;
-
+- (void)getMyEventsCompletion:(void (^)(NSError* error)) onCompletion;
 
 
 @end

@@ -14,7 +14,9 @@
 #import "Profile.h"
 #import "Picture.h"
 #import "ProfileMenuCell.h"
+#import "UIScrollView+APParallaxHeader.h"
 
+static CGFloat kImageOriginHight = 246.f;
 @interface ProfileViewController ()
 
 @end
@@ -30,7 +32,7 @@
     {
         self.navigationController.navigationBarHidden =true;
         [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
-            self.mUser = [WSParser getUser:  [ShareAppContext sharedInstance].userIdentifier];
+            self.mProfile = (Profile*)[WSParser getUser:  [ShareAppContext sharedInstance].userIdentifier];
             [self updateView];
         }];
     }
@@ -38,7 +40,29 @@
     {
          [self updateView];
     }
+    [self.mTableView setTableHeaderView:nil];
+    self.mTableView.contentInset = UIEdgeInsetsMake(kImageOriginHight, 0, 0, 0);
+    [self.mTableView addSubview:self.mImagePager];
 }
+
+-(void) viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.mImagePager.frame = CGRectMake(0, -kImageOriginHight, self.mTableView.frame.size.width, kImageOriginHight);
+}
+
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    if (yOffset < -kImageOriginHight) {
+        CGRect f = self.mImagePager.frame;
+        f.origin.y = yOffset;
+        f.size.height =  -yOffset;
+        self.mImagePager.frame = f;
+    }
+}
+
 
 -(void) configure:(id)profile
 {
@@ -57,27 +81,13 @@
 
 -(void) updateView
 {
-    Profile* lCurrentProfile = self.mProfile;
-    if(self.mUser != nil)
-    {
-        lCurrentProfile = (Profile*)self.mUser;
-    }
-    
     [self.mImagePager reloadData];
-
- //   [self.mTitle setText: [NSString stringWithFormat:@"%@ %@", lCurrentProfile.name , lCurrentProfile.firstName]];
 }
 
 - (NSArray *) arrayWithImages:(KIImagePager*)pager
 {
-    Profile* lCurrentProfile = self.mProfile;
-    if(self.mUser != nil)
-    {
-        lCurrentProfile = (Profile*)self.mUser;
-    }
-    
     NSMutableArray * lData = [NSMutableArray array];
-    for(Picture* lImage in lCurrentProfile.pictures)
+    for(Picture* lImage in self.mProfile.pictures)
     {
         [lData addObject:[lImage filename]];
     }
@@ -108,7 +118,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(self.mUser != nil)
+    if([self.mProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
         return 3;
     }
@@ -120,27 +130,20 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
    
-    Profile* lCurrentProfile = self.mProfile;
-    if(self.mUser != nil)
+    if([self.mProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
-        lCurrentProfile = (Profile*)self.mUser;
-        
-        NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
-                                           components:NSCalendarUnitYear
-                                           fromDate:lCurrentProfile.birthdate
-                                           toDate:[NSDate date]
-                                           options:0];
+        NSDateComponents* ageComponents = [[NSCalendar currentCalendar]components:NSCalendarUnitYear fromDate:self.mProfile.birthdate toDate:[NSDate date] options:0];
         NSInteger age = [ageComponents year];
         
         ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
         switch (indexPath.row) {
             case 0:
-                cell.mTitleLabel.text = [NSString stringWithFormat:@"%@, %ld", lCurrentProfile.firstName,age];
-                cell.mSubTitle.text = lCurrentProfile.occupation;
+                cell.mTitleLabel.text = [NSString stringWithFormat:@"%@, %ld", self.mProfile.firstName,age];
+                cell.mSubTitle.text = self.mProfile.occupation;
                 break;
             case 1:
                 cell.mTitleLabel.text = @"Friends";
-                cell.mSubTitle.text = [NSString stringWithFormat:@"%ld", [lCurrentProfile.friends count]];
+                cell.mSubTitle.text = [NSString stringWithFormat:@"%ld", [self.mProfile.friends count]];
                 break;
             case 2:
                 cell.mTitleLabel.text = @"Parameters";
@@ -154,7 +157,7 @@
     else
     {
         UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"DetailProfileCell"];
-        NSObject* obj = lCurrentProfile;
+        NSObject* obj = self.mProfile;
         if([cell respondsToSelector:@selector(configure:)])
         {
             [cell performSelector:@selector(configure:) withObject:obj];
@@ -185,7 +188,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(self.mUser != nil)
+    if([self.mProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
         return 64;
     }

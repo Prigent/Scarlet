@@ -23,4 +23,5 @@
 @property (nonatomic, strong) UIActivityIndicatorView * mIndicatorViewGeneric;
 @property (nonatomic, strong) UILabel * mTextLoadingGeneric;
 @property (nonatomic) BOOL customReturn;
+@property (nonatomic) BOOL hideBottom;
 @end

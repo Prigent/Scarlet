@@ -41,8 +41,64 @@
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOffScreen:) name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
+-(void)keyboardOnScreen:(NSNotification *)notification
+{
+    NSDictionary *info  = notification.userInfo;
+    NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rawFrame      = [value CGRectValue];
+    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
+    
+    NSLog(@"keyboardFrame: %@", NSStringFromCGRect(keyboardFrame));
+    
+
+    
+    [_mBottomLayout setConstant:(8+keyboardFrame.size.height)];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [self.view layoutIfNeeded]; // Called on parent view
+                     } completion:^(BOOL finished) {
+                         CGPoint offset = CGPointMake(0, self.tableView.contentSize.height -     self.tableView.frame.size.height);
+                         [self.tableView setContentOffset:offset animated:YES];
+                     }];
+}
+
+-(void)keyboardOffScreen:(NSNotification *)notification
+{
+    NSDictionary *info  = notification.userInfo;
+    NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rawFrame      = [value CGRectValue];
+    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
+    
+    NSLog(@"keyboardFrame: %@", NSStringFromCGRect(keyboardFrame));
+    
+    [_mBottomLayout setConstant:8];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [self.view layoutIfNeeded]; // Called on parent view
+                     }];
+}
+
+- (IBAction)sendMessage:(id)sender {
+    [_mTextField resignFirstResponder];
+}
+/*
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_mTextField resignFirstResponder];
+}*/
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 -(void) configure:(Chat*) chat
 {
     self.mChat = chat;

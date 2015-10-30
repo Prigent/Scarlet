@@ -10,6 +10,8 @@
 #import "AutoListViewController.h"
 
 @class Chat;
-@interface ChatViewController : AutoListViewController
+@interface ChatViewController : AutoListViewController<UISearchBarDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mBottomLayout;
 @property (nonatomic, retain) Chat* mChat;
+@property (weak, nonatomic) IBOutlet UITextField *mTextField;
 @end

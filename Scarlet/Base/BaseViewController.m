@@ -35,6 +35,12 @@
     self.mIndicatorViewGeneric = (UIActivityIndicatorView*)[self.mLoadingViewGeneric viewWithTag:1];
     self.mTextLoadingGeneric =(UILabel*)[self.mLoadingViewGeneric viewWithTag:2];
 }
+
+-(BOOL)hidesBottomBarWhenPushed
+{
+    return self.hideBottom;
+}
+
 -(void) viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];

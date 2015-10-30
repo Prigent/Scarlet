@@ -66,11 +66,42 @@
 
 - (void) layoutSubviews
 {
-	for (UIView *view in self.subviews) {
-		[view removeFromSuperview];
-	}
-    [self initialize];
+    [super layoutSubviews];
+    if(isInit == false)
+    {
+        for (UIView *view in self.subviews) {
+            [view removeFromSuperview];
+        }
+        [self initialize];
+        isInit = true;
+    }
+    else
+    {
+        [self resize];
+    }
 }
+
+-(void) resize
+{
+    _scrollView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    NSArray *aImageUrls = (NSArray *)[_dataSource arrayWithImages:self];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width * [aImageUrls count],
+                                           _scrollView.frame.size.height)];
+
+    _pageControl.frame = CGRectMake(0, 0, _scrollView.frame.size.width, kPageControlHeight);
+    _pageControl.center = CGPointMake(_scrollView.frame.size.width / 2, _scrollView.frame.size.height - self.paddingControl);
+    
+    int i=0;
+    for(UIView *sub in _scrollView.subviews)
+    {
+        [sub setFrame:CGRectMake( self.frame.size.width*i, 0, self.frame.size.width, self.frame.size.height)];
+        i++;
+    }
+    
+    NSLog(@"with %f",self.frame.size.width);
+}
+
+
 
 #pragma mark - General
 - (void) initialize
@@ -84,10 +115,6 @@
 
     [self initializeScrollView];
     [self initializePageControl];
-  /*  if(!_imageCounterDisabled) {
-        [self initalizeImageCounter];
-    }*/
-    [self initializeCaption];
 
     if(!self.imageSource)
     {
@@ -117,44 +144,6 @@
                            alpha:1];
 }
 
-- (void) initalizeImageCounter
-{
-    _imageCounterBackground = [[UIView alloc] initWithFrame:CGRectMake(_scrollView.frame.size.width-(kOverlayWidth-4),
-                                                                       _scrollView.frame.size.height-kOverlayHeight,
-                                                                       kOverlayWidth,
-                                                                       kOverlayHeight)];
-    _imageCounterBackground.backgroundColor = [UIColor whiteColor];
-    _imageCounterBackground.alpha = 0.7f;
-    _imageCounterBackground.layer.cornerRadius = 5.0f;
-
-    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
-    [icon setImage:[UIImage imageNamed:@"KICamera"]];
-    icon.center = CGPointMake(_imageCounterBackground.frame.size.width-18, _imageCounterBackground.frame.size.height/2);
-    [_imageCounterBackground addSubview:icon];
-
-    _countLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 48, 24)];
-    [_countLabel setTextAlignment:NSTextAlignmentCenter];
-    [_countLabel setBackgroundColor:[UIColor clearColor]];
-    [_countLabel setTextColor:[UIColor blackColor]];
-    [_countLabel setFont:[UIFont systemFontOfSize:11.0f]];
-    _countLabel.center = CGPointMake(15, _imageCounterBackground.frame.size.height/2);
-    [_imageCounterBackground addSubview:_countLabel];
-
-    if(!_imageCounterDisabled) [self addSubview:_imageCounterBackground];
-}
-
-- (void) initializeCaption
-{
-    _captionLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, _scrollView.frame.size.width - 10, 20)];
-    [_captionLabel setBackgroundColor:self.captionBackgroundColor];
-    [_captionLabel setTextColor:self.captionTextColor];
-    [_captionLabel setFont:self.captionFont];
-
-    _captionLabel.alpha = 0.7f;
-    _captionLabel.layer.cornerRadius = 5.0f;
-
-    [self addSubview:_captionLabel];
-}
 
 - (void) reloadData
 {

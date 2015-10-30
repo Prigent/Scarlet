@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9i9-Xu-v3c">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="604"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="C5F-2F-FY7">
@@ -50,27 +50,6 @@
                                         <constraint firstAttribute="trailing" secondItem="gvT-eD-Kni" secondAttribute="trailing" constant="32" id="PDs-b8-Fek"/>
                                         <constraint firstItem="8FR-Du-ldh" firstAttribute="leading" secondItem="C5F-2F-FY7" secondAttribute="leading" constant="8" id="czf-oE-oRQ"/>
                                         <constraint firstItem="gvT-eD-Kni" firstAttribute="top" secondItem="8FR-Du-ldh" secondAttribute="bottom" constant="8" id="fJq-Lr-IfO"/>
-                                    </constraints>
-                                </view>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="YVQ-yt-FU7">
-                                    <rect key="frame" x="0.0" y="286" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rq5-HJ-LN1">
-                                            <rect key="frame" x="8" y="7" width="359" height="30"/>
-                                            <animations/>
-                                            <state key="normal" title="Create a scarlet"/>
-                                            <connections>
-                                                <action selector="createScarlet:" destination="ySu-CQ-qTi" eventType="touchUpInside" id="kCb-1x-4Jv"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <animations/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstItem="rq5-HJ-LN1" firstAttribute="centerY" secondItem="YVQ-yt-FU7" secondAttribute="centerY" id="2el-34-Twj"/>
-                                        <constraint firstItem="rq5-HJ-LN1" firstAttribute="leading" secondItem="YVQ-yt-FU7" secondAttribute="leading" constant="8" id="eDt-dt-dEp"/>
-                                        <constraint firstAttribute="trailing" secondItem="rq5-HJ-LN1" secondAttribute="trailing" constant="8" id="tiQ-JV-j0p"/>
                                     </constraints>
                                 </view>
                                 <prototypes>
@@ -255,15 +234,45 @@
                                     <outlet property="delegate" destination="ySu-CQ-qTi" id="szD-pu-NkC"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YVQ-yt-FU7">
+                                <rect key="frame" x="0.0" y="624" width="375" height="43"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rq5-HJ-LN1">
+                                        <rect key="frame" x="8" y="6" width="359" height="30"/>
+                                        <animations/>
+                                        <state key="normal" title="Create a scarlet"/>
+                                        <connections>
+                                            <action selector="createScarlet:" destination="ySu-CQ-qTi" eventType="touchUpInside" id="kCb-1x-4Jv"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="rq5-HJ-LN1" firstAttribute="centerY" secondItem="YVQ-yt-FU7" secondAttribute="centerY" id="2el-34-Twj"/>
+                                    <constraint firstAttribute="height" constant="43" id="8ht-QP-nAv"/>
+                                    <constraint firstItem="rq5-HJ-LN1" firstAttribute="leading" secondItem="YVQ-yt-FU7" secondAttribute="leading" constant="8" id="eDt-dt-dEp"/>
+                                    <constraint firstAttribute="trailing" secondItem="rq5-HJ-LN1" secondAttribute="trailing" constant="8" id="tiQ-JV-j0p"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="DiM-t9-nqY" firstAttribute="top" secondItem="9i9-Xu-v3c" secondAttribute="bottom" id="0S4-2W-N6G"/>
+                            <constraint firstItem="DiM-t9-nqY" firstAttribute="top" secondItem="YVQ-yt-FU7" secondAttribute="bottom" id="2NZ-96-08R"/>
                             <constraint firstItem="9i9-Xu-v3c" firstAttribute="top" secondItem="iwV-sU-0bx" secondAttribute="bottom" id="IsQ-bc-xz9"/>
+                            <constraint firstAttribute="trailing" secondItem="YVQ-yt-FU7" secondAttribute="trailing" id="Svl-0H-v9D"/>
                             <constraint firstAttribute="trailing" secondItem="9i9-Xu-v3c" secondAttribute="trailing" id="cdP-2q-Eed"/>
                             <constraint firstItem="9i9-Xu-v3c" firstAttribute="leading" secondItem="G5l-Db-tG5" secondAttribute="leading" id="w1P-Ul-cjX"/>
+                            <constraint firstItem="YVQ-yt-FU7" firstAttribute="leading" secondItem="G5l-Db-tG5" secondAttribute="leading" id="xCW-nw-bbP"/>
+                            <constraint firstItem="YVQ-yt-FU7" firstAttribute="top" secondItem="9i9-Xu-v3c" secondAttribute="bottom" id="xbg-qS-Ghq"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="0S4-2W-N6G"/>
+                            </mask>
+                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>

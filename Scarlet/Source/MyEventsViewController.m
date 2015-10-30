@@ -8,6 +8,12 @@
 
 #import "MyEventsViewController.h"
 #import "ShareAppContext.h"
+#import "WSManager.h"
+
+#import "Event.h"
+#import "Demand.h"
+#import "Profile.h"
+
 
 @interface MyEventsViewController ()
 
@@ -24,11 +30,19 @@
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"MyEvent" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
 
-    
-    NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"leader.identifier == %@", [ShareAppContext sharedInstance].userIdentifier];
-    [self updateWithPredicate:lNSPredicate];
-    
+    [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+            [self updateWithPredicate:lNSPredicate];
+        }];
 }
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 135;
+}
+
+
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

@@ -31,7 +31,7 @@
     
     [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
         [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
-            NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"leader.identifier != %@", [ShareAppContext sharedInstance].userIdentifier];
+            NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
             [self updateWithPredicate:lNSPredicate];
         }];
     }];
@@ -42,36 +42,46 @@
     if([ShareAppContext sharedInstance].firstStarted == false)
     {
         BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+        viewController.hideBottom = true;
         [self.navigationController pushViewController:viewController animated:false];
     }
-    
-    
-    
-    
 }
+
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.mSearchField resignFirstResponder];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_mSearchField resignFirstResponder];
+}
+
 - (IBAction)showList:(id)sender {
-    self.tableView.hidden = false;
-    self.mMapView.hidden = true;
     self.mButtonList.selected = true;
     self.mButtonMap.selected = false;
+    NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+    [self updateWithPredicate:lNSPredicate];
+
+    self.tableView.bounces = true;
+    [self.mTableLayoutTop setConstant:0];
+    [UIView animateWithDuration:0.4 animations:^{ [self.view layoutIfNeeded]; }];
     
 }
 - (IBAction)showMap:(id)sender {
-    
-    self.tableView.hidden = true;
-    self.mMapView.hidden = false;
     self.mButtonList.selected = false;
     self.mButtonMap.selected = true;
-    
+    self.tableView.bounces = false;
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"EEEE, dd/MM/yyyy\nHH:mm"];
     
@@ -88,7 +98,9 @@
         
         [self.mMapView addAnnotation:annotation];
     }
-
+    
+    [self.mTableLayoutTop setConstant:self.view.frame.size.height-44];
+    [UIView animateWithDuration:0.4 animations:^{ [self.view layoutIfNeeded]; }];
 }
 
 
@@ -104,6 +116,26 @@
     return customPin;
 }
 
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    EventPointAnnotation * lEventPoint = view.annotation;
+    NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"identifier == %@", lEventPoint.mEvent.identifier];
+    [self updateWithPredicate:lNSPredicate];
+    [self.mTableLayoutTop setConstant:self.view.frame.size.height-44-205];
+    [UIView animateWithDuration:0.2 animations:^{ [self.view layoutIfNeeded]; }];
+    [self.mMapView setCenterCoordinate:view.annotation.coordinate animated:true];
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    [self.mTableLayoutTop setConstant:self.view.frame.size.height-44];
+    [UIView animateWithDuration:0.2 animations:^{ [self.view layoutIfNeeded]; }];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 135;
+}
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
