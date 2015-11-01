@@ -41,7 +41,7 @@
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOffScreen:) name:UIKeyboardWillHideNotification object:nil];
     

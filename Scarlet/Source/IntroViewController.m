@@ -9,7 +9,7 @@
 #import "IntroViewController.h"
 #import "KIImagePager.h"
 #import "ShareAppContext.h"
-
+#import "WSManager.h"
 
 @interface IntroViewController ()
 
@@ -43,9 +43,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 {
     if(error == nil)
     {
-        NSLog(@"result %@", result.token.tokenString);
-        [ShareAppContext sharedInstance].userIdentifier = @"1";
-        [self performSegueWithIdentifier:@"showTabView" sender:self];
+        [[WSManager sharedInstance] getAuthentification:result.token.tokenString completion:^(NSError *error) {
+            NSLog(@"result %@", result.token.tokenString);
+            [ShareAppContext sharedInstance].userIdentifier = @"1";
+            [self performSegueWithIdentifier:@"showTabView" sender:self];
+        }];
     }
 }
 

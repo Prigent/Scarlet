@@ -19,7 +19,7 @@
 + (CLGeocoder*) sharedGeocoder;
 
 
-
+- (void)getAuthentification:(NSString*) token completion:(void (^)(NSError* error)) onCompletion;
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getEventsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getProfilsCompletion:(void (^)(NSError* error)) onCompletion;

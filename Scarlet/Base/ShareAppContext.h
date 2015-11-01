@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import <MapKit/MapKit.h>
 
-@interface ShareAppContext : NSObject
+@interface ShareAppContext : NSObject<CLLocationManagerDelegate>
 
 + (ShareAppContext *)sharedInstance;
 

@@ -210,7 +210,7 @@
     NSInteger line = indexPath.item / 3;
     CGFloat lineSpaceForIndexPath = _lineSpacing * line;
     CGFloat lineOriginY = (_largeCellSize.height * (line/2.))  + _smallCellSize.height * (line/2.)  + sectionHeight + lineSpaceForIndexPath + _insets.top;
-    CGFloat rightSideLargeCellOriginX = _collectionViewSize.width - _largeCellSize.width - _insets.right;
+  
     CGFloat rightSideSmallCellOriginX = _collectionViewSize.width - _smallCellSize.width - _insets.right;
     
     

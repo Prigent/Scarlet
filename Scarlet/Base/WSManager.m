@@ -111,6 +111,21 @@
     return responseObject;
 }
 
+- (void)getAuthentification:(NSString*) token completion:(void (^)(NSError* error)) onCompletion
+{
+    //NSString* base= nil;
+    //AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    //[manager GET:base parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        NSDictionary* reponseObject = [self getDataFromFile:@"user.json"];
+        [WSParser addUser:[reponseObject valueForKey:@"user"]];
+        onCompletion(nil);
+    }
+    /*failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+     onCompletion(nil);
+     }];*/
+}
 
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion
 {
