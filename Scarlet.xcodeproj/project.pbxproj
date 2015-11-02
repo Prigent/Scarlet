@@ -58,6 +58,18 @@
 		B23FA5D91BD5037000868D12 /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5D81BD5037000868D12 /* IntroViewController.m */; };
 		B244DA501BDE972B0088BB1D /* ProfileListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B244DA4F1BDE972B0088BB1D /* ProfileListCell.m */; };
 		B244DA531BDE9FEC0088BB1D /* JoinEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B244DA521BDE9FEC0088BB1D /* JoinEventViewController.m */; };
+		B27389771BE65D4200AF1209 /* FacebookImagePicker.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B27389601BE65D4200AF1209 /* FacebookImagePicker.xcassets */; };
+		B27389781BE65D4200AF1209 /* OLAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389621BE65D4200AF1209 /* OLAlbumViewController.m */; };
+		B27389791BE65D4200AF1209 /* OLAlbumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B27389631BE65D4200AF1209 /* OLAlbumViewController.xib */; };
+		B273897A1BE65D4200AF1209 /* OLFacebookAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389651BE65D4200AF1209 /* OLFacebookAlbum.m */; };
+		B273897B1BE65D4200AF1209 /* OLFacebookAlbumRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389671BE65D4200AF1209 /* OLFacebookAlbumRequest.m */; };
+		B273897C1BE65D4200AF1209 /* OLFacebookImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389691BE65D4200AF1209 /* OLFacebookImage.m */; };
+		B273897D1BE65D4200AF1209 /* OLFacebookImagePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B273896B1BE65D4200AF1209 /* OLFacebookImagePickerCell.m */; };
+		B273897E1BE65D4200AF1209 /* OLFacebookImagePickerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B273896D1BE65D4200AF1209 /* OLFacebookImagePickerConstants.m */; };
+		B273897F1BE65D4200AF1209 /* OLFacebookImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = B273896F1BE65D4200AF1209 /* OLFacebookImagePickerController.m */; };
+		B27389801BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389711BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m */; };
+		B27389811BE65D4200AF1209 /* OLPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389731BE65D4200AF1209 /* OLPhotoViewController.m */; };
+		B27389821BE65D4200AF1209 /* OLPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B27389741BE65D4200AF1209 /* OLPhotoViewController.xib */; };
 		B27F77E51BD7FFEB0038B4B0 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27F77E41BD7FFEB0038B4B0 /* FBSDKLoginKit.framework */; };
 		B27F77E71BD800410038B4B0 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27F77E61BD800410038B4B0 /* FBSDKCoreKit.framework */; };
 		B27F77EA1BD8013B0038B4B0 /* KIImagePager.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F77E91BD8013B0038B4B0 /* KIImagePager.m */; };
@@ -283,6 +295,27 @@
 		B244DA4F1BDE972B0088BB1D /* ProfileListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileListCell.m; path = Source/ProfileListCell.m; sourceTree = "<group>"; };
 		B244DA511BDE9FEC0088BB1D /* JoinEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinEventViewController.h; path = Source/JoinEventViewController.h; sourceTree = "<group>"; };
 		B244DA521BDE9FEC0088BB1D /* JoinEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JoinEventViewController.m; path = Source/JoinEventViewController.m; sourceTree = "<group>"; };
+		B27389601BE65D4200AF1209 /* FacebookImagePicker.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FacebookImagePicker.xcassets; sourceTree = "<group>"; };
+		B27389611BE65D4200AF1209 /* OLAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLAlbumViewController.h; sourceTree = "<group>"; };
+		B27389621BE65D4200AF1209 /* OLAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLAlbumViewController.m; sourceTree = "<group>"; };
+		B27389631BE65D4200AF1209 /* OLAlbumViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OLAlbumViewController.xib; sourceTree = "<group>"; };
+		B27389641BE65D4200AF1209 /* OLFacebookAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookAlbum.h; sourceTree = "<group>"; };
+		B27389651BE65D4200AF1209 /* OLFacebookAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookAlbum.m; sourceTree = "<group>"; };
+		B27389661BE65D4200AF1209 /* OLFacebookAlbumRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookAlbumRequest.h; sourceTree = "<group>"; };
+		B27389671BE65D4200AF1209 /* OLFacebookAlbumRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookAlbumRequest.m; sourceTree = "<group>"; };
+		B27389681BE65D4200AF1209 /* OLFacebookImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookImage.h; sourceTree = "<group>"; };
+		B27389691BE65D4200AF1209 /* OLFacebookImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookImage.m; sourceTree = "<group>"; };
+		B273896A1BE65D4200AF1209 /* OLFacebookImagePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookImagePickerCell.h; sourceTree = "<group>"; };
+		B273896B1BE65D4200AF1209 /* OLFacebookImagePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookImagePickerCell.m; sourceTree = "<group>"; };
+		B273896C1BE65D4200AF1209 /* OLFacebookImagePickerConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookImagePickerConstants.h; sourceTree = "<group>"; };
+		B273896D1BE65D4200AF1209 /* OLFacebookImagePickerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookImagePickerConstants.m; sourceTree = "<group>"; };
+		B273896E1BE65D4200AF1209 /* OLFacebookImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookImagePickerController.h; sourceTree = "<group>"; };
+		B273896F1BE65D4200AF1209 /* OLFacebookImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookImagePickerController.m; sourceTree = "<group>"; };
+		B27389701BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLFacebookPhotosForAlbumRequest.h; sourceTree = "<group>"; };
+		B27389711BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLFacebookPhotosForAlbumRequest.m; sourceTree = "<group>"; };
+		B27389721BE65D4200AF1209 /* OLPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLPhotoViewController.h; sourceTree = "<group>"; };
+		B27389731BE65D4200AF1209 /* OLPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLPhotoViewController.m; sourceTree = "<group>"; };
+		B27389741BE65D4200AF1209 /* OLPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OLPhotoViewController.xib; sourceTree = "<group>"; };
 		B27F77E41BD7FFEB0038B4B0 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		B27F77E61BD800410038B4B0 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		B27F77E81BD8013B0038B4B0 /* KIImagePager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIImagePager.h; sourceTree = "<group>"; };
@@ -462,6 +495,7 @@
 		B23FA52E1BD5011B00868D12 /* Third-party */ = {
 			isa = PBXGroup;
 			children = (
+				B273895F1BE65D4200AF1209 /* ImagePickerLib */,
 				B2E05F891BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout */,
 				B28302CD1BDFAD0C006FC644 /* APParallaxHeader */,
 				B23FA52F1BD5011B00868D12 /* AFNetworking */,
@@ -770,6 +804,34 @@
 			name = Friend;
 			sourceTree = "<group>";
 		};
+		B273895F1BE65D4200AF1209 /* ImagePickerLib */ = {
+			isa = PBXGroup;
+			children = (
+				B27389601BE65D4200AF1209 /* FacebookImagePicker.xcassets */,
+				B27389611BE65D4200AF1209 /* OLAlbumViewController.h */,
+				B27389621BE65D4200AF1209 /* OLAlbumViewController.m */,
+				B27389631BE65D4200AF1209 /* OLAlbumViewController.xib */,
+				B27389641BE65D4200AF1209 /* OLFacebookAlbum.h */,
+				B27389651BE65D4200AF1209 /* OLFacebookAlbum.m */,
+				B27389661BE65D4200AF1209 /* OLFacebookAlbumRequest.h */,
+				B27389671BE65D4200AF1209 /* OLFacebookAlbumRequest.m */,
+				B27389681BE65D4200AF1209 /* OLFacebookImage.h */,
+				B27389691BE65D4200AF1209 /* OLFacebookImage.m */,
+				B273896A1BE65D4200AF1209 /* OLFacebookImagePickerCell.h */,
+				B273896B1BE65D4200AF1209 /* OLFacebookImagePickerCell.m */,
+				B273896C1BE65D4200AF1209 /* OLFacebookImagePickerConstants.h */,
+				B273896D1BE65D4200AF1209 /* OLFacebookImagePickerConstants.m */,
+				B273896E1BE65D4200AF1209 /* OLFacebookImagePickerController.h */,
+				B273896F1BE65D4200AF1209 /* OLFacebookImagePickerController.m */,
+				B27389701BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.h */,
+				B27389711BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m */,
+				B27389721BE65D4200AF1209 /* OLPhotoViewController.h */,
+				B27389731BE65D4200AF1209 /* OLPhotoViewController.m */,
+				B27389741BE65D4200AF1209 /* OLPhotoViewController.xib */,
+			);
+			path = ImagePickerLib;
+			sourceTree = "<group>";
+		};
 		B27F77FF1BD911090038B4B0 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -1024,6 +1086,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2E05FBB1BDFE0070037A8ED /* 9.jpg in Resources */,
+				B27389791BE65D4200AF1209 /* OLAlbumViewController.xib in Resources */,
 				B2E05FBA1BDFE0070037A8ED /* 8.jpg in Resources */,
 				B2E05FB51BDFE0070037A8ED /* 3.jpg in Resources */,
 				B27F78DF1BD937690038B4B0 /* user.json in Resources */,
@@ -1035,6 +1098,7 @@
 				B2E05FAB1BDFE0070037A8ED /* 12.jpg in Resources */,
 				B27F77FD1BD911030038B4B0 /* Parameter.storyboard in Resources */,
 				B2F9723C1BD94D0A00B8BF72 /* Chat.plist in Resources */,
+				B27389821BE65D4200AF1209 /* OLPhotoViewController.xib in Resources */,
 				B2E05FAF1BDFE0070037A8ED /* 16.jpg in Resources */,
 				B2E05FB71BDFE0070037A8ED /* 5.jpg in Resources */,
 				B2F9723A1BD94CFE00B8BF72 /* MyEvent.plist in Resources */,
@@ -1044,6 +1108,7 @@
 				B27F77F61BD910620038B4B0 /* Friend.storyboard in Resources */,
 				B2B70D271BDE54D500C89731 /* Event.storyboard in Resources */,
 				B2E05FB81BDFE0070037A8ED /* 6.jpg in Resources */,
+				B27389771BE65D4200AF1209 /* FacebookImagePicker.xcassets in Resources */,
 				B2E05FAE1BDFE0070037A8ED /* 15.jpg in Resources */,
 				B2E05FA81BDFE0070037A8ED /* 1.jpg in Resources */,
 				B2E05FAA1BDFE0070037A8ED /* 11.jpg in Resources */,
@@ -1101,17 +1166,23 @@
 				B2AA6EC81BCCF66500DCF1A4 /* AppDelegate.m in Sources */,
 				B23FA5D91BD5037000868D12 /* IntroViewController.m in Sources */,
 				B27F78C61BD9236F0038B4B0 /* Event.m in Sources */,
+				B273897A1BE65D4200AF1209 /* OLFacebookAlbum.m in Sources */,
+				B27389801BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m in Sources */,
 				B27F78071BD914F60038B4B0 /* ProfileViewController.m in Sources */,
 				B2B70D2A1BDE551A00C89731 /* CreateEventViewController.m in Sources */,
 				B23FA5BF1BD5011B00868D12 /* StretchedLocalizedButton.m in Sources */,
 				B27F78CD1BD9236F0038B4B0 /* Message+CoreDataProperties.m in Sources */,
 				B27F78D81BD9236F0038B4B0 /* Demand.m in Sources */,
 				B23585771BDCCEA000568AB9 /* MessageCell.m in Sources */,
+				B273897D1BE65D4200AF1209 /* OLFacebookImagePickerCell.m in Sources */,
 				B2E060001BE101390037A8ED /* DetailMyProfileCell.m in Sources */,
 				B27F78E91BD93B260038B4B0 /* Picture.m in Sources */,
 				B27F78C71BD9236F0038B4B0 /* FriendRequest+CoreDataProperties.m in Sources */,
+				B273897B1BE65D4200AF1209 /* OLFacebookAlbumRequest.m in Sources */,
+				B27389811BE65D4200AF1209 /* OLPhotoViewController.m in Sources */,
 				B27F789B1BD922F30038B4B0 /* ParameterViewController.m in Sources */,
 				B27F78EA1BD93B260038B4B0 /* Profile+CoreDataProperties.m in Sources */,
+				B27389781BE65D4200AF1209 /* OLAlbumViewController.m in Sources */,
 				B23FA5BD1BD5011B00868D12 /* LocalizedLabel.m in Sources */,
 				B2E05F8E1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m in Sources */,
 				B23FA5B01BD5011B00868D12 /* AFSecurityPolicy.m in Sources */,
@@ -1121,11 +1192,13 @@
 				B23FA5BE1BD5011B00868D12 /* LocalizedTextField.m in Sources */,
 				B2F972351BD9468200B8BF72 /* AutoListViewController.m in Sources */,
 				B23FA5AD1BD5011B00868D12 /* AFHTTPRequestOperationManager.m in Sources */,
+				B273897E1BE65D4200AF1209 /* OLFacebookImagePickerConstants.m in Sources */,
 				B27F78E81BD93B260038B4B0 /* Picture+CoreDataProperties.m in Sources */,
 				B23FA5C81BD5011B00868D12 /* UIAlertView+AFNetworking.m in Sources */,
 				B23FA5CD1BD5011B00868D12 /* UIWebView+AFNetworking.m in Sources */,
 				B23FA5C41BD5011B00868D12 /* NSString+XMLEntities.m in Sources */,
 				B27F78CE1BD9236F0038B4B0 /* Message.m in Sources */,
+				B273897C1BE65D4200AF1209 /* OLFacebookImage.m in Sources */,
 				B27F78D31BD9236F0038B4B0 /* Address+CoreDataProperties.m in Sources */,
 				B2F972381BD946B800B8BF72 /* EventCell.m in Sources */,
 				B27F77EA1BD8013B0038B4B0 /* KIImagePager.m in Sources */,
@@ -1152,6 +1225,7 @@
 				B27F788B1BD9225A0038B4B0 /* MyChatsViewController.m in Sources */,
 				B23FA5B31BD5011B00868D12 /* AFURLResponseSerialization.m in Sources */,
 				B27F78C51BD9236F0038B4B0 /* Event+CoreDataProperties.m in Sources */,
+				B273897F1BE65D4200AF1209 /* OLFacebookImagePickerController.m in Sources */,
 				B23FA52A1BD5011100868D12 /* BaseViewController.m in Sources */,
 				B27F78D11BD9236F0038B4B0 /* User+CoreDataProperties.m in Sources */,
 				B27F78851BD922180038B4B0 /* SearchEventViewController.m in Sources */,

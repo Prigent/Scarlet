@@ -14,6 +14,13 @@
 #import "ShareAppContext.h"
 #import "UIImageView+AFNetworking.h"
 #import "DetailMyProfileCell.h"
+#import "OLFacebookAlbumRequest.h"
+#import "OLFacebookPhotosForAlbumRequest.h"
+#import "OLFacebookAlbum.h"
+#import "OLFacebookImage.h"
+#import "OLFacebookImagePickerController.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface MyProfileViewController ()
 
@@ -35,7 +42,6 @@
     self.mUser = [WSParser getUser:  [ShareAppContext sharedInstance].userIdentifier];
     [self setupPhotosArray];
 }
-
 
 -(void) viewDidLayoutSubviews
 {
@@ -179,7 +185,7 @@
     NSString* urlString =  _photosArray[indexPath.item];
     if(urlString.length==0)
     {
-        UIActionSheet * lUIActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Library photos", @"Facebook photos", nil];
+        UIActionSheet * lUIActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Library", @"Facebook", nil];
         [lUIActionSheet showInView:self.view];
     }
     else
@@ -188,6 +194,57 @@
         [lUIActionSheet showInView:self.view];
     }
 }
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"%d", buttonIndex);
+    switch (buttonIndex) {
+        case 0:
+            [self openLibrary:true];
+            break;
+        case 1:
+            [self openLibrary:false];
+            break;
+        case 2:
+            [self openFacebookPicker];
+            break;
+        default:
+            break;
+    }
+
+}
+
+-(void) openLibrary:(BOOL) camera
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    
+    if(camera)
+    {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else
+    {
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+-(void) openFacebookPicker
+{
+    OLFacebookImagePickerController *picker = [[OLFacebookImagePickerController alloc] init];
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
 
 - (IBAction)refresh:(UIBarButtonItem *)sender
 {
@@ -258,6 +315,35 @@
         [cell performSelector:@selector(configure:) withObject:nil];
     }
     return cell;
+}
+
+
+
+#pragma mark - OLFacebookImagePickerControllerDelegate methods
+
+- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didFailWithError:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:^() {
+        [[[UIAlertView alloc] initWithTitle:@"Oops" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }];
+}
+
+- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didFinishPickingImages:(NSArray/*<OLFacebookImage>*/ *)images {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"User did pick %lu images", (unsigned long) images.count);
+}
+
+- (void)facebookImagePickerDidCancelPickingImages:(OLFacebookImagePickerController *)imagePicker {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"User cancelled facebook image picking");
+}
+
+- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didSelectImage:(OLFacebookImage *)image
+{
+    [imagePicker performSelector:@selector(albumViewControllerDoneClicked:) withObject:imagePicker afterDelay:0];
+}
+- (BOOL)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker shouldSelectImage:(OLFacebookImage *)image
+{
+    return true;
 }
 
 

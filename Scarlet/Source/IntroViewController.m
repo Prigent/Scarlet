@@ -22,7 +22,7 @@
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
     // Optional: Place the button in the center of your view.
     loginButton.center= CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height - 30);
-    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_photos"];
     loginButton.delegate = self;
     [self.view addSubview:loginButton];
     
