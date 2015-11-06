@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--My Profile View Controller-->
@@ -18,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mP0-N7-L6Q">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mP0-N7-L6Q">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -67,26 +66,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bP-Rt-T6v">
-                                                    <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJW-xr-MAD">
+                                                    <rect key="frame" x="15" y="3" width="547" height="69"/>
                                                     <animations/>
-                                                    <string key="text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="MXH-Oh-Poi" id="wpK-Ll-ZGM"/>
+                                                    </connections>
+                                                </textView>
                                             </subviews>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="5bP-Rt-T6v" secondAttribute="bottom" constant="8" id="1dd-kx-fxr"/>
-                                                <constraint firstItem="5bP-Rt-T6v" firstAttribute="leading" secondItem="nVy-sf-6di" secondAttribute="leading" constant="8" id="A0z-KZ-Xo5"/>
-                                                <constraint firstItem="5bP-Rt-T6v" firstAttribute="top" secondItem="nVy-sf-6di" secondAttribute="top" constant="8" id="CKj-ln-DGA"/>
-                                                <constraint firstAttribute="trailing" secondItem="5bP-Rt-T6v" secondAttribute="trailing" constant="8" id="yD5-GH-wib"/>
+                                                <constraint firstAttribute="trailing" secondItem="lJW-xr-MAD" secondAttribute="trailing" constant="8" id="1j3-ti-8Co"/>
+                                                <constraint firstItem="lJW-xr-MAD" firstAttribute="leading" secondItem="nVy-sf-6di" secondAttribute="leading" constant="8" id="ZYA-ib-3FU"/>
+                                                <constraint firstAttribute="bottom" secondItem="lJW-xr-MAD" secondAttribute="bottom" constant="8" id="hcy-rZ-e0r"/>
+                                                <constraint firstItem="lJW-xr-MAD" firstAttribute="top" secondItem="nVy-sf-6di" secondAttribute="top" constant="8" id="pUg-vm-voX"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <animations/>
                                         <connections>
-                                            <outlet property="mDetailText" destination="5bP-Rt-T6v" id="dca-d1-R8H"/>
+                                            <outlet property="mDetailText" destination="lJW-xr-MAD" id="HLF-Mq-WTN"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AgeCell" id="qZe-Xt-vP8">

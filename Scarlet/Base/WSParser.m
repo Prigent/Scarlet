@@ -17,6 +17,7 @@
 #import "Address.h"
 #import "Demand.h"
 #import "Message.h"
+#import "FriendRequest.h"
 
 @implementation WSParser
 
@@ -32,6 +33,27 @@
     return message;
 }
 
++(FriendRequest*) addFriendRequest:(NSDictionary*) dicFriendRequest
+{
+    FriendRequest* friendRequest = [WSParser getFriendRequest:[dicFriendRequest valueForKey:@"identifier"]];
+    if(friendRequest == nil)
+    {
+        friendRequest = [NSEntityDescription insertNewObjectForEntityForName:@"FriendRequest" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    }
+    friendRequest.identifier = [dicFriendRequest valueForKey:@"identifier"];
+    friendRequest.date = [NSDate dateWithTimeIntervalSince1970:[[dicFriendRequest valueForKey:@"date"] integerValue]];
+    friendRequest.status = [dicFriendRequest valueForKey:@"status"];
+    friendRequest.profile = [self getProfile: [dicFriendRequest valueForKey:@"profile_id"]];
+    
+    return friendRequest;
+}
+
+
++(FriendRequest*) getFriendRequest:(NSString*) idFriendRequest
+{
+    return [WSParser searchIdentifier:idFriendRequest andName:@"FriendRequest"];
+}
+
 
 +(User*) addUser:(NSDictionary*) dicUser
 {
@@ -42,9 +64,19 @@
     }
     [self parseProfile:dicUser profile:user];
     user.lookingFor = [dicUser valueForKey:@"lookingFor"];
-    user.ageMax = [dicUser valueForKey:@"age_max"];
-    user.ageMin = [dicUser valueForKey:@"age_min"];
+   // user.ageMax = [dicUser valueForKey:@"age_max"];
+   // user.ageMin = [dicUser valueForKey:@"age_min"];
     
+    
+    NSArray* lArrayFriends = [dicUser valueForKey:@"friendRequest"];
+    if([lArrayFriends isKindOfClass:[NSArray class]])
+    {
+        for(NSDictionary* lFriendRequest in lArrayFriends)
+        {
+            [user addFriendRequestObject:[self addFriendRequest:lFriendRequest]];
+        }
+    }
+
     return user;
 }
 
@@ -76,10 +108,25 @@
     
     profile.birthdate = [NSDate dateWithTimeIntervalSince1970:[[dicProfile valueForKey:@"birthdate"] integerValue]];
     
-    
-    for(NSString* lFileName in [dicProfile valueForKey:@"picture"])
+    NSArray* lArrayPicture = [dicProfile valueForKey:@"picture"];
+    if([lArrayPicture isKindOfClass:[NSArray class]])
     {
-        [profile addPicturesObject:[self addPicture:lFileName]];
+        for(NSString* lFileName in lArrayPicture)
+        {
+            [profile addPicturesObject:[self addPicture:lFileName]];
+        }
+    }
+    NSArray* lArrayFriends = [dicProfile valueForKey:@"friends"];
+    if([lArrayFriends isKindOfClass:[NSArray class]])
+    {
+        for(NSString* lIdentifier in lArrayFriends)
+        {
+            Profile* lProfile = [self getProfile:lIdentifier];
+            if(lProfile)
+            {
+                [profile addFriendsObject:lProfile];
+            }
+        }
     }
     return profile;
 }
@@ -104,11 +151,19 @@
     event.address = [self addAddress:dicEvent];
     for(NSString* lProfileIdentifier in [dicEvent valueForKey:@"partners"])
     {
-        [event addPartnersObject:[self getProfile:lProfileIdentifier]];
+        Profile* lProfile = [self getProfile:lProfileIdentifier];
+        if(lProfile)
+        {
+            [event addPartnersObject:[self getProfile:lProfileIdentifier]];
+        }
     }
     for(NSDictionary* lDemandDic in [dicEvent valueForKey:@"demands"])
     {
-        [event addDemandsObject:[self addDemand:lDemandDic]];
+        Demand * lDemand = [self addDemand:lDemandDic];
+        if(lDemand)
+        {
+            [event addDemandsObject:lDemand];
+        }
     }
     return event;
 }
@@ -133,7 +188,11 @@
     
     for(NSString* lProfileIdentifier in [dicDemand valueForKey:@"partners"])
     {
-        [demand addPartnersObject:[self getProfile:lProfileIdentifier]];
+        Profile* lProfile = [self getProfile:lProfileIdentifier];
+        if(lProfile)
+        {
+            [demand addPartnersObject:lProfile];
+        }
     }
     
     return demand;
@@ -184,6 +243,9 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Profile" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@", [ShareAppContext sharedInstance].userIdentifier];
+    [fetchRequest setPredicate:predicate];
+    
     NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
     return anArray;
 }

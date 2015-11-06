@@ -10,6 +10,7 @@
 #import "Profile.h"
 #import "Picture.h"
 #import "UIImageView+AFNetworking.h"
+#import "ProfileCollectionCell.h"
 
 @implementation ProfileListCell
 
@@ -23,33 +24,41 @@
     // Configure the view for the selected state
 }
 
--(void) configure:(NSArray*) listProfile
+-(void) configure:(NSArray*) listProfile type:(int) type
 {
-    int i=0;
-    for(UIImageView * imageView in _mProfileListImage)
+    if(type == 1)
     {
-        imageView.image = nil;
+        self.mEmptyLabel.text = @"Inviter des amis afin de créer des scarlets.";
     }
-    for(UILabel * labelView in _mProfileListLabel)
+    else
     {
-        labelView.text = nil;
+        self.mEmptyLabel.text = @"Pas d'invitation reçu.";
     }
     
+    self.mData = listProfile;
+    self.mType = type;
+    [_mCollectionView reloadData];
     
-    for(Profile * profile in listProfile)
-    {
-        if( [_mProfileListImage count] > i)
-        {
-            UIImageView * lProfileImage = [_mProfileListImage objectAtIndex:i];
-            UILabel* lProfileLabel = [_mProfileListLabel objectAtIndex:i];
-            
-            Picture* picture = [profile.pictures firstObject];
-            [lProfileImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-            
-            lProfileLabel.text = profile.firstName;
-        }
-        i++;
-    }
+    
+
+        self.mEmptyLabel.hidden = ([self.mData count]>0);
+
 }
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return  [self.mData count];
+}
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"ProfileCollectionCell";
+    ProfileCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+    [cell configure:[self.mData objectAtIndex:indexPath.row] type:self.mType];
+    return cell;
+}
+
+
+
+
 
 @end

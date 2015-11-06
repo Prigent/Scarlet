@@ -10,6 +10,7 @@
 #import "KIImagePager.h"
 #import "ShareAppContext.h"
 #import "WSManager.h"
+#import "MBProgressHUD.h"
 
 @interface IntroViewController ()
 
@@ -22,7 +23,7 @@
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
     // Optional: Place the button in the center of your view.
     loginButton.center= CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height - 30);
-    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_photos"];
+    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_photos",@"user_about_me",@"user_hometown",@"user_work_history", @"user_location"];
     loginButton.delegate = self;
     [self.view addSubview:loginButton];
     
@@ -43,11 +44,29 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 {
     if(error == nil)
     {
-        [[WSManager sharedInstance] getAuthentification:result.token.tokenString completion:^(NSError *error) {
-            NSLog(@"result %@", result.token.tokenString);
-            [ShareAppContext sharedInstance].userIdentifier = @"1";
-            [self performSegueWithIdentifier:@"showTabView" sender:self];
+        loginButton.hidden = true;
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = @"Loading";
+        
+        [[WSManager sharedInstance] authentification:result.token.tokenString completion:^(NSError *error) {
+            if(error == nil)
+            {
+                [hud hide:YES];
+                NSLog(@"result %@", result.token.tokenString);
+                [self performSegueWithIdentifier:@"showTabView" sender:self];
+            }
+            else
+            {
+                [hud hide:YES];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            }
         }];
+    }
+    else
+    {
+         [[[UIAlertView alloc] initWithTitle:@"Facebook error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
     }
 }
 

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailMyProfileCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *mDetailText;
+@property (weak, nonatomic) IBOutlet UITextView *mDetailText;
 
 @end

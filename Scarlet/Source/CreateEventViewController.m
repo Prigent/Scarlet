@@ -8,7 +8,7 @@
 
 #import "CreateEventViewController.h"
 #import "WSParser.h"
-
+#import "ProfileListCell.h"
 
 @interface CreateEventViewController ()
 
@@ -86,10 +86,9 @@
     else
     {
         cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
-    }
-    if([cell respondsToSelector:@selector(configure:)])
-    {
-        [cell performSelector:@selector(configure:) withObject:[WSParser getProfiles]];
+
+        ProfileListCell* cellList = (ProfileListCell*)cell;
+        [cellList configure:[WSParser getProfiles] type:2];
     }
     return cell;
 }

@@ -29,12 +29,12 @@
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"AllEvent" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
     
-    [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
+
         [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
             NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
             [self updateWithPredicate:lNSPredicate];
         }];
-    }];
+
     
     [self.mMapView setShowsUserLocation:true];
     

@@ -112,6 +112,10 @@
 		B27F78EA1BD93B260038B4B0 /* Profile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E51BD93B260038B4B0 /* Profile+CoreDataProperties.m */; };
 		B27F78EB1BD93B260038B4B0 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E71BD93B260038B4B0 /* Profile.m */; };
 		B28302D01BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */; };
+		B290FBE41BE924EC00868F02 /* ProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE31BE924EC00868F02 /* ProfileCell.m */; };
+		B290FBE71BE927F200868F02 /* ProfileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE61BE927F200868F02 /* ProfileListViewController.m */; };
+		B290FBE91BE92B2200868F02 /* AllProfile.plist in Resources */ = {isa = PBXBuildFile; fileRef = B290FBE81BE92B2200868F02 /* AllProfile.plist */; };
+		B290FBEC1BE9345500868F02 /* ProfileCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBEB1BE9345500868F02 /* ProfileCollectionCell.m */; };
 		B2AA6EC51BCCF66500DCF1A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6EC41BCCF66500DCF1A4 /* main.m */; };
 		B2AA6EC81BCCF66500DCF1A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6EC71BCCF66500DCF1A4 /* AppDelegate.m */; };
 		B2AA6ECE1BCCF66500DCF1A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ECC1BCCF66500DCF1A4 /* Main.storyboard */; };
@@ -149,6 +153,8 @@
 		B2E05FBB1BDFE0070037A8ED /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2E05FA71BDFE0070037A8ED /* 9.jpg */; };
 		B2E060001BE101390037A8ED /* DetailMyProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05FFF1BE101390037A8ED /* DetailMyProfileCell.m */; };
 		B2E060021BE104D20037A8ED /* myevents.json in Resources */ = {isa = PBXBuildFile; fileRef = B2E060011BE104D20037A8ED /* myevents.json */; };
+		B2F3A3FF1BEBC84F006F76B1 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */; };
+		B2F3A4031BEBD4EB006F76B1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */; };
 		B2F972321BD945D300B8BF72 /* AllEvent.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F972311BD945D300B8BF72 /* AllEvent.plist */; };
 		B2F972351BD9468200B8BF72 /* AutoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972341BD9468200B8BF72 /* AutoListViewController.m */; };
 		B2F972381BD946B800B8BF72 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972371BD946B800B8BF72 /* EventCell.m */; };
@@ -389,6 +395,13 @@
 		B27F78E71BD93B260038B4B0 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = DataBase/Profile.m; sourceTree = "<group>"; };
 		B28302CE1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+APParallaxHeader.h"; sourceTree = "<group>"; };
 		B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+APParallaxHeader.m"; sourceTree = "<group>"; };
+		B290FBE21BE924EC00868F02 /* ProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileCell.h; path = Source/ProfileCell.h; sourceTree = "<group>"; };
+		B290FBE31BE924EC00868F02 /* ProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileCell.m; path = Source/ProfileCell.m; sourceTree = "<group>"; };
+		B290FBE51BE927F200868F02 /* ProfileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileListViewController.h; sourceTree = "<group>"; };
+		B290FBE61BE927F200868F02 /* ProfileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileListViewController.m; sourceTree = "<group>"; };
+		B290FBE81BE92B2200868F02 /* AllProfile.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AllProfile.plist; path = Source/AllProfile.plist; sourceTree = "<group>"; };
+		B290FBEA1BE9345500868F02 /* ProfileCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileCollectionCell.h; path = Source/ProfileCollectionCell.h; sourceTree = "<group>"; };
+		B290FBEB1BE9345500868F02 /* ProfileCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileCollectionCell.m; path = Source/ProfileCollectionCell.m; sourceTree = "<group>"; };
 		B2AA6EC01BCCF66500DCF1A4 /* Scarlet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scarlet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2AA6EC41BCCF66500DCF1A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B2AA6EC61BCCF66500DCF1A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -436,6 +449,9 @@
 		B2E05FFE1BE101390037A8ED /* DetailMyProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailMyProfileCell.h; path = Source/DetailMyProfileCell.h; sourceTree = "<group>"; };
 		B2E05FFF1BE101390037A8ED /* DetailMyProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailMyProfileCell.m; path = Source/DetailMyProfileCell.m; sourceTree = "<group>"; };
 		B2E060011BE104D20037A8ED /* myevents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = myevents.json; sourceTree = "<group>"; };
+		B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		B2F3A4011BEBD4EB006F76B1 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		B2F972311BD945D300B8BF72 /* AllEvent.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AllEvent.plist; path = Source/AllEvent.plist; sourceTree = "<group>"; };
 		B2F972331BD9468200B8BF72 /* AutoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoListViewController.h; sourceTree = "<group>"; };
 		B2F972341BD9468200B8BF72 /* AutoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoListViewController.m; sourceTree = "<group>"; };
@@ -456,6 +472,7 @@
 			files = (
 				B2AA6EE11BCCF6DA00DCF1A4 /* Crashlytics.framework in Frameworks */,
 				B23FA5B71BD5011B00868D12 /* libGoogleAdMobAds.a in Frameworks */,
+				B2F3A3FF1BEBC84F006F76B1 /* FBSDKShareKit.framework in Frameworks */,
 				B27F77E51BD7FFEB0038B4B0 /* FBSDKLoginKit.framework in Frameworks */,
 				B2AA6EE01BCCF6DA00DCF1A4 /* Fabric.framework in Frameworks */,
 				B27F77E71BD800410038B4B0 /* FBSDKCoreKit.framework in Frameworks */,
@@ -495,6 +512,7 @@
 		B23FA52E1BD5011B00868D12 /* Third-party */ = {
 			isa = PBXGroup;
 			children = (
+				B2F3A4001BEBD4EB006F76B1 /* MBProgressHUD */,
 				B273895F1BE65D4200AF1209 /* ImagePickerLib */,
 				B2E05F891BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout */,
 				B28302CD1BDFAD0C006FC644 /* APParallaxHeader */,
@@ -796,10 +814,17 @@
 		B23FA5D51BD5033300868D12 /* Friend */ = {
 			isa = PBXGroup;
 			children = (
+				B290FBE81BE92B2200868F02 /* AllProfile.plist */,
 				B27F78951BD922A80038B4B0 /* FriendViewController.h */,
 				B27F78961BD922A80038B4B0 /* FriendViewController.m */,
 				B244DA4E1BDE972B0088BB1D /* ProfileListCell.h */,
 				B244DA4F1BDE972B0088BB1D /* ProfileListCell.m */,
+				B290FBE21BE924EC00868F02 /* ProfileCell.h */,
+				B290FBE31BE924EC00868F02 /* ProfileCell.m */,
+				B290FBE51BE927F200868F02 /* ProfileListViewController.h */,
+				B290FBE61BE927F200868F02 /* ProfileListViewController.m */,
+				B290FBEA1BE9345500868F02 /* ProfileCollectionCell.h */,
+				B290FBEB1BE9345500868F02 /* ProfileCollectionCell.m */,
 			);
 			name = Friend;
 			sourceTree = "<group>";
@@ -848,6 +873,7 @@
 		B27F78001BD911210038B4B0 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */,
 				B27F77EF1BD8036E0038B4B0 /* Bolts.framework */,
 				B27F77F01BD8036F0038B4B0 /* FacebookSDKStrings.bundle */,
 				B27F77F11BD8036F0038B4B0 /* FBAudienceNetwork.framework */,
@@ -1027,6 +1053,15 @@
 			path = photos;
 			sourceTree = "<group>";
 		};
+		B2F3A4001BEBD4EB006F76B1 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				B2F3A4011BEBD4EB006F76B1 /* MBProgressHUD.h */,
+				B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1101,6 +1136,7 @@
 				B27389821BE65D4200AF1209 /* OLPhotoViewController.xib in Resources */,
 				B2E05FAF1BDFE0070037A8ED /* 16.jpg in Resources */,
 				B2E05FB71BDFE0070037A8ED /* 5.jpg in Resources */,
+				B290FBE91BE92B2200868F02 /* AllProfile.plist in Resources */,
 				B2F9723A1BD94CFE00B8BF72 /* MyEvent.plist in Resources */,
 				B27F78DD1BD937690038B4B0 /* events.json in Resources */,
 				B23585741BDCCE7400568AB9 /* Message.plist in Resources */,
@@ -1155,12 +1191,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2E05F921BDFDEED0037A8ED /* RACollectionViewCell.m in Sources */,
+				B290FBE41BE924EC00868F02 /* ProfileCell.m in Sources */,
 				B235857F1BDCEB9200568AB9 /* DetailProfileCell.m in Sources */,
 				B23FA5CB1BD5011B00868D12 /* UIProgressView+AFNetworking.m in Sources */,
 				B23FA5C11BD5011B00868D12 /* ReverseGeocoding.m in Sources */,
 				B235856B1BDA49E500568AB9 /* DemandCell.m in Sources */,
 				B28302D01BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m in Sources */,
 				B27F78D71BD9236F0038B4B0 /* Demand+CoreDataProperties.m in Sources */,
+				B290FBE71BE927F200868F02 /* ProfileListViewController.m in Sources */,
 				B23FA5B11BD5011B00868D12 /* AFURLConnectionOperation.m in Sources */,
 				B23FA5C91BD5011B00868D12 /* UIButton+AFNetworking.m in Sources */,
 				B2AA6EC81BCCF66500DCF1A4 /* AppDelegate.m in Sources */,
@@ -1198,6 +1236,7 @@
 				B23FA5CD1BD5011B00868D12 /* UIWebView+AFNetworking.m in Sources */,
 				B23FA5C41BD5011B00868D12 /* NSString+XMLEntities.m in Sources */,
 				B27F78CE1BD9236F0038B4B0 /* Message.m in Sources */,
+				B2F3A4031BEBD4EB006F76B1 /* MBProgressHUD.m in Sources */,
 				B273897C1BE65D4200AF1209 /* OLFacebookImage.m in Sources */,
 				B27F78D31BD9236F0038B4B0 /* Address+CoreDataProperties.m in Sources */,
 				B2F972381BD946B800B8BF72 /* EventCell.m in Sources */,
@@ -1219,6 +1258,7 @@
 				B2B70D251BDE49BF00C89731 /* ProfileMenuCell.m in Sources */,
 				B235857C1BDCDDC900568AB9 /* EventPointAnnotation.m in Sources */,
 				B27F78CC1BD9236F0038B4B0 /* Interest.m in Sources */,
+				B290FBEC1BE9345500868F02 /* ProfileCollectionCell.m in Sources */,
 				B23FA52B1BD5011100868D12 /* ShareAppContext.m in Sources */,
 				B23FA5B51BD5011B00868D12 /* UIColor+PXExtentions.m in Sources */,
 				B23FA5B41BD5011B00868D12 /* AFURLSessionManager.m in Sources */,

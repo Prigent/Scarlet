@@ -17,6 +17,7 @@
 @property (nonatomic) BOOL firstStarted;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSOperationQueue* queue;
+@property (strong, nonatomic) NSString* accessToken;
 @property (strong, nonatomic) NSString* userIdentifier;
 @property (strong, nonatomic) CLLocationManager* locationManager;
 

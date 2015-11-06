@@ -259,6 +259,9 @@
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     
     NSInteger count = [sectionInfo numberOfObjects];
+    
+    self.emptyStateView.hidden = (count != 0);
+    
     return count;
 }
 
@@ -345,8 +348,6 @@
         return cell.contentView;
     }
 }
-
-
 
 
  #pragma mark - Navigation

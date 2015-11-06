@@ -32,8 +32,10 @@ static CGFloat kImageOriginHight = 246.f;
     {
         self.navigationController.navigationBarHidden =true;
         [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
+            
             self.mProfile = (Profile*)[WSParser getUser:  [ShareAppContext sharedInstance].userIdentifier];
             [self updateView];
+            [self.mTableView reloadData];
         }];
     }
     else
@@ -118,7 +120,7 @@ static CGFloat kImageOriginHight = 246.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if([self.mProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    if([self.mProfile.identifier.description isEqualToString:[ShareAppContext sharedInstance].userIdentifier.description])
     {
         return 3;
     }

@@ -294,10 +294,12 @@
         case 0:
             cell = [tableView dequeueReusableCellWithIdentifier:@"DetailMyProfileCell"];
             cell.mDetailText.text = self.mUser.occupation;
+            cell.mDetailText.editable = true;
             break;
         case 1:
             cell = [tableView dequeueReusableCellWithIdentifier:@"DetailMyProfileCell"];
             cell.mDetailText.text = self.mUser.about;
+            cell.mDetailText.editable = true;
             break;
         case 2:
             cell = [tableView dequeueReusableCellWithIdentifier:@"SexCell"];
@@ -317,7 +319,15 @@
     return cell;
 }
 
-
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    return YES;
+}
 
 #pragma mark - OLFacebookImagePickerControllerDelegate methods
 

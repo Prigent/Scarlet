@@ -19,6 +19,7 @@
 -(void) updateWithPredicate:(NSPredicate*) predicate;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *emptyStateView;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSString* entityName;

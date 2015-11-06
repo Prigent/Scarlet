@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProfileListCell : UITableViewCell
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *mProfileListImage;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *mProfileListLabel;
-
+@interface ProfileListCell : UITableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
+@property (strong, nonatomic) NSArray *mData;
+@property (nonatomic) int mType;
+@property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
+@property (weak, nonatomic) IBOutlet UILabel *mEmptyLabel;
+-(void) configure:(NSArray*) listProfile type:(int) type;
 @end
