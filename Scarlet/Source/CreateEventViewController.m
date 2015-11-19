@@ -88,7 +88,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
 
         ProfileListCell* cellList = (ProfileListCell*)cell;
-        [cellList configure:[WSParser getProfiles] type:2];
+        [cellList configure:[WSParser getProfiles]];
     }
     return cell;
 }

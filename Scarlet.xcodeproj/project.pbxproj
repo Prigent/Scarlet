@@ -16,6 +16,13 @@
 		B23585791BDCD18500568AB9 /* messages.json in Resources */ = {isa = PBXBuildFile; fileRef = B23585781BDCD18500568AB9 /* messages.json */; };
 		B235857C1BDCDDC900568AB9 /* EventPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B235857B1BDCDDC900568AB9 /* EventPointAnnotation.m */; };
 		B235857F1BDCEB9200568AB9 /* DetailProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B235857E1BDCEB9200568AB9 /* DetailProfileCell.m */; };
+		B23838271BFBA6FE00E4A42D /* iconScarlet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838221BFBA6FE00E4A42D /* iconScarlet@2x.png */; };
+		B23838281BFBA6FE00E4A42D /* iconScarlet@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838231BFBA6FE00E4A42D /* iconScarlet@3x.png */; };
+		B238382A1BFBA6FE00E4A42D /* letteringScarlet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838251BFBA6FE00E4A42D /* letteringScarlet@2x.png */; };
+		B238382B1BFBA6FE00E4A42D /* letteringScarlet@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838261BFBA6FE00E4A42D /* letteringScarlet@3x.png */; };
+		B238382E1BFBB78600E4A42D /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B238382D1BFBB78600E4A42D /* User+CoreDataProperties.m */; };
+		B23838601BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B238385D1BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.m */; };
+		B23838611BFD0B4800E4A42D /* FacebookProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = B238385F1BFD0B4800E4A42D /* FacebookProfile.m */; };
 		B23FA5271BD5011100868D12 /* BaseNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA51A1BD5011100868D12 /* BaseNavigationViewController.m */; };
 		B23FA5281BD5011100868D12 /* BaseSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA51C1BD5011100868D12 /* BaseSplitViewController.m */; };
 		B23FA5291BD5011100868D12 /* BaseTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA51E1BD5011100868D12 /* BaseTabViewController.m */; };
@@ -153,6 +160,10 @@
 		B2E05FBB1BDFE0070037A8ED /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2E05FA71BDFE0070037A8ED /* 9.jpg */; };
 		B2E060001BE101390037A8ED /* DetailMyProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05FFF1BE101390037A8ED /* DetailMyProfileCell.m */; };
 		B2E060021BE104D20037A8ED /* myevents.json in Resources */ = {isa = PBXBuildFile; fileRef = B2E060011BE104D20037A8ED /* myevents.json */; };
+		B2E4EADE1BFD2B0900D1CCA2 /* CALayer+UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E4EADD1BFD2B0900D1CCA2 /* CALayer+UIColor.m */; };
+		B2E4EB071BFD47C800D1CCA2 /* InterestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E4EB061BFD47C800D1CCA2 /* InterestListCell.m */; };
+		B2E4EB0A1BFD47E100D1CCA2 /* InterestCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E4EB091BFD47E100D1CCA2 /* InterestCollectionCell.m */; };
+		B2EF3B641BFB492200830C4B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2EF3B631BFB492200830C4B /* Localizable.strings */; };
 		B2F3A3FF1BEBC84F006F76B1 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */; };
 		B2F3A4031BEBD4EB006F76B1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */; };
 		B2F972321BD945D300B8BF72 /* AllEvent.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F972311BD945D300B8BF72 /* AllEvent.plist */; };
@@ -179,6 +190,16 @@
 		B235857B1BDCDDC900568AB9 /* EventPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventPointAnnotation.m; path = Source/EventPointAnnotation.m; sourceTree = "<group>"; };
 		B235857D1BDCEB9200568AB9 /* DetailProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailProfileCell.h; path = Source/DetailProfileCell.h; sourceTree = "<group>"; };
 		B235857E1BDCEB9200568AB9 /* DetailProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailProfileCell.m; path = Source/DetailProfileCell.m; sourceTree = "<group>"; };
+		B23838221BFBA6FE00E4A42D /* iconScarlet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconScarlet@2x.png"; sourceTree = "<group>"; };
+		B23838231BFBA6FE00E4A42D /* iconScarlet@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconScarlet@3x.png"; sourceTree = "<group>"; };
+		B23838251BFBA6FE00E4A42D /* letteringScarlet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "letteringScarlet@2x.png"; sourceTree = "<group>"; };
+		B23838261BFBA6FE00E4A42D /* letteringScarlet@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "letteringScarlet@3x.png"; sourceTree = "<group>"; };
+		B238382C1BFBB78600E4A42D /* User+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "User+CoreDataProperties.h"; path = "Scarlet/DataBase/User+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B238382D1BFBB78600E4A42D /* User+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "User+CoreDataProperties.m"; path = "Scarlet/DataBase/User+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B238385C1BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FacebookProfile+CoreDataProperties.h"; path = "DataBase/FacebookProfile+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B238385D1BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FacebookProfile+CoreDataProperties.m"; path = "DataBase/FacebookProfile+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B238385E1BFD0B4800E4A42D /* FacebookProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookProfile.h; path = DataBase/FacebookProfile.h; sourceTree = "<group>"; };
+		B238385F1BFD0B4800E4A42D /* FacebookProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookProfile.m; path = DataBase/FacebookProfile.m; sourceTree = "<group>"; };
 		B23FA5191BD5011100868D12 /* BaseNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationViewController.h; sourceTree = "<group>"; };
 		B23FA51A1BD5011100868D12 /* BaseNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationViewController.m; sourceTree = "<group>"; };
 		B23FA51B1BD5011100868D12 /* BaseSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSplitViewController.h; sourceTree = "<group>"; };
@@ -449,6 +470,13 @@
 		B2E05FFE1BE101390037A8ED /* DetailMyProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailMyProfileCell.h; path = Source/DetailMyProfileCell.h; sourceTree = "<group>"; };
 		B2E05FFF1BE101390037A8ED /* DetailMyProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailMyProfileCell.m; path = Source/DetailMyProfileCell.m; sourceTree = "<group>"; };
 		B2E060011BE104D20037A8ED /* myevents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = myevents.json; sourceTree = "<group>"; };
+		B2E4EADC1BFD2B0900D1CCA2 /* CALayer+UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CALayer+UIColor.h"; path = "Source/CALayer+UIColor.h"; sourceTree = "<group>"; };
+		B2E4EADD1BFD2B0900D1CCA2 /* CALayer+UIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CALayer+UIColor.m"; path = "Source/CALayer+UIColor.m"; sourceTree = "<group>"; };
+		B2E4EB051BFD47C800D1CCA2 /* InterestListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterestListCell.h; path = Source/InterestListCell.h; sourceTree = "<group>"; };
+		B2E4EB061BFD47C800D1CCA2 /* InterestListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InterestListCell.m; path = Source/InterestListCell.m; sourceTree = "<group>"; };
+		B2E4EB081BFD47E100D1CCA2 /* InterestCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterestCollectionCell.h; path = Source/InterestCollectionCell.h; sourceTree = "<group>"; };
+		B2E4EB091BFD47E100D1CCA2 /* InterestCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InterestCollectionCell.m; path = Source/InterestCollectionCell.m; sourceTree = "<group>"; };
+		B2EF3B631BFB492200830C4B /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		B2F3A4011BEBD4EB006F76B1 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -727,6 +755,10 @@
 		B23FA5D01BD5013900868D12 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				B23838221BFBA6FE00E4A42D /* iconScarlet@2x.png */,
+				B23838231BFBA6FE00E4A42D /* iconScarlet@3x.png */,
+				B23838251BFBA6FE00E4A42D /* letteringScarlet@2x.png */,
+				B23838261BFBA6FE00E4A42D /* letteringScarlet@3x.png */,
 				B27F77E81BD8013B0038B4B0 /* KIImagePager.h */,
 				B27F77E91BD8013B0038B4B0 /* KIImagePager.m */,
 				B23FA5D71BD5037000868D12 /* IntroViewController.h */,
@@ -771,6 +803,12 @@
 				B2B70D2F1BDE55A100C89731 /* MyProfileViewController.m */,
 				B2E05FFE1BE101390037A8ED /* DetailMyProfileCell.h */,
 				B2E05FFF1BE101390037A8ED /* DetailMyProfileCell.m */,
+				B2E4EADC1BFD2B0900D1CCA2 /* CALayer+UIColor.h */,
+				B2E4EADD1BFD2B0900D1CCA2 /* CALayer+UIColor.m */,
+				B2E4EB051BFD47C800D1CCA2 /* InterestListCell.h */,
+				B2E4EB061BFD47C800D1CCA2 /* InterestListCell.m */,
+				B2E4EB081BFD47E100D1CCA2 /* InterestCollectionCell.h */,
+				B2E4EB091BFD47E100D1CCA2 /* InterestCollectionCell.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -888,6 +926,10 @@
 		B27F78461BD91C580038B4B0 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
+				B238385C1BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.h */,
+				B238385D1BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.m */,
+				B238385E1BFD0B4800E4A42D /* FacebookProfile.h */,
+				B238385F1BFD0B4800E4A42D /* FacebookProfile.m */,
 				B27F78E01BD93B260038B4B0 /* Picture+CoreDataProperties.h */,
 				B27F78E11BD93B260038B4B0 /* Picture+CoreDataProperties.m */,
 				B27F78E21BD93B260038B4B0 /* Picture.h */,
@@ -967,6 +1009,8 @@
 		B2AA6EB71BCCF66500DCF1A4 = {
 			isa = PBXGroup;
 			children = (
+				B238382C1BFBB78600E4A42D /* User+CoreDataProperties.h */,
+				B238382D1BFBB78600E4A42D /* User+CoreDataProperties.m */,
 				B2AA6EC21BCCF66500DCF1A4 /* Scarlet */,
 				B2AA6EC11BCCF66500DCF1A4 /* Products */,
 			);
@@ -999,6 +1043,7 @@
 				B2AA6ED71BCCF66500DCF1A4 /* Info.plist */,
 				B2AA6EC61BCCF66500DCF1A4 /* AppDelegate.h */,
 				B2AA6EC71BCCF66500DCF1A4 /* AppDelegate.m */,
+				B2EF3B631BFB492200830C4B /* Localizable.strings */,
 				B23FA5DA1BD5042700868D12 /* Constants.h */,
 				B23FA5DB1BD5042700868D12 /* Prefix.pch */,
 				B27F78D91BD937690038B4B0 /* Json */,
@@ -1122,6 +1167,7 @@
 			files = (
 				B2E05FBB1BDFE0070037A8ED /* 9.jpg in Resources */,
 				B27389791BE65D4200AF1209 /* OLAlbumViewController.xib in Resources */,
+				B238382A1BFBA6FE00E4A42D /* letteringScarlet@2x.png in Resources */,
 				B2E05FBA1BDFE0070037A8ED /* 8.jpg in Resources */,
 				B2E05FB51BDFE0070037A8ED /* 3.jpg in Resources */,
 				B27F78DF1BD937690038B4B0 /* user.json in Resources */,
@@ -1141,6 +1187,8 @@
 				B27F78DD1BD937690038B4B0 /* events.json in Resources */,
 				B23585741BDCCE7400568AB9 /* Message.plist in Resources */,
 				B2E05FAD1BDFE0070037A8ED /* 14.jpg in Resources */,
+				B23838271BFBA6FE00E4A42D /* iconScarlet@2x.png in Resources */,
+				B23838281BFBA6FE00E4A42D /* iconScarlet@3x.png in Resources */,
 				B27F77F61BD910620038B4B0 /* Friend.storyboard in Resources */,
 				B2B70D271BDE54D500C89731 /* Event.storyboard in Resources */,
 				B2E05FB81BDFE0070037A8ED /* 6.jpg in Resources */,
@@ -1149,6 +1197,7 @@
 				B2E05FA81BDFE0070037A8ED /* 1.jpg in Resources */,
 				B2E05FAA1BDFE0070037A8ED /* 11.jpg in Resources */,
 				B23585721BDCC90E00568AB9 /* chats.json in Resources */,
+				B238382B1BFBA6FE00E4A42D /* letteringScarlet@3x.png in Resources */,
 				B2E05FB91BDFE0070037A8ED /* 7.jpg in Resources */,
 				B27F77FE1BD911030038B4B0 /* Profile.storyboard in Resources */,
 				B27F78DE1BD937690038B4B0 /* profiles.json in Resources */,
@@ -1160,6 +1209,7 @@
 				B27F77F31BD8036F0038B4B0 /* FacebookSDKStrings.bundle in Resources */,
 				B2E05FB11BDFE0070037A8ED /* 18.jpg in Resources */,
 				B2E05FB21BDFE0070037A8ED /* 19.jpg in Resources */,
+				B2EF3B641BFB492200830C4B /* Localizable.strings in Resources */,
 				B2AA6ED31BCCF66500DCF1A4 /* Assets.xcassets in Resources */,
 				B23FA5B81BD5011B00868D12 /* README.txt in Resources */,
 				B2AA6ECE1BCCF66500DCF1A4 /* Main.storyboard in Resources */,
@@ -1198,12 +1248,14 @@
 				B235856B1BDA49E500568AB9 /* DemandCell.m in Sources */,
 				B28302D01BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m in Sources */,
 				B27F78D71BD9236F0038B4B0 /* Demand+CoreDataProperties.m in Sources */,
+				B23838601BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.m in Sources */,
 				B290FBE71BE927F200868F02 /* ProfileListViewController.m in Sources */,
 				B23FA5B11BD5011B00868D12 /* AFURLConnectionOperation.m in Sources */,
 				B23FA5C91BD5011B00868D12 /* UIButton+AFNetworking.m in Sources */,
 				B2AA6EC81BCCF66500DCF1A4 /* AppDelegate.m in Sources */,
 				B23FA5D91BD5037000868D12 /* IntroViewController.m in Sources */,
 				B27F78C61BD9236F0038B4B0 /* Event.m in Sources */,
+				B23838611BFD0B4800E4A42D /* FacebookProfile.m in Sources */,
 				B273897A1BE65D4200AF1209 /* OLFacebookAlbum.m in Sources */,
 				B27389801BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m in Sources */,
 				B27F78071BD914F60038B4B0 /* ProfileViewController.m in Sources */,
@@ -1220,6 +1272,7 @@
 				B27389811BE65D4200AF1209 /* OLPhotoViewController.m in Sources */,
 				B27F789B1BD922F30038B4B0 /* ParameterViewController.m in Sources */,
 				B27F78EA1BD93B260038B4B0 /* Profile+CoreDataProperties.m in Sources */,
+				B238382E1BFBB78600E4A42D /* User+CoreDataProperties.m in Sources */,
 				B27389781BE65D4200AF1209 /* OLAlbumViewController.m in Sources */,
 				B23FA5BD1BD5011B00868D12 /* LocalizedLabel.m in Sources */,
 				B2E05F8E1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m in Sources */,
@@ -1261,15 +1314,18 @@
 				B290FBEC1BE9345500868F02 /* ProfileCollectionCell.m in Sources */,
 				B23FA52B1BD5011100868D12 /* ShareAppContext.m in Sources */,
 				B23FA5B51BD5011B00868D12 /* UIColor+PXExtentions.m in Sources */,
+				B2E4EB0A1BFD47E100D1CCA2 /* InterestCollectionCell.m in Sources */,
 				B23FA5B41BD5011B00868D12 /* AFURLSessionManager.m in Sources */,
 				B27F788B1BD9225A0038B4B0 /* MyChatsViewController.m in Sources */,
 				B23FA5B31BD5011B00868D12 /* AFURLResponseSerialization.m in Sources */,
 				B27F78C51BD9236F0038B4B0 /* Event+CoreDataProperties.m in Sources */,
 				B273897F1BE65D4200AF1209 /* OLFacebookImagePickerController.m in Sources */,
+				B2E4EB071BFD47C800D1CCA2 /* InterestListCell.m in Sources */,
 				B23FA52A1BD5011100868D12 /* BaseViewController.m in Sources */,
 				B27F78D11BD9236F0038B4B0 /* User+CoreDataProperties.m in Sources */,
 				B27F78851BD922180038B4B0 /* SearchEventViewController.m in Sources */,
 				B244DA501BDE972B0088BB1D /* ProfileListCell.m in Sources */,
+				B2E4EADE1BFD2B0900D1CCA2 /* CALayer+UIColor.m in Sources */,
 				B23FA52D1BD5011100868D12 /* WSParser.m in Sources */,
 				B27F78941BD9228D0038B4B0 /* EventViewController.m in Sources */,
 				B27F78C81BD9236F0038B4B0 /* FriendRequest.m in Sources */,

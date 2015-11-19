@@ -15,6 +15,7 @@
 #import "WSParser.h"
 #import "Chat.h"
 #import "ShareAppContext.h"
+#import "User.h"
 
 #import <sys/utsname.h>
 #import "Toast+UIView.h"
@@ -31,7 +32,7 @@
     
     if (self)
     {
-        
+        self.mBaseURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"urlBase"];   
     }
     return self;
 }
@@ -125,29 +126,56 @@
 
 #pragma mark - POST REQUEST
 
+-(NSError*) checkResponse:(NSDictionary*) responseObject
+{
+    if([responseObject isKindOfClass:[NSDictionary class]])
+    {
+        NSString* code = [responseObject valueForKey:@"response_code"];
+        if([code intValue] != 0)
+        {
+            return [NSError errorWithDomain:self.mBaseURL code:100 userInfo:nil];
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    return [NSError errorWithDomain:self.mBaseURL code:101 userInfo:nil];
+}
 
 
 
 - (void)authentification:(NSString*) token completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/auth/authenticate" ;
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/auth/authenticate"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    
     [param setObject:token forKey:@"FBSDKAccessToken"];
+    
+    NSLog(@"%@ : %@", param, base);
     
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSLog(@"authentification %@", responseObject);
-        
-        [ShareAppContext sharedInstance].userIdentifier = [responseObject valueForKey:@"profile_id"];
-        [ShareAppContext sharedInstance].accessToken = [responseObject valueForKey:@"access_token"];
-        
-        [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
-            [self getUserCompletion:^(NSError *error) {
-                
-                onCompletion(nil);
+        NSError * error  =  [self checkResponse:responseObject];
+        if(error == nil)
+        {
+            [ShareAppContext sharedInstance].userIdentifier = [responseObject valueForKey:@"profile_id"];
+            [ShareAppContext sharedInstance].accessToken = [responseObject valueForKey:@"access_token"];
+            
+            [self getProfilsCompletion:^(NSError *error) {
+                [self getUserCompletion:^(NSError *error) {
+                    
+                    onCompletion(nil);
+                }];
             }];
-        }];
+        }
+        else
+        {
+            onCompletion(error);
+        }
     }
     failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
@@ -156,29 +184,65 @@
      }];
 }
 
-- (void)sendPicture:(UIImage*) picture position:(NSNumber*) position completion:(void (^)(NSError* error)) onCompletion
+- (void)removePicture:(NSNumber*) position completion:(void (^)(NSError* error)) onCompletion;
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/picture" ;
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/picture"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[self encodeToBase64String:picture] forKey:@"picture_data"];
-    [param setObject:position forKey:@"position"];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    [param setObject:position forKey:@"picture_id"];
     
+    NSLog(@"%@ %@",base, param);
     
-    [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+    [manager DELETE:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-        onCompletion(nil);
-
+         
+         [WSParser addUser:[responseObject valueForKey:@"user"]];
+         NSLog(@"REPONSE %@ %@",base, responseObject);
+         onCompletion(nil);
      }
-    failure:^(AFHTTPRequestOperation *operation, NSError *error)
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
+         NSLog(@"base %@ error %@", base , error);
          onCompletion(error);
      }];
 }
 
+- (void)sendPicture:(UIImage*) picture position:(NSNumber*) position completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/picture"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    NSString* stringImage =  [NSString stringWithFormat:@"%@%@",@"data:image/jpg;base64,/9j/",[self encodeToBase64String:picture]];
+    [param setObject:stringImage forKey:@"picture_data"];
+    [param setObject:position forKey:@"position"];
+    
+    NSLog(@"%@ %@",base, param);
+    
+    [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         
+         [WSParser addUser:[responseObject valueForKey:@"user"]];
+         NSLog(@"%@ %@",base, responseObject);
+        onCompletion(nil);
+     }
+    failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+          NSLog(@"base %@ error %@", base , error);
+         onCompletion(error);
+     }];
+    
+    
+
+}
+
 - (void)addDemand:(NSString*) identifier partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/friend" ;
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setObject:identifier forKey:@"event_identifier"];
@@ -196,11 +260,13 @@
 }
 - (void)respondDemand:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/friend" ;
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setObject:identifier forKey:@"demand_identifier"];
     [param setObject:status forKey:@"status"];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -216,60 +282,75 @@
 
 - (void)addFriend:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/friend" ;
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setObject:identifier forKey:@"profile_identifier"];
-    
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-         onCompletion(nil);
          
+         [WSParser addUser:[responseObject valueForKey:@"user"]];
+         NSLog(@"error %@", responseObject);
+         onCompletion(nil);
      }
           failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
+         NSLog(@"error %@", error);
          onCompletion(error);
      }];
 }
 
 - (void)respondFriend:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/friend" ;
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setObject:identifier forKey:@"friend_request_identifier"];
     [param setObject:status forKey:@"status"];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
+         [WSParser addUser:[responseObject valueForKey:@"user"]];
+         NSLog(@"%@", responseObject);
          onCompletion(nil);
          
      }
     failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
+         NSLog(@"%@", error);
          onCompletion(error);
      }];
 }
 
 - (NSString *)encodeToBase64String:(UIImage *)image {
-    return [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
+    return [UIImageJPEGRepresentation(image, 0.9) base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
 }
 
 
-- (void)editUserCompletion:(NSDictionary*) property :(void (^)(NSError* error)) onCompletion
+- (void)saveUserCompletion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/user";
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/user"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
-    NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:property];
+    
+    
+    NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:[[ShareAppContext sharedInstance].user getDictionary]];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
+         NSLog(@"%@", responseObject);
          [WSParser addUser:[responseObject valueForKey:@"user"]];
          onCompletion(nil);
      }
          failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
+        NSLog(@"%@", error);
          onCompletion(error);
      }];
 }
@@ -279,7 +360,8 @@
 
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/user";
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/user"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
@@ -288,7 +370,7 @@
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSLog(@"getUserCompletion %@", responseObject);
-        [WSParser addUser:[responseObject valueForKey:@"user"]];
+        [ShareAppContext sharedInstance].user = [WSParser addUser:[responseObject valueForKey:@"user"]];
         onCompletion(nil);
     }
     failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -300,7 +382,8 @@
 
 - (void)getEventsCompletion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/event";
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/event"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     [manager GET:base parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
@@ -319,7 +402,8 @@
 
 - (void)getProfilsCompletion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/profile";
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/profile"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
@@ -345,7 +429,8 @@
 
 - (void)getMessagesForChat:(Chat*) chat completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/message";
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/message"];
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     [manager GET:base parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
@@ -369,7 +454,9 @@
 
 - (void)getMyEventsCompletion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= @"http://scarlet.aouka.org/rest/services/v1/myevent";
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/myevent"];
+    
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     [manager GET:base parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
@@ -407,7 +494,35 @@
      }];*/
 }
 
-
+- (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/mutualfriend"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    [param setObject:profile.identifier forKey:@"profile_identifier"];
+    
+    
+    [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"getMutualfriend %@", responseObject);
+         NSArray* lAllProfiles= [responseObject valueForKey:@"mutual_friend"];
+         
+         [profile removeMutualFriends:profile.mutualFriends];
+         
+         for(NSDictionary * lDicProfile in lAllProfiles)
+         {
+             [profile addMutualFriendsObject:[WSParser addFacebookProfile:lDicProfile]];
+         }
+         onCompletion(nil);
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         onCompletion(error);
+     }];
+}
 
 
 

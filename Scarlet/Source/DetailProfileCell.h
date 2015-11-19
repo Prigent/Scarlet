@@ -13,5 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *mOccupationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mAboutLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mCountFriendLabel;
+@property (weak, nonatomic) IBOutlet UIButton *mEdit;
+@property (weak, nonatomic) IBOutlet UIImageView *mIconMutual;
 
 @end

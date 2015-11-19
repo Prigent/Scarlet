@@ -21,9 +21,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
-    // Optional: Place the button in the center of your view.
+    
     loginButton.center= CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height - 30);
-    loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_photos",@"user_about_me",@"user_hometown",@"user_work_history", @"user_location"];
+    loginButton.readPermissions = @[@"user_birthday", @"user_hometown", @"user_location", @"user_work_history", @"user_photos", @"user_friends", @"user_about_me", @"email", @"public_profile", @"user_likes"];
+    
+    
+    
     loginButton.delegate = self;
     [self.view addSubview:loginButton];
     
@@ -37,32 +40,47 @@
     
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self authentification];
+}
+
+-(void) authentification
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Loading";
+    
+
+    [[WSManager sharedInstance] authentification: [FBSDKAccessToken currentAccessToken].tokenString completion:^(NSError *error) {
+        if(error == nil)
+        {
+            [hud hide:YES];
+            NSLog(@"result %@", [FBSDKAccessToken currentAccessToken].tokenString);
+            
+            
+            [self performSegueWithIdentifier:@"showTabView" sender:self];
+        }
+        else
+        {
+            [hud hide:YES];
+            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:@"Retry", nil];
+            [lUIAlertView show];
+            
+            
+        }
+    }];
+}
+
 
 - (void)  loginButton:(FBSDKLoginButton *)loginButton
 didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 error:(NSError *)error
 {
-    if(error == nil)
+    if(error == nil && [FBSDKAccessToken currentAccessToken].tokenString !=nil)
     {
         loginButton.hidden = true;
-        
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.mode = MBProgressHUDModeIndeterminate;
-        hud.labelText = @"Loading";
-        
-        [[WSManager sharedInstance] authentification:result.token.tokenString completion:^(NSError *error) {
-            if(error == nil)
-            {
-                [hud hide:YES];
-                NSLog(@"result %@", result.token.tokenString);
-                [self performSegueWithIdentifier:@"showTabView" sender:self];
-            }
-            else
-            {
-                [hud hide:YES];
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
-            }
-        }];
+        [self authentification];
     }
     else
     {

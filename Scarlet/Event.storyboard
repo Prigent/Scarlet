@@ -28,12 +28,16 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eed-dd-rdO">
                                             <rect key="frame" x="8" y="8" width="305" height="30"/>
                                             <animations/>
-                                            <state key="normal" title="Address..."/>
+                                            <state key="normal" title="Address...">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XU1-FX-FoR">
                                             <rect key="frame" x="8" y="46" width="359" height="30"/>
                                             <animations/>
-                                            <state key="normal" title="Choose your mood"/>
+                                            <state key="normal" title="Choose your mood">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSu-G6-rPd">
                                             <rect key="frame" x="321" y="8" width="46" height="30"/>
@@ -41,7 +45,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="46" id="3M1-dU-07f"/>
                                             </constraints>
-                                            <state key="normal" title="Loc"/>
+                                            <state key="normal" title="Loc">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                         </button>
                                     </subviews>
                                     <animations/>
@@ -64,12 +70,16 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="38U-cz-Ots">
                                             <rect key="frame" x="8" y="8" width="176" height="30"/>
                                             <animations/>
-                                            <state key="normal" title="See more"/>
+                                            <state key="normal" title="See more">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uHr-Sj-Kxe">
                                             <rect key="frame" x="192" y="8" width="175" height="30"/>
                                             <animations/>
-                                            <state key="normal" title="Invite friends"/>
+                                            <state key="normal" title="Invite friends">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                             <connections>
                                                 <action selector="inviteFriend:" destination="C8K-cG-3EU" eventType="touchUpInside" id="4N5-C4-89M"/>
                                             </connections>
@@ -77,7 +87,9 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OTZ-KB-fDh">
                                             <rect key="frame" x="8" y="46" width="359" height="30"/>
                                             <animations/>
-                                            <state key="normal" title="Create"/>
+                                            <state key="normal" title="Create">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                             <connections>
                                                 <action selector="createEvent:" destination="C8K-cG-3EU" eventType="touchUpInside" id="9ML-M0-eUB"/>
                                             </connections>

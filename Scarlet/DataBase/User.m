@@ -12,5 +12,12 @@
 @implementation User
 
 // Insert code here to add functionality to your managed object subclass
-
+- (NSDictionary*) getDictionary
+{
+    NSMutableDictionary * lDic = [NSMutableDictionary dictionary];
+    [lDic setObject:self.occupation forKey:@"occupation"];
+    [lDic setObject:self.about forKey:@"about"];
+    
+    return lDic;
+}
 @end

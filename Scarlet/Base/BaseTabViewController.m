@@ -29,6 +29,7 @@
             [lNext performSelector:@selector(configure:) withObject:self.mObject];
         }
     }
+
 }
 
 - (void)didReceiveMemoryWarning {

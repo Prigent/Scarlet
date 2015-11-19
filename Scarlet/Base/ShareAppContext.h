@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import <MapKit/MapKit.h>
 
+@class User;
 @interface ShareAppContext : NSObject<CLLocationManagerDelegate>
 
 + (ShareAppContext *)sharedInstance;
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) NSString* accessToken;
 @property (strong, nonatomic) NSString* userIdentifier;
 @property (strong, nonatomic) CLLocationManager* locationManager;
+@property (strong, nonatomic) User* user;
 
 + (BOOL)isConnected;
 + (BOOL)isOnline;

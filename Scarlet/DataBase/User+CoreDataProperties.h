@@ -2,7 +2,7 @@
 //  User+CoreDataProperties.h
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 22/10/2015.
+//  Created by Prigent ROUDAUT on 17/11/2015.
 //  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *ageMin;
 @property (nullable, nonatomic, retain) NSNumber *lookingFor;
 @property (nullable, nonatomic, retain) NSSet<FriendRequest *> *friendRequest;
+@property (nullable, nonatomic, retain) NSSet<Profile *> *suggestProfile;
 
 @end
 
@@ -28,6 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeFriendRequestObject:(FriendRequest *)value;
 - (void)addFriendRequest:(NSSet<FriendRequest *> *)values;
 - (void)removeFriendRequest:(NSSet<FriendRequest *> *)values;
+
+- (void)addSuggestProfileObject:(Profile *)value;
+- (void)removeSuggestProfileObject:(Profile *)value;
+- (void)addSuggestProfile:(NSSet<Profile *> *)values;
+- (void)removeSuggestProfile:(NSSet<Profile *> *)values;
 
 @end
 

@@ -18,6 +18,8 @@
 #import "Demand.h"
 #import "Message.h"
 #import "FriendRequest.h"
+#import "FacebookProfile.h"
+#import "Interest.h"
 
 @implementation WSParser
 
@@ -42,9 +44,9 @@
     }
     friendRequest.identifier = [dicFriendRequest valueForKey:@"identifier"];
     friendRequest.date = [NSDate dateWithTimeIntervalSince1970:[[dicFriendRequest valueForKey:@"date"] integerValue]];
-    friendRequest.status = [dicFriendRequest valueForKey:@"status"];
+    friendRequest.status = [self getValue:[dicFriendRequest valueForKey:@"status"]];
     friendRequest.profile = [self getProfile: [dicFriendRequest valueForKey:@"profile_id"]];
-    
+    friendRequest.type = [self getValue:[dicFriendRequest valueForKey:@"type"]];
     return friendRequest;
 }
 
@@ -54,6 +56,16 @@
     return [WSParser searchIdentifier:idFriendRequest andName:@"FriendRequest"];
 }
 
++(FacebookProfile*) addFacebookProfile:(NSDictionary*) dicFacebookProfile
+{
+    FacebookProfile* facebookProfile = [NSEntityDescription insertNewObjectForEntityForName:@"FacebookProfile" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    
+    facebookProfile.identifier = [dicFacebookProfile valueForKey:@"id"];
+    facebookProfile.name = [dicFacebookProfile valueForKey:@"name"];
+    facebookProfile.picture = [dicFacebookProfile valueForKey:@"picture"];
+    
+    return facebookProfile;
+}
 
 +(User*) addUser:(NSDictionary*) dicUser
 {
@@ -64,19 +76,46 @@
     }
     [self parseProfile:dicUser profile:user];
     user.lookingFor = [dicUser valueForKey:@"lookingFor"];
-   // user.ageMax = [dicUser valueForKey:@"age_max"];
-   // user.ageMin = [dicUser valueForKey:@"age_min"];
+    user.ageMax = [dicUser valueForKey:@"age_max"];
+    user.ageMin = [dicUser valueForKey:@"age_min"];
     
     
-    NSArray* lArrayFriends = [dicUser valueForKey:@"friendRequest"];
-    if([lArrayFriends isKindOfClass:[NSArray class]])
+    NSArray* lArrayFriendsRequest = [dicUser valueForKey:@"friendRequest"];
+    
+    NSArray* listOfFriendRequest = [user.friendRequest allObjects];
+    [user removeFriendRequest:user.friendRequest];
+    for (NSManagedObject *managedObject in listOfFriendRequest) {
+        [[ShareAppContext sharedInstance].managedObjectContext deleteObject:managedObject];
+    }
+    
+    [user removeFriendRequest:user.friendRequest];
+    
+    if([lArrayFriendsRequest isKindOfClass:[NSArray class]])
     {
-        for(NSDictionary* lFriendRequest in lArrayFriends)
+        for(NSDictionary* lFriendRequest in lArrayFriendsRequest)
         {
             [user addFriendRequestObject:[self addFriendRequest:lFriendRequest]];
         }
     }
 
+    NSArray* lArraySuggest = [dicUser valueForKey:@"suggestProfile"];
+    
+
+    
+    [user removeSuggestProfile:user.suggestProfile];
+    if([lArraySuggest isKindOfClass:[NSArray class]])
+    {
+        for(NSString* lIdentifier in lArraySuggest)
+        {
+            Profile* lProfile = [self getProfile:lIdentifier];
+            if(lProfile)
+            {
+                [user addSuggestProfileObject:lProfile];
+            }
+        }
+    }
+
+    
     return user;
 }
 
@@ -128,6 +167,20 @@
             }
         }
     }
+    
+    [profile removeInterests:profile.interests];
+    NSArray* lArrayInterest = [dicProfile valueForKey:@"interests"];
+    if([lArrayInterest isKindOfClass:[NSArray class]])
+    {
+        for(NSString* lTitle in lArrayInterest)
+        {
+            Interest* lInterest =  [NSEntityDescription insertNewObjectForEntityForName:@"Interest" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+            lInterest.name = lTitle;
+                [profile addInterestsObject:lInterest];
+            
+        }
+    }
+    
     return profile;
 }
 
@@ -263,5 +316,38 @@
     NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
     return [anArray firstObject];
 }
+
+
++(NSNumber*) getValue:(id) data
+{
+    if([data isKindOfClass:[NSArray class]])
+    {
+        for (NSDictionary* lDic in data)
+        {
+            if([lDic isKindOfClass:[NSDictionary class]])
+            {
+                id value = [lDic valueForKey:@"value"];
+                if([value isKindOfClass:[NSString class]]  || [value isKindOfClass:[NSNumber class]])
+                {
+                    return [NSNumber numberWithInt:[value intValue]];
+                }
+            }
+        }
+    }
+    else if ([data isKindOfClass:[NSDictionary class]])
+    {
+        id value = [data valueForKey:@"value"];
+        if([value isKindOfClass:[NSString class]]  || [value isKindOfClass:[NSNumber class]])
+        {
+            return [NSNumber numberWithInt:[value intValue]];
+        }
+    }
+    else if([data isKindOfClass:[NSString class]]  || [data isKindOfClass:[NSNumber class]])
+    {
+        return [NSNumber numberWithInt:[data intValue]];
+    }
+    return nil;
+}
+
 
 @end

@@ -14,5 +14,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
 @property (strong, nonatomic) id mData;
 @property (nonatomic) int mType;
--(void) configure:(Profile*) profile  type:(int) type;
+-(void) configure:(Profile*) profile;
 @end

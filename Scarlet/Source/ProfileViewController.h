@@ -13,6 +13,7 @@
 @class Profile;
 @interface ProfileViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
+    BOOL isUser;
 }
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet KIImagePager *mImagePager;

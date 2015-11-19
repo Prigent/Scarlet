@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Demand, Event, FriendRequest, Interest, Message, Picture;
+@class Demand, Event, FriendRequest, Interest, Message, Picture, User;
 
 NS_ASSUME_NONNULL_BEGIN
 

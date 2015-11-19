@@ -2,7 +2,7 @@
 //  Profile+CoreDataProperties.h
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 22/10/2015.
+//  Created by Prigent ROUDAUT on 18/11/2015.
 //  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<Message *> *messages;
 @property (nullable, nonatomic, retain) NSSet<Demand *> *partnerDemands;
 @property (nullable, nonatomic, retain) NSOrderedSet<Picture *> *pictures;
+@property (nullable, nonatomic, retain) User *suggest;
+@property (nullable, nonatomic, retain) NSSet<NSManagedObject *> *mutualFriends;
 
 @end
 
@@ -92,6 +94,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removePicturesObject:(Picture *)value;
 - (void)addPictures:(NSOrderedSet<Picture *> *)values;
 - (void)removePictures:(NSOrderedSet<Picture *> *)values;
+
+- (void)addMutualFriendsObject:(NSManagedObject *)value;
+- (void)removeMutualFriendsObject:(NSManagedObject *)value;
+- (void)addMutualFriends:(NSSet<NSManagedObject *> *)values;
+- (void)removeMutualFriends:(NSSet<NSManagedObject *> *)values;
 
 @end
 

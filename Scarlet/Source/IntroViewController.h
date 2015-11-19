@@ -11,7 +11,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #import "KIImagePager.h"
-@interface IntroViewController : UIViewController<FBSDKLoginButtonDelegate>
+@interface IntroViewController : UIViewController<FBSDKLoginButtonDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet KIImagePager *mImagePager;
 
 @end

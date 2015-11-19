@@ -15,6 +15,10 @@
 #import "Picture.h"
 #import "ProfileMenuCell.h"
 #import "UIScrollView+APParallaxHeader.h"
+#import "FriendViewController.h"
+#import "User.h"
+#import "MBProgressHUD.h"
+
 
 static CGFloat kImageOriginHight = 246.f;
 @interface ProfileViewController ()
@@ -25,33 +29,97 @@ static CGFloat kImageOriginHight = 246.f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profilelistselected:) name:@"profilelistselected" object:nil];
+    
     // Do any additional setup after loading the view from its nib.
     self.mImagePager.paddingControl = 16;
+    self.mTableView.rowHeight = UITableViewAutomaticDimension;
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Loading";
     
     if(self.mProfile == nil)
     {
-        self.navigationController.navigationBarHidden =true;
+        [[self navigationController] setNavigationBarHidden:true];
         [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
             
-            self.mProfile = (Profile*)[WSParser getUser:  [ShareAppContext sharedInstance].userIdentifier];
+            [hud hide:YES];
+
+            isUser=true;
+            self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
             [self updateView];
-            [self.mTableView reloadData];
         }];
     }
     else
     {
-         [self updateView];
+        self.title = self.mProfile.firstName;
+        [[WSManager sharedInstance] getMutualfriend:self.mProfile completion:^(NSError *error) {
+            [self updateView];
+            [hud hide:YES];
+        }];
+        
+        
+        UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
+        UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
+        [backButton setBackgroundImage:backImage  forState:UIControlStateNormal];
+        [backButton setTitle:@"" forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(popBack) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = backButtonItem;
+        
+
+        
     }
-    [self.mTableView setTableHeaderView:nil];
-    self.mTableView.contentInset = UIEdgeInsetsMake(kImageOriginHight, 0, 0, 0);
+
+   // [self.mTableView setTableHeaderView:nil];
+  //  self.mTableView.contentInset = UIEdgeInsetsMake(kImageOriginHight, 0, 0, 0);
     [self.mTableView addSubview:self.mImagePager];
 }
 
+-(void) popBack {
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionReveal; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromBottom; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+-(void) profilelistselected:(NSNotification*) notification
+{
+    id data = [notification object];
+
+    if([data isKindOfClass: [Profile class]])
+    {
+        Profile * profile = (Profile*)data;
+        BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        
+        [lMain configure:profile];
+        
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+        
+        
+        
+        [self.navigationController pushViewController:lMain animated:NO];
+    }
+}
+/*
 -(void) viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     self.mImagePager.frame = CGRectMake(0, -kImageOriginHight, self.mTableView.frame.size.width, kImageOriginHight);
 }
+
 
 
 
@@ -64,7 +132,7 @@ static CGFloat kImageOriginHight = 246.f;
         self.mImagePager.frame = f;
     }
 }
-
+*/
 
 -(void) configure:(id)profile
 {
@@ -74,16 +142,21 @@ static CGFloat kImageOriginHight = 246.f;
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if(self.mProfile == nil)
+    if(isUser)
     {
-        [[self navigationController] setNavigationBarHidden:YES animated:YES];
+        [[self navigationController] setNavigationBarHidden:true animated:YES];
     }
+    else
+    {
+        [[self navigationController] setNavigationBarHidden:false animated:YES];
+    }
+    [self updateView];
 }
 
 -(void) updateView
 {
     [self.mImagePager reloadData];
+    [self.mTableView reloadData];
 }
 
 - (NSArray *) arrayWithImages:(KIImagePager*)pager
@@ -120,81 +193,275 @@ static CGFloat kImageOriginHight = 246.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if([self.mProfile.identifier.description isEqualToString:[ShareAppContext sharedInstance].userIdentifier.description])
+    if(isUser)
+    {
+        switch (section) {
+            case 0:
+                return 1;
+                break;
+            case 1:
+                return 2;
+                break;
+            case 2:
+                return 1;
+                break;
+            default:
+                break;
+        }
+        return 3;
+    }
+    return 3;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if(isUser)
     {
         return 3;
     }
     return 1;
 }
 
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
    
-    if([self.mProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    if(isUser)
     {
-        NSDateComponents* ageComponents = [[NSCalendar currentCalendar]components:NSCalendarUnitYear fromDate:self.mProfile.birthdate toDate:[NSDate date] options:0];
-        NSInteger age = [ageComponents year];
-        
-        ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
-        switch (indexPath.row) {
-            case 0:
-                cell.mTitleLabel.text = [NSString stringWithFormat:@"%@, %ld", self.mProfile.firstName,age];
-                cell.mSubTitle.text = self.mProfile.occupation;
-                break;
-            case 1:
-                cell.mTitleLabel.text = @"Friends";
-                cell.mSubTitle.text = [NSString stringWithFormat:@"%ld", [self.mProfile.friends count]];
-                break;
-            case 2:
+        if(indexPath.section == 0)
+        {
+            UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"DetailProfileCell"];
+            NSObject* obj = self.mProfile;
+            if([cell respondsToSelector:@selector(configure:)])
+            {
+                [cell performSelector:@selector(configure:) withObject:obj];
+            }
+            return cell;
+        }
+        if(indexPath.section == 1)
+        {
+        if(indexPath.row == 0)
+            {
+                UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
+                if([cell respondsToSelector:@selector(configure:)])
+                {
+                    [cell performSelector:@selector(configure:) withObject:[[ShareAppContext sharedInstance].user.friends allObjects]];
+                }
+                return cell;
+            }
+       if(indexPath.row == 1)
+            {
+                UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AddMoreFriend"];
+                
+                return cell;
+            }
+        }
+        if(indexPath.section == 2)
+        {
+
+                ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
                 cell.mTitleLabel.text = @"Parameters";
                 cell.mSubTitle.text = @"Notifications, account and others";
-                break;
-            default:
-                break;
+                return cell;
         }
-        return cell;
     }
     else
     {
-        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"DetailProfileCell"];
-        NSObject* obj = self.mProfile;
-        if([cell respondsToSelector:@selector(configure:)])
+        if(indexPath.row == 0)
         {
-            [cell performSelector:@selector(configure:) withObject:obj];
+            UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"DetailProfileCell"];
+            NSObject* obj = self.mProfile;
+            if([cell respondsToSelector:@selector(configure:)])
+            {
+                [cell performSelector:@selector(configure:) withObject:obj];
+            }
+            
+            return cell;
         }
-        
-        return cell;
+        else if(indexPath.row == 1)
+        {
+            UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"MutualListCell"];
+            if([cell respondsToSelector:@selector(configure:)])
+            {
+                [cell performSelector:@selector(configure:) withObject:[self.mProfile.mutualFriends allObjects]];
+            }
+            return cell;
+        }
+        else if(indexPath.row == 2)
+        {
+            UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"InterestListCell"];
+            if([cell respondsToSelector:@selector(configure:)])
+            {
+                [cell performSelector:@selector(configure:) withObject:[self.mProfile.interests allObjects]];
+            }
+            return cell;
+        }
+
     }
+    return nil;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BaseViewController *viewController = nil;
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
-    switch (indexPath.row) {
-        case 0:     viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-            break;
-        case 1:     viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
-            break;
-        case 2:     viewController = [[UIStoryboard storyboardWithName:@"Parameter" bundle:nil] instantiateInitialViewController];
-            break;
-        default:
-            break;
+            [tableView deselectRowAtIndexPath:indexPath animated:true];
+    if(isUser)
+    {
+        if(indexPath.section == 2)
+        {
+        FriendViewController *viewController = nil;
+        viewController = [[UIStoryboard storyboardWithName:@"Parameter" bundle:nil] instantiateInitialViewController];
+        
+        [self.navigationController pushViewController:viewController animated:true];
+        }
     }
-
-    
-    [self.navigationController pushViewController:viewController animated:true];
 }
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section == 0) return 1;
+    return 16;
+}
+- (UIView*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section {
+    return [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *v = [UIView new];
+    [v setBackgroundColor:[UIColor clearColor]];
+    if(section == 0) return v;
+    
+    /*v.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
+    v.layer.borderWidth = 1;*/
+    
+    CALayer *rightBorder = [CALayer layer];
+    rightBorder.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
+    rightBorder.borderWidth = 1;
+    rightBorder.frame = CGRectMake(-1, -1, CGRectGetWidth(tableView.frame)+2,16+2);
+    [v.layer addSublayer:rightBorder];
+    
+    return v;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self.mProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    if(isUser)
     {
-        return 64;
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            int size = 57;
+            if([self.mProfile.occupation length]> 0)
+            {
+                size += 20;
+            }
+            if([self.mProfile.about length]> 0)
+            {
+                size += 50;
+            }
+            return size;
+        }
+        else if(indexPath.section == 1)
+        {
+            if(indexPath.row == 0)
+            {
+                if([[ShareAppContext sharedInstance].user.friends count]>0)
+                {
+                    return 165;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return 48;
+            }
+        }
+        else
+        {
+            return 45;
+        }
     }
-    return 114;
+    else
+    {
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            int size = 57;
+            if([self.mProfile.occupation length]> 0)
+            {
+                size += 20;
+            }
+            if([self.mProfile.about length]> 0)
+            {
+                size += 50;
+            }
+            return size;
+        }
+        if(indexPath.row == 1)
+        {
+            if([self.mProfile.mutualFriends count]>0)
+            {
+                return 165;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        if(indexPath.row == 2)
+        {
+            if([self.mProfile.interests count]>0)
+            {
+                return 73;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+- (IBAction)editProfile:(id)sender {
+
+    FriendViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
+    [self.navigationController pushViewController:viewController animated:NO];
+}
+
+
+- (IBAction)addFriends:(id)sender
+{
+    FriendViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+    viewController.type = 2;
+    
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
+    
+    
+    [self.navigationController pushViewController:viewController animated:false];
 }
 /*
 #pragma mark - Navigation

@@ -8,6 +8,7 @@
 
 #import "MyProfileViewController.h"
 #import "RACollectionViewCell.h"
+#import "WSManager.h"
 #import "WSParser.h"
 #import "User.h"
 #import "Picture.h"
@@ -39,7 +40,6 @@
     [super viewDidLoad];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    self.mUser = [WSParser getUser:  [ShareAppContext sharedInstance].userIdentifier];
     [self setupPhotosArray];
 }
 
@@ -63,9 +63,9 @@
     for (NSInteger i = 0; i < 6; i++)
     {
         NSString* photoURL = @"";
-        if([self.mUser.pictures count]>i)
+        if([[ShareAppContext sharedInstance].user.pictures count]>i)
         {
-            Picture * lPicture = [self.mUser.pictures objectAtIndex:i];
+            Picture * lPicture = [[ShareAppContext sharedInstance].user.pictures objectAtIndex:i];
             photoURL = lPicture.filename;
         }
         [_photosArray addObject:photoURL];
@@ -183,14 +183,20 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString* urlString =  _photosArray[indexPath.item];
+    indexTemp = indexPath.row;
+    NSLog(@"indexTemp %d", indexTemp);
+    
     if(urlString.length==0)
     {
         UIActionSheet * lUIActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Library", @"Facebook", nil];
+        lUIActionSheet.tag = 1;
         [lUIActionSheet showInView:self.view];
     }
     else
     {
         UIActionSheet * lUIActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
+        
+        lUIActionSheet.tag = 2;
         [lUIActionSheet showInView:self.view];
     }
 }
@@ -198,20 +204,38 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSLog(@"%d", buttonIndex);
-    switch (buttonIndex) {
-        case 0:
-            [self openLibrary:true];
-            break;
-        case 1:
-            [self openLibrary:false];
-            break;
-        case 2:
-            [self openFacebookPicker];
-            break;
-        default:
-            break;
+    if(actionSheet.tag == 1)
+    {
+        switch (buttonIndex) {
+            case 0:
+                [self openLibrary:true];
+                break;
+            case 1:
+                [self openLibrary:false];
+                break;
+            case 2:
+                [self openFacebookPicker];
+                break;
+            default:
+                break;
+        }
     }
+    else
+    {
+        if(buttonIndex == 0)
+        {
+            [self deletePicture];
+        }
+    }
+}
 
+-(void) deletePicture
+{
+    [[WSManager sharedInstance] removePicture:[NSNumber numberWithInt:indexTemp+1] completion:^(NSError *error) {
+        [self setupPhotosArray];
+        [self.tableview reloadData];
+        [self.collectionView reloadData];
+    }];
 }
 
 -(void) openLibrary:(BOOL) camera
@@ -233,8 +257,26 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    UIImage* image = nil;
+    image = [info objectForKey:UIImagePickerControllerEditedImage];
+    if(image==nil)
+    {
+        image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    }
+    if(image==nil)
+    {
+        image = [info objectForKey:UIImagePickerControllerCropRect];
+    }
+    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInt:indexTemp+1] completion:^(NSError *error) {
+        [self setupPhotosArray];
+        [self.tableview reloadData];
+        [self.collectionView reloadData];
+    }];
+    
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -293,12 +335,14 @@
     switch (indexPath.section) {
         case 0:
             cell = [tableView dequeueReusableCellWithIdentifier:@"DetailMyProfileCell"];
-            cell.mDetailText.text = self.mUser.occupation;
+            cell.mDetailText.text = [ShareAppContext sharedInstance].user.occupation;
+            cell.mDetailText.tag = 2;
             cell.mDetailText.editable = true;
             break;
         case 1:
             cell = [tableView dequeueReusableCellWithIdentifier:@"DetailMyProfileCell"];
-            cell.mDetailText.text = self.mUser.about;
+            cell.mDetailText.text = [ShareAppContext sharedInstance].user.about;
+            cell.mDetailText.tag = 1;
             cell.mDetailText.editable = true;
             break;
         case 2:
@@ -319,10 +363,36 @@
     return cell;
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if(textView.tag == 2)
+    {
+        [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    }
+    else if(textView.tag == 1)
+    {
+        [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    }
+}
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if([text isEqualToString:@"\n"]) {
+        
+        if(textView.tag == 1)
+        {
+            [ShareAppContext sharedInstance].user.about = textView.text;
+        }
+        else if(textView.tag == 2)
+        {
+            [ShareAppContext sharedInstance].user.occupation = textView.text;
+        }
         [textView resignFirstResponder];
+        
+        [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
+            
+        }];
+        
         return NO;
     }
     
@@ -337,7 +407,17 @@
     }];
 }
 
-- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didFinishPickingImages:(NSArray/*<OLFacebookImage>*/ *)images {
+- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didFinishPickingImages:(NSArray *)images {
+    
+    OLFacebookImage * lOLFacebookImage = [images objectAtIndex:0];
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[lOLFacebookImage bestURLForSize:CGSizeMake(800, 800)]]];
+    
+    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInt:indexTemp+1] completion:^(NSError *error) {
+        [self setupPhotosArray];
+        [self.tableview reloadData];
+        [self.collectionView reloadData];
+    }];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
     NSLog(@"User did pick %lu images", (unsigned long) images.count);
 }

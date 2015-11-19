@@ -2,7 +2,7 @@
 //  FriendRequest+CoreDataProperties.h
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 22/10/2015.
+//  Created by Prigent ROUDAUT on 18/11/2015.
 //  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSDate *date;
 @property (nullable, nonatomic, retain) NSString *identifier;
 @property (nullable, nonatomic, retain) NSNumber *status;
+@property (nullable, nonatomic, retain) NSNumber *type;
 @property (nullable, nonatomic, retain) Profile *profile;
 @property (nullable, nonatomic, retain) User *user;
 

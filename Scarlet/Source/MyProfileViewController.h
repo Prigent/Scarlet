@@ -11,9 +11,11 @@
 #import "RACollectionViewReorderableTripletLayout.h"
 
 @class User;
-@interface MyProfileViewController : BaseViewController<RACollectionViewDelegateReorderableTripletLayout, RACollectionViewReorderableTripletLayoutDataSource, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface MyProfileViewController : BaseViewController<RACollectionViewDelegateReorderableTripletLayout, RACollectionViewReorderableTripletLayoutDataSource, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate>
+{
+    int indexTemp;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *photosArray;
-@property (strong, nonatomic) User* mUser;
 @end

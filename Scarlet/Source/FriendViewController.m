@@ -14,6 +14,7 @@
 #import "ProfileListCell.h"
 #import "User.h"
 #import "FriendRequest.h"
+#import "ProfileCell.h"
 
 @interface FriendViewController ()
 
@@ -24,20 +25,124 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.mUser = [WSParser getUser:[ShareAppContext sharedInstance].userIdentifier];
     if([ShareAppContext sharedInstance].firstStarted == false)
     {
         [self.navigationItem setHidesBackButton:YES];
-        [_mButtonBottom setTitle:@"Do it later" forState:UIControlStateNormal];
+        self.title = nil;
+        _mButtonBottom.hidden = true;
+        
+        if(self.type == 2)
+        {
+            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"CLOSE" style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
+            [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
+            self.navigationItem.leftBarButtonItem = anotherButton;
+            
+            self.title = @"Add more friends";
+        }
+        else
+        {
+            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"SKIP" style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
+            [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
+            self.navigationItem.rightBarButtonItem = anotherButton;
+        }
     }
     else
     {
         [self.mTableView setTableHeaderView:nil];
     }
-    [ShareAppContext sharedInstance].firstStarted = true;
+ //   [ShareAppContext sharedInstance].firstStarted = true;
+    
+
+    
+    
+}
+
+-(void)acceptInvitation:(NSNotification*) notification
+{
+    [self respondFriendRequest:notification.object status:kaccept];
+}
+
+-(void)declineInvitation:(NSNotification*) notification
+{
+    [self respondFriendRequest:notification.object status:kreject];
 }
 
 
+-(void) skip
+{
+    if( self.type == 1)
+    {
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionFade; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+        
+        [self.navigationController popToRootViewControllerAnimated:false];
+    }
+    else if( self.type == 2)
+    {
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionReveal; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        transition.subtype = kCATransitionFromBottom; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+        
+        [self.navigationController popToRootViewControllerAnimated:false];
+    }
+    else
+    {
+        FriendViewController * lController = [self.storyboard instantiateViewControllerWithIdentifier:@"FriendViewController"];
+        lController.type = true;
+        [self.navigationController pushViewController:lController animated:true];
+    }
+
+}
+
+
+
+-(void) updateData
+{
+    if( self.type == 0 ||  self.type == 1)
+    {
+        self.mFriendRequestData = [NSArray array];
+    }
+    else
+    {
+        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
+        self.mFriendRequestData = [[[ShareAppContext sharedInstance].user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
+    }
+
+    
+    
+    self.mSuggestData = [[ShareAppContext sharedInstance].user.suggestProfile allObjects];
+    
+    if( [self.mSuggestData count] == 0 && self.type == 0)
+    {
+        self.type = 1;
+    }
+
+    
+    if(self.type == 0)
+    {
+        [_mTitleLabel setText:@"Welcome to scarlet"];
+        [_mSubTitleLabel setText:@"Few of your friends are already on Scarlet. Invite them now."];
+    }
+    else if(self.type == 1)
+    {
+        [_mTitleLabel setText:@"More friends is more fun!"];
+        [_mSubTitleLabel setText:@"Add few friends to have the best scarlet's experience."];
+    }
+    else
+    {
+        [self.mTableView setTableHeaderView:[[UIView alloc] init]];
+    }
+    
+    [self.mTableView reloadData];
+}
 
 -(void) viewWillAppear:(BOOL)animated
 {
@@ -46,9 +151,11 @@
 
     [[self navigationController] setNavigationBarHidden:false animated:YES];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newInviteRequest:) name:@"newInviteRequest" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(friendSuggestion:) name:@"friendSuggestion" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acceptInvitation:) name:@"acceptInvitation" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(declineInvitation:) name:@"declineInvitation" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(yourFriend:) name:@"yourFriend" object:nil];
+    
+    [self updateData];
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -56,6 +163,8 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+/*
 -(void)newInviteRequest:(NSNotification*) notification
 {
     self.mDataToRespond = notification.object;
@@ -74,7 +183,7 @@
     UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list?", profile.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     lUIAlertView.tag = 2;
     [lUIAlertView show];
-}
+}*/
 
 -(void)yourFriend:(NSNotification*) notification
 {
@@ -91,7 +200,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    if(section == 0)
+    {
+        return [self.mFriendRequestData count];
+    }
+    if(section == 1)
+    {
+        if(self.type == 0)
+        {
+            return 0;
+        }
+        return 2;
+    }
+    if(section == 2)
+    {
+        if(self.type == 1)
+        {
+            return 0;
+        }
+        return [self.mSuggestData count];
+    }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -99,49 +228,102 @@
     return 3;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.section == 1)
-    {
-        return 134;
-    }
-    return 84;
-}
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if(self.type == 1 || self.type == 0)
+    {
+        return nil;
+    }
+    
     switch (section) {
-        case 0:return @"New invite requests";
-        case 1:return @"Invite more friends";
-        case 2:return @"Your friends";
-        case 3:return @"Friends suggestion";
-        default:return @"";
+        case 0:
+            if([self.mFriendRequestData count] == 0)
+            {
+                return nil;
+            }
+            
+            
+            
+            return @"Invitation";
+        case 1:return nil;
+        case 2:
+            if([self.mSuggestData count] == 0)
+            {
+                return nil;
+            }
+            return @"Facebook friend already on Scarlet";
+        default:return nil;
     }
 }
 
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.section == 0)
+    {
+        return 92;
+    }
+    if(indexPath.section == 1)
+    {
+        switch (indexPath.row)
+        {
+            case 0:
+                return 55;
+                break;
+            case 1:
+                return 142;
+                break;
+        }
+    }
+    else
+    {
+        return 50;
+    }
+    return 0;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = nil;
-    switch (indexPath.section) {
-        case 0:{
-            cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
-            ProfileListCell* cellList = (ProfileListCell*)cell;
-            [cellList configure:[self.mUser.friendRequest allObjects] type:0];}
-            break;
-        case 1:
-            cell = [tableView dequeueReusableCellWithIdentifier:@"InviteMoreCell"];
-            break;
-        case 2:{
-            cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
-            ProfileListCell* cellList = (ProfileListCell*)cell;
-            [cellList configure:[self.mUser.friends allObjects] type:1];}
-            break;
-        default:
-            break;
+    if(indexPath.section == 0)
+    {
+        ProfileCell * cell = [tableView dequeueReusableCellWithIdentifier:@"RequestCell"];
+        FriendRequest * lFriendRequest = [self.mFriendRequestData objectAtIndex:indexPath.row];
+        [cell configure:lFriendRequest.profile];
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+        return cell;
     }
-
-    return cell;
+    if(indexPath.section == 1)
+    {
+        UITableViewCell* cell = nil;
+        switch (indexPath.row)
+        {
+            case 0:
+                cell = [tableView dequeueReusableCellWithIdentifier:@"browseScarlet"];
+                break;
+            case 1:
+                cell = [tableView dequeueReusableCellWithIdentifier:@"InviteMoreCell"];
+                break;
+            default:
+                break;
+        }
+        return cell;
+    }
+    else
+    {
+        ProfileCell * cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
+        [cell configure:[self.mSuggestData objectAtIndex:indexPath.row]];
+        
+        if(self.type == 2)
+        {
+            cell.backgroundColor = [UIColor whiteColor];
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
+        
+        return cell;
+    }
 }
 
 
@@ -173,7 +355,7 @@
 */
 
 
-
+/*
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag)
@@ -199,14 +381,69 @@
         case 3:break;
         default:break;
     }
-   
+}*/
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+
+    if( indexPath.section == 1 && indexPath.row == 0)
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:true];
+        [self performSegueWithIdentifier:@"showProfileList" sender:self];
+    }
+    else if (indexPath.section == 2)
+    {
+        Profile* lProfile =  [self.mSuggestData objectAtIndex:indexPath.row];
+        
+        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
+        
+        NSArray * friend = [[lProfile.friends allObjects] filteredArrayUsingPredicate:bPredicate];
+        
+        FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
+        
+        if( [friend count]> 0)
+        {
+            //@"remove from friends"
+        }
+        else if (friendRequest)
+        {
+            if([friendRequest.type intValue] == 0)
+            {
+                //@"remove friend request for response"
+                [self removeFriendRequest:friendRequest];
+            }
+            else
+            {
+                //@"respond to friend request"
+                //[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list", self.mProfileToAdd.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil]show];
+            }
+        }
+        else
+        {
+            [self addFriend:lProfile];
+            //[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list", self.mProfileToAdd.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil]show];
+        }
+    }
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if( indexPath.section == 0)
+    {
+        return false;
+    }
+    if( indexPath.section == 1 && indexPath.row != 0)
+    {
+        return false;
+    }
+    return true;
+}
 
 -(void) respondFriendRequest:(FriendRequest*) friendRequest status:(StatusType) status
 {
     [[WSManager sharedInstance] respondFriend:friendRequest.identifier status:[NSNumber numberWithInt:status] completion:^(NSError *error) {
-        if(error != nil)
+        if(error == nil)
         {
             if(status == kaccept)
             {
@@ -216,6 +453,7 @@
             {
                 [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ refuser", friendRequest.profile.firstName] message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
             }
+            [self updateData];
         }
         else
         {
@@ -224,20 +462,60 @@
     }];
 }
 
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(8, 0, tableView.frame.size.width-16, 34);
+    myLabel.font = [UIFont systemFontOfSize:15];
+    myLabel.textColor = [UIColor colorWithWhite:68/255. alpha:1];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:myLabel];
+    headerView.backgroundColor = [UIColor clearColor];
+    return headerView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    NSString* lTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if([lTitle length]>0)
+    {
+        return 34;
+    }
+    
+    return 8;
+}
 -(void) addFriend:(Profile*) profile
 {
     [[WSManager sharedInstance] addFriend:profile.identifier completion:^(NSError *error) {
-        if(error != nil)
+        if(error == nil)
         {
-            [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ added", profile.firstName] message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            [self updateData];
         }
         else
         {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
         }
     }];
-
 }
+
+-(void) removeFriendRequest:(FriendRequest*) friendRequest
+{
+    [[WSManager sharedInstance] respondFriend:friendRequest.identifier status:[NSNumber numberWithInt:kreject] completion:^(NSError *error) {
+        
+        if(error == nil)
+        {
+            [self updateData];
+        }
+        else
+        {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+        }
+    }];
+}
+
 - (IBAction)sensFacebookInvitation:(id)sender {
     
     FBSDKAppInviteContent *content =[[FBSDKAppInviteContent alloc] init];

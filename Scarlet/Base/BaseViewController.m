@@ -19,6 +19,11 @@
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:false];
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar
+     setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:76/255. alpha:1]}];
+    
    // self.mLoadingViewGeneric = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil] objectAtIndex:0];
     CGRect frameLoading = self.view.frame;
     frameLoading.origin.y -= 80;
@@ -34,6 +39,12 @@
     self.mLoadingViewGeneric.hidden = true;
     self.mIndicatorViewGeneric = (UIActivityIndicatorView*)[self.mLoadingViewGeneric viewWithTag:1];
     self.mTextLoadingGeneric =(UILabel*)[self.mLoadingViewGeneric viewWithTag:2];
+ 
+    for(UITabBarItem* lItem in self.tabBarController.tabBar.items)
+    {
+        lItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+        lItem.titlePositionAdjustment = UIOffsetMake(0, 100);
+    }
 }
 
 -(BOOL)hidesBottomBarWhenPushed

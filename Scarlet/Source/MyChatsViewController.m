@@ -21,7 +21,7 @@
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Chat" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
-        [self.tableView reloadData];
+    [self.tableView reloadData];
     
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
 }

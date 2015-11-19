@@ -8,7 +8,8 @@
 
 #import "DetailProfileCell.h"
 #import "Profile.h"
-
+#import "ShareAppContext.h"
+#import "User.h"
 
 @implementation DetailProfileCell
 
@@ -24,18 +25,31 @@
 
 -(void) configure:(Profile*) profile
 {
+    if(profile.identifier == [ShareAppContext sharedInstance].user.identifier)
+    {
+        _mCountFriendLabel.hidden = true;
+        _mEdit.hidden =false;
+        _mIconMutual.hidden = true;
+    }
+    else
+    {
+        _mCountFriendLabel.hidden = false;
+        _mEdit.hidden =true;
+         _mIconMutual.hidden = false;
+    }
+    
     NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
                                        components:NSCalendarUnitYear
                                        fromDate:profile.birthdate
                                        toDate:[NSDate date]
                                        options:0];
     NSInteger age = [ageComponents year];
-     self.mNameLabel.text = [NSString stringWithFormat:@"%@, %ld", profile.firstName,age];
+     self.mNameLabel.text = [NSString stringWithFormat:@"%@, %ld", profile.firstName,(long)age];
     
     self.mOccupationLabel.text = profile.occupation;
     self.mAboutLabel.text = profile.about;
     
-    self.mCountFriendLabel.text = [NSString stringWithFormat:@"%lu",[profile.friends count]];
+    self.mCountFriendLabel.text = [NSString stringWithFormat:@"%lu",[profile.mutualFriends count]];
 }
 
 @end

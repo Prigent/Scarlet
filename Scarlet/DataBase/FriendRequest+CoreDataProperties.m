@@ -2,7 +2,7 @@
 //  FriendRequest+CoreDataProperties.m
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 22/10/2015.
+//  Created by Prigent ROUDAUT on 18/11/2015.
 //  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -16,6 +16,7 @@
 @dynamic date;
 @dynamic identifier;
 @dynamic status;
+@dynamic type;
 @dynamic profile;
 @dynamic user;
 

@@ -11,10 +11,21 @@
 #import "UIImageView+AFNetworking.h"
 #import "Picture.h"
 #import "FriendRequest.h"
+#import "FacebookProfile.h"
 
 @implementation ProfileCollectionCell
--(void) configure:(id) data  type:(int) type
+-(void) configure:(id) data
 {
+    self.mData = data;
+    
+    if([data isKindOfClass: [FacebookProfile class]])
+    {
+        FacebookProfile * facebookProfile = (FacebookProfile*)data;
+        [self.mImage setImageWithURL:[NSURL URLWithString:facebookProfile.picture]];
+        self.mTitle.text = [NSString stringWithFormat:@"%@", facebookProfile.name];
+        return;
+    }
+    
     Profile * profile;
     if([data isKindOfClass: [Profile class]])
     {
@@ -27,30 +38,14 @@
     Picture* picture = [profile.pictures firstObject];
     [self.mImage setImageWithURL:[NSURL URLWithString:picture.filename]];
     
+
     
-    NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
-                                       components:NSCalendarUnitYear
-                                       fromDate:profile.birthdate
-                                       toDate:[NSDate date]
-                                       options:0];
-    NSInteger age = [ageComponents year];
-    self.mTitle.text = [NSString stringWithFormat:@"%@ %@, %ld", profile.firstName,profile.name,age];
-    self.mData = data;
-    self.mType = type;
+    NSString *firstLetter = [profile.name substringToIndex:1];
+    firstLetter = [firstLetter uppercaseString];
+    
+    self.mTitle.text = [NSString stringWithFormat:@"%@ %@.", profile.firstName,firstLetter];
 }
 - (IBAction)selectCell:(id)sender {
-    switch (self.mType) {
-        case 0:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"newInviteRequest" object:self.mData];
-            break;
-        case 1:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"yourFriend" object:self.mData];
-            break;
-        case 2:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"friendSuggestion" object:self.mData];
-            break;
-        default:
-            break;
-    }
+   [[NSNotificationCenter defaultCenter] postNotificationName:@"profilelistselected" object:self.mData];
 }
 @end

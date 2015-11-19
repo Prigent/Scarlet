@@ -14,9 +14,15 @@
 @class User;
 @interface FriendViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,UIAlertViewDelegate,MFMessageComposeViewControllerDelegate,FBSDKAppInviteDialogDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *mTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *mSubTitleLabel;
+@property (nonatomic)  int type;
 
-@property (strong, nonatomic) User* mUser;
+
+@property (strong, nonatomic) NSArray* mFriendRequestData;
+@property (strong, nonatomic) NSArray* mSuggestData;
+
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonBottom;
-@property (strong, nonatomic) id mDataToRespond;
+
 @end

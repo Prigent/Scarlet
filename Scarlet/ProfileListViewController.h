@@ -11,5 +11,5 @@
 @class Profile;
 @interface ProfileListViewController : AutoListViewController<UISearchBarDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *mSearchField;
-@property (strong, nonatomic) Profile* mProfileToAdd;
+
 @end

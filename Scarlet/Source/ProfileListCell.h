@@ -10,8 +10,9 @@
 
 @interface ProfileListCell : UITableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (strong, nonatomic) NSArray *mData;
-@property (nonatomic) int mType;
 @property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
 @property (weak, nonatomic) IBOutlet UILabel *mEmptyLabel;
--(void) configure:(NSArray*) listProfile type:(int) type;
+
+-(void) configure:(NSArray*) listProfile;
+
 @end

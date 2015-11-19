@@ -16,10 +16,11 @@ typedef enum {
 } StatusType;
 
 
-@class Chat;
+@class Chat,Profile;
 @interface WSManager : NSObject
 
 
+@property (nonatomic, retain) NSString* mBaseURL;
 
 + (WSManager *)sharedInstance;
 + (CLGeocoder*) sharedGeocoder;
@@ -34,7 +35,7 @@ typedef enum {
 - (void)getChatsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion;
 
-- (void)editUserCompletion:(NSDictionary*) property :(void (^)(NSError* error)) onCompletion;
+- (void)saveUserCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)addDemand:(NSString*) identifier partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion;
 - (void)respondDemand:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;
 - (void)addFriend:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion;
@@ -45,6 +46,7 @@ typedef enum {
 
 - (void)addMessageCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)createEventCompletion:(void (^)(NSError* error)) onCompletion;
+- (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion;
 
 //add message
 //create event
