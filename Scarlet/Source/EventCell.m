@@ -12,32 +12,15 @@
 #import "Profile.h"
 #import "Picture.h"
 #import "Address.h"
+#import "ProfileCollectionCell.h"
 
 @implementation EventCell
 
+
+
+
 -(void) configure:(Event*) event
 {
-    Picture * picture = [event.leader.pictures firstObject];
-    [self.mLeaderImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-    
-    if([event.partners count] == 1)
-    {
-        Profile * partner = [[event.partners allObjects] firstObject];
-        Picture* picture = [partner.pictures firstObject];
-        [self.mPartnerImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-        
-    }
-    else if([event.partners count] >= 2)
-    {
-        Profile * partner1 = [[event.partners allObjects] firstObject];
-        Picture* picture1 = [partner1.pictures firstObject];
-        [self.mPartnerImage1 setImageWithURL:[NSURL URLWithString:picture1.filename]];
-        
-        Profile * partner2 = [[event.partners allObjects] objectAtIndex:1];
-        Picture* picture2 = [partner2.pictures firstObject];
-        [self.mPartnerImage2 setImageWithURL:[NSURL URLWithString:picture2.filename]];
-    }
-    
     _mTitle.text = event.leader.firstName;
     for(Profile * lPartner in event.partners)
     {
@@ -48,16 +31,58 @@
     [format setDateFormat:@"EEEE, dd/MM/yyyy à HH:mm"];
     _mSubtitle.text  = [NSString stringWithFormat:@"%@, %@",event.address.street ,[format stringFromDate:event.date] ];
     
+    
+    
+    NSMutableArray * listProfile = [NSMutableArray array];
+    [listProfile addObject:event.leader];
+    [listProfile addObjectsFromArray:[event.partners allObjects]];
+    
+    self.mData = listProfile;
+    
+    self.mCount.text = [NSString stringWithFormat:@"%ld", [self.mData count]];
 }
 
-- (void)awakeFromNib {
-    // Initialization code
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return  [self.mData count];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"ProfileCollectionCell";
+    ProfileCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+    [cell configure:[self.mData objectAtIndex:indexPath.row]];
+    return cell;
 }
 
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+   
+    switch ([self.mData count]) {
+            
+        case 1:
+            return  CGSizeMake( collectionView.frame.size.width, collectionView.frame.size.height);
+        case 2:
+            return  CGSizeMake(  collectionView.frame.size.width/2., collectionView.frame.size.height);
+        default:
+            return  CGSizeMake(  collectionView.frame.size.width/2.2, collectionView.frame.size.height);
+    }
+    
+    
+}
+
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 00.0;
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 00.0;
+}
 @end

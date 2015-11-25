@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface EventCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *mLeaderImage;
-@property (weak, nonatomic) IBOutlet UIImageView *mPartnerImage1;
-@property (weak, nonatomic) IBOutlet UIImageView *mPartnerImage2;
-@property (weak, nonatomic) IBOutlet UIImageView *mPartnerImage;
+
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
 @property (weak, nonatomic) IBOutlet UILabel *mSubtitle;
-
+@property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
+@property (weak, nonatomic) IBOutlet UILabel *mCount;
+@property (strong, nonatomic) NSArray *mData;
 @end

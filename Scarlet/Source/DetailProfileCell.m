@@ -33,9 +33,9 @@
     }
     else
     {
-        _mCountFriendLabel.hidden = false;
+        _mCountFriendLabel.hidden = [profile.mutualFriends count]==0;
         _mEdit.hidden =true;
-         _mIconMutual.hidden = false;
+         _mIconMutual.hidden = [profile.mutualFriends count]==0;
     }
     
     NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
@@ -44,7 +44,7 @@
                                        toDate:[NSDate date]
                                        options:0];
     NSInteger age = [ageComponents year];
-     self.mNameLabel.text = [NSString stringWithFormat:@"%@, %ld", profile.firstName,(long)age];
+    self.mNameLabel.text = [NSString stringWithFormat:@"%@, %ld", profile.firstName,(long)age];
     
     self.mOccupationLabel.text = profile.occupation;
     self.mAboutLabel.text = profile.about;

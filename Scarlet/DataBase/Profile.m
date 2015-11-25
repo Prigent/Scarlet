@@ -22,4 +22,18 @@
     self.pictures = tempSet;
 }
 
+- (void)insertObject:(Picture *)value inPicturesAtIndex:(NSUInteger)idx
+{
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.pictures];
+    [tempSet insertObject:value atIndex:idx];
+    self.pictures = tempSet;
+}
+
+- (void)removeObjectFromPicturesAtIndex:(NSUInteger)idx
+{
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.pictures];
+    [tempSet removeObjectAtIndex:idx];
+    self.pictures = tempSet;
+}
+
 @end

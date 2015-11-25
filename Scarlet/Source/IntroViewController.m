@@ -20,18 +20,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnect) name:@"disconnect" object:nil];
+    
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
     
     loginButton.center= CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height - 30);
     loginButton.readPermissions = @[@"user_birthday", @"user_hometown", @"user_location", @"user_work_history", @"user_photos", @"user_friends", @"user_about_me", @"email", @"public_profile", @"user_likes"];
     
-    
-    
+
     loginButton.delegate = self;
     [self.view addSubview:loginButton];
     
      self.mImagePager.paddingControl = 80;
 }
+
+
+-(void) disconnect
+{
+    [self dismissViewControllerAnimated:true completion:^{
+        
+    }];
+}
+
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+   
+    if([[[ShareAppContext sharedInstance] accessToken] length]>0)
+    {
+        [self performSegueWithIdentifier:@"showTabView" sender:self];
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -56,9 +78,6 @@
         if(error == nil)
         {
             [hud hide:YES];
-            NSLog(@"result %@", [FBSDKAccessToken currentAccessToken].tokenString);
-            
-            
             [self performSegueWithIdentifier:@"showTabView" sender:self];
         }
         else
@@ -66,8 +85,6 @@
             [hud hide:YES];
             UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:@"Retry", nil];
             [lUIAlertView show];
-            
-            
         }
     }];
 }
@@ -79,7 +96,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 {
     if(error == nil && [FBSDKAccessToken currentAccessToken].tokenString !=nil)
     {
-        loginButton.hidden = true;
+        //loginButton.hidden = true;
         [self authentification];
     }
     else

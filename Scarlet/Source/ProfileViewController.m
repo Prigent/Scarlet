@@ -36,18 +36,18 @@ static CGFloat kImageOriginHight = 246.f;
     self.mImagePager.paddingControl = 16;
     self.mTableView.rowHeight = UITableViewAutomaticDimension;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
-    
+
     if(self.mProfile == nil)
     {
-        [[self navigationController] setNavigationBarHidden:true];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = @"Loading";
+        
+        isUser=true;
+        [[self navigationController] setNavigationBarHidden:true animated:false];
         [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
             
             [hud hide:YES];
-
-            isUser=true;
             self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
             [self updateView];
         }];
@@ -57,9 +57,7 @@ static CGFloat kImageOriginHight = 246.f;
         self.title = self.mProfile.firstName;
         [[WSManager sharedInstance] getMutualfriend:self.mProfile completion:^(NSError *error) {
             [self updateView];
-            [hud hide:YES];
         }];
-        
         
         UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
         UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
@@ -68,13 +66,8 @@ static CGFloat kImageOriginHight = 246.f;
         [backButton addTarget:self action:@selector(popBack) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
         self.navigationItem.leftBarButtonItem = backButtonItem;
-        
-
-        
     }
 
-   // [self.mTableView setTableHeaderView:nil];
-  //  self.mTableView.contentInset = UIEdgeInsetsMake(kImageOriginHight, 0, 0, 0);
     [self.mTableView addSubview:self.mImagePager];
 }
 
@@ -107,12 +100,25 @@ static CGFloat kImageOriginHight = 246.f;
         transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
         transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
         [self.navigationController.view.layer addAnimation:transition forKey:nil];
-        
-        
-        
         [self.navigationController pushViewController:lMain animated:NO];
     }
 }
+
+
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(isUser == true)
+    {
+        if(  indexPath.section == 2) // (indexPath.section == 1 && indexPath.row == 1) ||
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /*
 -(void) viewDidLayoutSubviews
 {
@@ -151,7 +157,13 @@ static CGFloat kImageOriginHight = 246.f;
         [[self navigationController] setNavigationBarHidden:false animated:YES];
     }
     [self updateView];
+    
+    [self.mTableView.tableHeaderView setFrame:CGRectMake(0, 0, self.mTableView.frame.size.width, self.mTableView.frame.size.width)];
+    [self.mTableView setTableHeaderView:self.mTableView.tableHeaderView];
 }
+
+
+
 
 -(void) updateView
 {
@@ -235,6 +247,7 @@ static CGFloat kImageOriginHight = 246.f;
             {
                 [cell performSelector:@selector(configure:) withObject:obj];
             }
+            
             return cell;
         }
         if(indexPath.section == 1)
@@ -356,11 +369,22 @@ static CGFloat kImageOriginHight = 246.f;
             int size = 57;
             if([self.mProfile.occupation length]> 0)
             {
-                size += 20;
+                size += 14;
             }
             if([self.mProfile.about length]> 0)
             {
-                size += 50;
+               
+                
+                
+                CGSize constraint = CGSizeMake(tableView.frame.size.width - 16, 20000.0f);
+
+                NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+                CGSize boundingBox = [self.mProfile.about boundingRectWithSize:constraint
+                                                              options:NSStringDrawingUsesLineFragmentOrigin
+                                                           attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}
+                                                              context:context].size;
+                 size += ceil(boundingBox.height);
+                
             }
             return size;
         }
@@ -379,7 +403,7 @@ static CGFloat kImageOriginHight = 246.f;
             }
             else
             {
-                return 48;
+                return 58;
             }
         }
         else

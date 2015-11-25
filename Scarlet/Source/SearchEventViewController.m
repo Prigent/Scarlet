@@ -25,21 +25,34 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden =true;
     
+    [self.mSearchField setBackgroundImage:[[UIImage alloc]init]];
+    self.mSearchField.layer.borderWidth = 1;
+    self.mSearchField.layer.borderColor = [[UIColor whiteColor] CGColor];
+    
+    
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"AllEvent" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
     
+[[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
+    [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
+        
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+        [self updateWithPredicate:lNSPredicate];
+    }];
+}];
+    
 
-        [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
-            NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
-            [self updateWithPredicate:lNSPredicate];
-        }];
 
     
     [self.mMapView setShowsUserLocation:true];
     
     
-    if([ShareAppContext sharedInstance].firstStarted == false)
+    if([ShareAppContext sharedInstance].firstStarted == true)
     {
         BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
         viewController.hideBottom = true;
@@ -134,7 +147,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 135;
+    return 310;
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control

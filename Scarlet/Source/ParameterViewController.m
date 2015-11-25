@@ -61,7 +61,29 @@
     return cell;
 }
 
-
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(8, 0, tableView.frame.size.width-16, 34);
+    myLabel.font = [UIFont systemFontOfSize:15];
+    myLabel.textColor = [UIColor colorWithWhite:68/255. alpha:1];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:myLabel];
+    headerView.backgroundColor = [UIColor colorWithWhite:245/255. alpha:1];
+    return headerView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    NSString* lTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if([lTitle length]>0)
+    {
+        return 34;
+    }
+    
+    return 8;
+}
 /*
 #pragma mark - Navigation
 

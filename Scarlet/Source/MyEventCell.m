@@ -13,6 +13,8 @@
 #import "Picture.h"
 #import "ShareAppContext.h"
 #import "Demand.h"
+#import "ProfileCollectionCell.h"
+#import "Address.h"
 
 @implementation MyEventCell
 
@@ -29,34 +31,32 @@
 
 -(void) configure:(Event*) event
 {
-    Picture * picture = [event.leader.pictures firstObject];
-    [self.mLeaderImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-    
-    for(UIImageView * imageView in _mPartnerImages)
-    {
-        imageView.image = nil;
-    }
-    
-    int i=0;
+    _mTitle.text = event.leader.firstName;
     for(Profile * lPartner in event.partners)
     {
-        if(i>= [_mPartnerImages count])
-        {
-            break;
-        }
-        UIImageView * imagePartnerView = [_mPartnerImages objectAtIndex:i];
-        Picture * picture = [lPartner.pictures firstObject];
-        [imagePartnerView setImageWithURL:[NSURL URLWithString:picture.filename]];
-        i++;
+        _mTitle.text = [_mTitle.text stringByAppendingString:[NSString stringWithFormat:@", %@",lPartner.firstName]];
     }
     
-    _mTitle.text = [NSString stringWithFormat:@"%@ +%lu", event.leader.name, [event.partners count]];
+    _mSubtitle.text  = [NSString stringWithFormat:@"%@",event.address.street];
+    
+    
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"EEEE, dd/MM/yyyy\nHH:mm"];
     _mDate.text = [format stringFromDate:event.date];
     _mStatusLabel.text = @"";
     
+    
+    NSMutableArray * listProfile = [NSMutableArray array];
+    [listProfile addObject:event.leader];
+    [listProfile addObjectsFromArray:[event.partners allObjects]];
+    self.mData = listProfile;
+    [self.mCollectionView reloadData];
+    
+    
+    [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+    
+
     if([event.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
         _mStatusLabel.text = @"Leader";
@@ -99,9 +99,66 @@
             }
         }
     }
+}
+
+
+
+-(void) reloadData
+{
+    [self.mCollectionView reloadData];
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return  [self.mData count];
+}
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"ProfileCollectionCell";
+    ProfileCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
     
+    if([self.mData count]>indexPath.row)
+    {
+        [cell configure:[self.mData objectAtIndex:indexPath.row]];
+    }
+    else
+    {
+        [self.mCollectionView reloadData];
+    }
+
+    return cell;
+}
 
 
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    switch ([self.mData count]) {
+            
+        case 1:
+            return  CGSizeMake( collectionView.frame.size.width, collectionView.frame.size.height);
+        case 2:
+            return  CGSizeMake(  collectionView.frame.size.width/2., collectionView.frame.size.height);
+        default:
+            return  CGSizeMake(  collectionView.frame.size.width/2.2, collectionView.frame.size.height);
+    }
+    
+    
+}
+
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 00.0;
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 00.0;
 }
 
 @end

@@ -25,6 +25,14 @@
     [Fabric with:@[[Crashlytics class]]];
     [ShareAppContext sharedInstance].managedObjectContext = [self managedObjectContext];
     
+    
+    UIImage *barBackBtnImg = [[UIImage imageNamed:@"btnBack"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
+
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:barBackBtnImg
+                                                      forState:UIControlStateNormal
+                                                    barMetrics:UIBarMetricsDefault];
+    
+    
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
  [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     return YES;
@@ -47,6 +55,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    [self saveContext];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

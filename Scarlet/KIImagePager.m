@@ -296,6 +296,7 @@
     _pageControl = [[UIPageControl alloc] initWithFrame:pageControlFrame];
     _pageControl.center = CGPointMake(_scrollView.frame.size.width / 2, _scrollView.frame.size.height - self.paddingControl);
     _pageControl.userInteractionEnabled = NO;
+    _pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
     if(!_indicatorDisabled) [self addSubview:_pageControl];
 }
 

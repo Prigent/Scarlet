@@ -32,7 +32,13 @@
     self.mTitle.text = [NSString stringWithFormat:@"%@ %@, %ld", profile.firstName,profile.name,(long)age];
      
      */
-    self.mTitle.text = [NSString stringWithFormat:@"%@ %@", profile.name,profile.firstName];
+
+    NSString *firstLetter = [profile.name substringToIndex:1];
+    firstLetter = [firstLetter uppercaseString];
+    
+    self.mTitle.text = [NSString stringWithFormat:@"%@ %@.", profile.firstName,firstLetter];
+    
+    
     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",profile.identifier];
 
     NSArray * friend = [[[ShareAppContext sharedInstance].user.friends allObjects] filteredArrayUsingPredicate:bPredicate];
@@ -59,7 +65,7 @@
         {
            // [self.mStatusProfile setTitle:@"respond to friend request" forState:UIControlStateNormal];
             
-            self.mStatusProfile.alpha = 0;
+            self.mStatusProfile.alpha = 1;
             self.mStatusProfile.tag = 3;
         }
     }

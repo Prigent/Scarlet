@@ -44,9 +44,9 @@
     }
     friendRequest.identifier = [dicFriendRequest valueForKey:@"identifier"];
     friendRequest.date = [NSDate dateWithTimeIntervalSince1970:[[dicFriendRequest valueForKey:@"date"] integerValue]];
-    friendRequest.status = [self getValue:[dicFriendRequest valueForKey:@"status"]];
+    friendRequest.status = [self parseNumberValue:[dicFriendRequest valueForKey:@"status"]];
     friendRequest.profile = [self getProfile: [dicFriendRequest valueForKey:@"profile_id"]];
-    friendRequest.type = [self getValue:[dicFriendRequest valueForKey:@"type"]];
+    friendRequest.type = [self parseNumberValue:[dicFriendRequest valueForKey:@"type"]];
     return friendRequest;
 }
 
@@ -75,7 +75,7 @@
         user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     }
     [self parseProfile:dicUser profile:user];
-    user.lookingFor = [dicUser valueForKey:@"lookingFor"];
+    user.lookingFor = [dicUser valueForKey:@"lookingfor"];
     user.ageMax = [dicUser valueForKey:@"age_max"];
     user.ageMin = [dicUser valueForKey:@"age_min"];
     
@@ -196,10 +196,14 @@
     {
         event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     }
-    event.identifier = [dicEvent valueForKey:@"identifier"];
+    event.identifier = [self parseStringValue:[dicEvent valueForKey:@"identifier"]];
     event.date = [NSDate dateWithTimeIntervalSince1970:[[dicEvent valueForKey:@"date"] integerValue]];
-    event.leader = [self getProfile:[dicEvent valueForKey:@"leader_id"]];
-    event.chat = [self addChat:[dicEvent valueForKey:@"chat_id"]];
+   
+    
+    Profile* lLeader = [self getProfile:[self parseStringValue:[dicEvent valueForKey:@"leader_id"]]];
+    event.leader = lLeader;
+    
+    event.chat = [self addChat:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
     event.mood = [dicEvent valueForKey:@"mood"];
     event.address = [self addAddress:dicEvent];
     for(NSString* lProfileIdentifier in [dicEvent valueForKey:@"partners"])
@@ -237,7 +241,7 @@
     demand.identifier = [dicDemand valueForKey:@"identifier"];
     demand.date = [NSDate dateWithTimeIntervalSince1970:[[dicDemand valueForKey:@"date"] integerValue]];
     demand.leader = [self getProfile:[dicDemand valueForKey:@"leader_id"]];
-    demand.status =[dicDemand valueForKey:@"status"];
+    demand.status = [self parseNumberValue:[dicDemand valueForKey:@"status"]];
     
     for(NSString* lProfileIdentifier in [dicDemand valueForKey:@"partners"])
     {
@@ -318,36 +322,81 @@
 }
 
 
-+(NSNumber*) getValue:(id) data
++(NSNumber*) parseNumberValue:(id) valueArray
 {
-    if([data isKindOfClass:[NSArray class]])
+    if([valueArray isKindOfClass:[NSArray class]])
     {
-        for (NSDictionary* lDic in data)
+        for(NSDictionary* lDicValue in valueArray)
         {
-            if([lDic isKindOfClass:[NSDictionary class]])
+            id value = [lDicValue valueForKey:kValue];
+            if([value isKindOfClass:[NSNumber class]])
             {
-                id value = [lDic valueForKey:@"value"];
-                if([value isKindOfClass:[NSString class]]  || [value isKindOfClass:[NSNumber class]])
-                {
-                    return [NSNumber numberWithInt:[value intValue]];
-                }
+                return value;
+            }
+            else if([value isKindOfClass:[NSString class]])
+            {
+                return [NSNumber numberWithInteger:[[lDicValue valueForKey:kValue] integerValue]];
             }
         }
     }
-    else if ([data isKindOfClass:[NSDictionary class]])
+    else if([valueArray isKindOfClass:[NSDictionary class]])
     {
-        id value = [data valueForKey:@"value"];
-        if([value isKindOfClass:[NSString class]]  || [value isKindOfClass:[NSNumber class]])
+        id value = [valueArray valueForKey:kValue];
+        if([value isKindOfClass:[NSNumber class]])
         {
-            return [NSNumber numberWithInt:[value intValue]];
+            return value;
+        }
+        else if([value isKindOfClass:[NSString class]])
+        {
+            return [NSNumber numberWithInteger:[[valueArray valueForKey:kValue] integerValue]];
         }
     }
-    else if([data isKindOfClass:[NSString class]]  || [data isKindOfClass:[NSNumber class]])
+    else if([valueArray isKindOfClass:[NSString class]])
     {
-        return [NSNumber numberWithInt:[data intValue]];
+        id value = valueArray;
+        return [NSNumber numberWithInteger:[value integerValue]];
+    }
+    else if([valueArray isKindOfClass:[NSNumber class]])
+    {
+        id value = valueArray;
+        return value;
     }
     return nil;
 }
 
++(NSString*) parseStringValue:(id) valueArray
+{
+    if([valueArray isKindOfClass:[NSArray class]])
+    {
+        for(NSDictionary* lDicValue in valueArray)
+        {
+            id value = [lDicValue valueForKey:kValue];
+            if([value isKindOfClass:[NSString class]])
+            {
+                return value;
+            }
+            
+        }
+    }
+    else if([valueArray isKindOfClass:[NSDictionary class]])
+    {
+        id value = [valueArray valueForKey:kValue];
+        if([value isKindOfClass:[NSString class]])
+        {
+            return value;
+        }
+    }
+    else if([valueArray isKindOfClass:[NSString class]])
+    {
+        id value = valueArray;
+        return value;
+    }
+    else if([valueArray isKindOfClass:[NSNumber class]])
+    {
+        NSNumber* numberValue = (NSNumber*)valueArray;
+        return [numberValue stringValue];
+    }
+    return nil;
+}
 
 @end

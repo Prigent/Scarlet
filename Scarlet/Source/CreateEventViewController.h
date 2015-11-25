@@ -7,8 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+
 #import "BaseViewController.h"
 
-@interface CreateEventViewController : BaseViewController
+@interface CreateEventViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) NSDate * date;
+@property (nonatomic, strong) NSString * mood;
+@property (nonatomic, strong) NSString * address;
+@property (nonatomic) CLLocationCoordinate2D coordinate;
+@property (nonatomic, strong) NSMutableArray* listProfileId;
+@property (weak, nonatomic) IBOutlet UITableView *mTableView;
 
 @end

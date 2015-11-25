@@ -10,5 +10,6 @@
 
 @interface DetailMyProfileCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UITextView *mDetailText;
+@property (weak, nonatomic) IBOutlet UILabel *mCount;
 
 @end

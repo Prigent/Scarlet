@@ -10,6 +10,8 @@
 
 @implementation ShareAppContext
 
+@synthesize accessToken=_accessToken, firstStarted=_firstStarted, userIdentifier=_userIdentifier;
+
 
 - (id)init
 {
@@ -23,9 +25,39 @@
         if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             [self.locationManager requestWhenInUseAuthorization];
         }
+        [self.locationManager startUpdatingLocation];
     }
     return self;
 }
+
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    [manager stopUpdatingLocation];
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
+    [geocoder reverseGeocodeLocation:[locations objectAtIndex:0] completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (!(error))
+         {
+             self.placemark = [placemarks objectAtIndex:0];
+         }
+         /*---- For more results
+          placemark.region);
+          placemark.country);
+          placemark.locality);
+          placemark.name);
+          placemark.ocean);
+          placemark.postalCode);
+          placemark.subLocality);
+          placemark.location);
+          ------*/
+     }];
+}
+
+
+
+
+
 
 
 + (ShareAppContext *)sharedInstance
@@ -58,6 +90,34 @@
     return online;
 }
 
+- (void)setUserIdentifier:(NSString* )userIdentifier {
+    _userIdentifier = userIdentifier;
+    [[NSUserDefaults standardUserDefaults] setValue:_userIdentifier forKey:@"userIdentifier"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
+- (NSString*)userIdentifier {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"userIdentifier"];
+}
+
+- (void)setAccessToken:(NSString* )accessToken {
+    _accessToken = accessToken;
+    [[NSUserDefaults standardUserDefaults] setValue:_accessToken forKey:@"accessToken"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString*)accessToken {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"accessToken"];
+}
+
+- (void)setFirstStarted:(BOOL )firstStarted {
+    _firstStarted = firstStarted;
+    [[NSUserDefaults standardUserDefaults] setBool:_firstStarted forKey:@"firstStarted"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)firstStarted {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"firstStarted"];
+}
 
 @end

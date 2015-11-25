@@ -8,7 +8,7 @@
 
 #import "User.h"
 #import "FriendRequest.h"
-
+#import "Picture.h"
 @implementation User
 
 // Insert code here to add functionality to your managed object subclass
@@ -18,6 +18,26 @@
     [lDic setObject:self.occupation forKey:@"occupation"];
     [lDic setObject:self.about forKey:@"about"];
     
+    NSMutableArray* lPictureList = [NSMutableArray array];
+    for(Picture* lPicture in self.pictures)
+    {
+        [lPictureList addObject:lPicture.filename];
+    }
+    
+    [lDic setObject:lPictureList forKey:@"picture"];
+    
+    
+    [lDic setObject:self.ageMax forKey:@"age_max"];
+    [lDic setObject:self.ageMin forKey:@"age_min"];
+   
+    
+
+    [lDic setObject:self.lookingFor forKey:@"lookingfor"];
+    
+    
+    
+    
     return lDic;
 }
+
 @end

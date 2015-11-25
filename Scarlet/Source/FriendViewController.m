@@ -33,10 +33,13 @@
         
         if(self.type == 2)
         {
-            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"CLOSE" style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
-            [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
-            self.navigationItem.leftBarButtonItem = anotherButton;
-            
+            UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
+            UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
+            [backButton setBackgroundImage:backImage  forState:UIControlStateNormal];
+            [backButton setTitle:@"" forState:UIControlStateNormal];
+            [backButton addTarget:self action:@selector(skip) forControlEvents:UIControlEventTouchUpInside];
+            UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+            self.navigationItem.leftBarButtonItem = backButtonItem;
             self.title = @"Add more friends";
         }
         else
@@ -394,12 +397,17 @@
     }
     else if (indexPath.section == 2)
     {
+        if(self.type == 0)
+        {
+            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"NEXT" style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
+            [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
+            self.navigationItem.rightBarButtonItem = anotherButton;
+        }
+        
+        
         Profile* lProfile =  [self.mSuggestData objectAtIndex:indexPath.row];
-        
         NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
-        
         NSArray * friend = [[lProfile.friends allObjects] filteredArrayUsingPredicate:bPredicate];
-        
         FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
         
         if( [friend count]> 0)
@@ -474,7 +482,7 @@
     
     UIView *headerView = [[UIView alloc] init];
     [headerView addSubview:myLabel];
-    headerView.backgroundColor = [UIColor clearColor];
+    headerView.backgroundColor =  [UIColor colorWithWhite:245/255. alpha:1];
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{

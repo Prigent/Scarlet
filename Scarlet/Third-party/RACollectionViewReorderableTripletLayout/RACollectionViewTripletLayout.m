@@ -213,8 +213,18 @@
   
     CGFloat rightSideSmallCellOriginX = _collectionViewSize.width - _smallCellSize.width - _insets.right;
     
+    /*
+    switch (indexPath.item) {
+        case 0:  attribute.frame = CGRectMake(_insets.left, lineOriginY, _largeCellSize.width, _largeCellSize.height); break;
+        case 1:  attribute.frame = CGRectMake(rightSideSmallCellOriginX, lineOriginY +  _smallCellSize.height/2. + _itemSpacing/2., _smallCellSize.width, _smallCellSize.height); break;
+        case 2:  attribute.frame = CGRectMake(rightSideSmallCellOriginX, lineOriginY , _smallCellSize.width, _smallCellSize.height);break;
+        case 3:  attribute.frame =CGRectMake(rightSideSmallCellOriginX, lineOriginY + _smallCellSize.height + _itemSpacing, _smallCellSize.width, _smallCellSize.height);break;
+        case 4:  attribute.frame = CGRectMake(_insets.left, lineOriginY+  _smallCellSize.height/2. + _itemSpacing/2., _smallCellSize.width, _smallCellSize.height);break;
+        case 5:  attribute.frame =CGRectMake(_insets.left  + _smallCellSize.width + _itemSpacing, lineOriginY +  _smallCellSize.height/2. + _itemSpacing/2., _smallCellSize.width, _smallCellSize.height);break;
+        default:
+            break;
+    }*/
     
-
     if (indexPath.item % 6 == 0) {
         attribute.frame = CGRectMake(_insets.left, lineOriginY, _largeCellSize.width, _largeCellSize.height);
     }
@@ -233,6 +243,11 @@
             attribute.frame =CGRectMake(_insets.left  + _smallCellSize.width + _itemSpacing, lineOriginY +  _smallCellSize.height/2. + _itemSpacing/2., _smallCellSize.width, _smallCellSize.height);
         }
     }
+    
+    
+    
+    
+    
     return attribute;
 }
 
