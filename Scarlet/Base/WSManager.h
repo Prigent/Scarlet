@@ -16,7 +16,7 @@ typedef enum {
 } StatusType;
 
 
-@class Chat,Profile;
+@class Chat,Profile, Event;
 @interface WSManager : NSObject
 
 
@@ -36,7 +36,7 @@ typedef enum {
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion;
 
 - (void)saveUserCompletion:(void (^)(NSError* error)) onCompletion;
-- (void)addDemand:(NSString*) identifier partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion;
+- (void)addDemand:(Event*) event partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion;
 - (void)respondDemand:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;
 - (void)addFriend:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion;
 - (void)respondFriend:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;

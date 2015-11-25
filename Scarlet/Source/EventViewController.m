@@ -62,6 +62,8 @@
 }
 
 - (IBAction)joinScarlet:(id)sender {
+   
+    self.objectToPush = self.mEvent;
     [self performSegueWithIdentifier:@"showJoin" sender:self];
 }
 

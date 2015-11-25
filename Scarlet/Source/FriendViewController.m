@@ -94,7 +94,7 @@
         [self.navigationController.view.layer addAnimation:transition forKey:nil];
     
         
-        [self.navigationController popToRootViewControllerAnimated:false];
+        [self.navigationController popViewControllerAnimated:false];
     }
     else
     {

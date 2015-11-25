@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15C47a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="C8K-cG-3EU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15C47a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="C8K-cG-3EU">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -42,11 +42,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="icnMood" translatesAutoresizingMaskIntoConstraints="NO" id="Itp-Mh-TF3">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="icnMood" translatesAutoresizingMaskIntoConstraints="NO" id="Itp-Mh-TF3">
                                                     <rect key="frame" x="8" y="12" width="20" height="20"/>
                                                     <animations/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XiX-7y-oFM">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XiX-7y-oFM">
                                                     <rect key="frame" x="36" y="13" width="38" height="18"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -163,8 +163,8 @@
                                                             </constraints>
                                                             <variation key="default">
                                                                 <mask key="constraints">
-                                                                    <exclude reference="lNf-qQ-umA"/>
                                                                     <exclude reference="NSh-r6-Oyg"/>
+                                                                    <exclude reference="lNf-qQ-umA"/>
                                                                 </mask>
                                                             </variation>
                                                             <connections>
@@ -253,8 +253,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="RJU-hF-OgY"/>
                                                     <exclude reference="6EU-br-9Fa"/>
+                                                    <exclude reference="RJU-hF-OgY"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -299,7 +299,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="53" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Xjg-EF-3Um">
-                                <rect key="frame" x="0.0" y="45" width="320" height="435"/>
+                                <rect key="frame" x="0.0" y="46" width="320" height="434"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="JBY-kM-fLi">
@@ -345,6 +345,7 @@
                                 <rect key="frame" x="0.0" y="1" width="320" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -355,7 +356,7 @@
                         <animations/>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Xjg-EF-3Um" firstAttribute="top" secondItem="JXF-0y-8XG" secondAttribute="bottom" id="ATf-oV-GzT"/>
+                            <constraint firstItem="Xjg-EF-3Um" firstAttribute="top" secondItem="JXF-0y-8XG" secondAttribute="bottom" constant="1" id="ATf-oV-GzT"/>
                             <constraint firstItem="6wD-F9-iAO" firstAttribute="top" secondItem="Xjg-EF-3Um" secondAttribute="bottom" id="Hy8-8T-T4x"/>
                             <constraint firstItem="Xjg-EF-3Um" firstAttribute="leading" secondItem="A0C-la-seY" secondAttribute="leading" id="Sge-41-MyQ"/>
                             <constraint firstItem="JXF-0y-8XG" firstAttribute="leading" secondItem="A0C-la-seY" secondAttribute="leading" id="WwH-Yn-VRe"/>
@@ -433,7 +434,7 @@
                             </tableView>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="cLf-8H-vsd" firstAttribute="top" secondItem="msd-8c-lgw" secondAttribute="bottom" id="99W-LC-BrN"/>
                             <constraint firstAttribute="trailing" secondItem="msd-8c-lgw" secondAttribute="trailing" id="G1p-oF-4fH"/>

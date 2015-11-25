@@ -154,6 +154,23 @@
     return false;
 }
 
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    
+    
+    UIViewController* lNext = [segue destinationViewController];
+    if([lNext isKindOfClass:[UINavigationController class]])
+    {
+        lNext =  [(UINavigationController*)lNext topViewController];
+    }
+    if([lNext respondsToSelector:@selector(configure:)])
+    {
+        [lNext performSelector:@selector(configure:) withObject:self.objectToPush];
+    }
+}
 
 
 

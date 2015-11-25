@@ -7,6 +7,8 @@
 //
 
 #import "LocationSearchViewController.h"
+#import "ShareAppContext.h"
+#import "WSManager.h"
 
 @interface LocationSearchViewController ()
 
@@ -16,6 +18,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.title = @"Place";
+    
+    
     // Do any additional setup after loading the view.
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
     UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
@@ -50,18 +56,32 @@
     [self.navigationController popViewControllerAnimated:NO];
 }
 
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self search];
+}
+
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    CLGeocoder*    geocoder = [[CLGeocoder alloc] init];
-    [geocoder geocodeAddressString:searchBar.text completionHandler:^(NSArray* placemarks, NSError* error)
-    {
-        self.mData = placemarks;
+    [self search];
+    [self.mSearchBar resignFirstResponder];
+}
+
+-(void) search
+{
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+    request.naturalLanguageQuery = self.mSearchBar.text;
+    
+    [self.mLocalSearch cancel];
+    self.mLocalSearch = [[MKLocalSearch alloc] initWithRequest:request];
+    [self.mLocalSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
+        // check for error and process the response
+        self.mData = response.mapItems;
         [self.mTableView reloadData];
     }];
-    
-    
-    
-    [self.mSearchBar resignFirstResponder];
+ 
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -77,17 +97,26 @@
 {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AddressCell"];
     
-    CLPlacemark* aPlacemark = [self.mData objectAtIndex:indexPath.row];
+    MKMapItem * lItem = [self.mData objectAtIndex:indexPath.row];
+    CLPlacemark* aPlacemark = lItem.placemark;
     NSString *locatedAt = [[aPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
-    cell.textLabel.text =  [[NSString alloc]initWithString:locatedAt];
-
+    if(locatedAt != nil)
+    {
+        cell.textLabel.text =  [[NSString alloc]initWithString:locatedAt];
+    }
+    else
+    {
+        cell.textLabel.text =  @"";
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object: [self.mData objectAtIndex:indexPath.row]];
+    MKMapItem * lItem = [self.mData objectAtIndex:indexPath.row];
+    CLPlacemark* aPlacemark = lItem.placemark;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:aPlacemark];
     [self popBack];
 }
 

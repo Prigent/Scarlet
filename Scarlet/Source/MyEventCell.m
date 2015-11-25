@@ -52,61 +52,44 @@
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     self.mData = listProfile;
     [self.mCollectionView reloadData];
+     _mStatusLabel.hidden = false;
     
-    
-    [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
-    
-
-    if([event.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    switch ([event getMyStatus])
     {
-        _mStatusLabel.text = @"Leader";
-        return;
-    }
-
-    NSPredicate *predPart = [NSPredicate predicateWithFormat:@"identifier == %@",[ShareAppContext sharedInstance].userIdentifier];
-    NSArray *matchesPart = [[event.partners allObjects] filteredArrayUsingPredicate:predPart];
-    if([matchesPart count]>0)
-    {
-        _mStatusLabel.text = @"Partner";
-        return;
-    }
-
-    
-    for(Demand * lDemand in event.demands)
-    {
-        if([lDemand.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+        case 1:
         {
-            switch ([lDemand.status integerValue]) {
-                case 1: _mStatusLabel.text = @"accepted";break;
-                case 2: _mStatusLabel.text = @"rejected";break;
-                case 3: _mStatusLabel.text = @"waiting"; break;
-                default:break;
-            }
-            return;
-        }
-        
-        for(Profile* lProfile in lDemand.partners)
-        {
-            if([lProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+            NSInteger countWaiting = [event getWaitingDemand];
+            if(countWaiting>0)
             {
-                switch ([lDemand.status integerValue]) {
-                    case 1: _mStatusLabel.text = @"accepted";break;
-                    case 2: _mStatusLabel.text = @"rejected";break;
-                    case 3: _mStatusLabel.text = @"waiting"; break;
-                    default:break;
-                }
-                return;
+                _mStatusLabel.text = [NSString stringWithFormat:@"%ld new requests", countWaiting];
+                _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
             }
+            else
+            {
+                _mStatusLabel.hidden = true;
+            }
+            break;
         }
+        case 2:
+            _mStatusLabel.hidden = true;
+            break;
+        case 3:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
+             _mStatusLabel.text = @"Scarlet accepted !";
+            break;
+        case 4:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet rejected !";
+            break;
+        case 5:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet pending !";
+            break;
+        default:
+            break;
     }
 }
 
-
-
--(void) reloadData
-{
-    [self.mCollectionView reloadData];
-}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return  [self.mData count];
@@ -116,16 +99,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *cellID = @"ProfileCollectionCell";
     ProfileCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
-    
-    if([self.mData count]>indexPath.row)
-    {
-        [cell configure:[self.mData objectAtIndex:indexPath.row]];
-    }
-    else
-    {
-        [self.mCollectionView reloadData];
-    }
-
+    [cell configure:[self.mData objectAtIndex:indexPath.row]];
     return cell;
 }
 

@@ -38,7 +38,7 @@
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     
     self.mData = listProfile;
-    
+    [self.mCollectionView reloadData];
     self.mCount.text = [NSString stringWithFormat:@"%ld", [self.mData count]];
 }
 

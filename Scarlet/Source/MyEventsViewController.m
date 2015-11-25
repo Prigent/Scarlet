@@ -26,19 +26,69 @@
     self.navigationController.navigationBarHidden =true;
     
     
+    [self.mSegmentedControl setSectionTitles:@[@"INCOMMING",@"PAST"] ];
+    self.mSegmentedControl.textColor = [UIColor lightGrayColor];
+    self.mSegmentedControl.selectedTextColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+    self.mSegmentedControl.selectionIndicatorColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+    self.mSegmentedControl.segmentWidthStyle = HMSegmentedControlSegmentWidthStyleDynamic;
+    self.mSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
+    self.mSegmentedControl.segmentEdgeInset = UIEdgeInsetsMake(0, 0, 0, 24);
+    
+    
+    
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"MyEvent" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
 
-    [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
-            [self updateWithPredicate:lNSPredicate];
+    [self changeSegment:nil];
+    
+    
+    
+        [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
+            if(error)
+            {
+                NSLog(@"%@", error);
+            }
         }];
+
+    
+    
+    
+    
 }
 
+- (IBAction)changeSegment:(id)sender {
+    
+   
+    if(self.mSegmentedControl.selectedSegmentIndex == 0)
+    {
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND date > %@",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier, [NSDate date]];
+        [self updateWithPredicate:lNSPredicate];
+        
+    }
+    else
+    {
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND date <= %@",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier, [NSDate date]];
+        [self updateWithPredicate:lNSPredicate];
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Event * lEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSInteger status = [lEvent getMyStatus];
+    if(status == 2)
+    {
+        return 177;
+    }
+    if(status == 1)
+    {
+        NSInteger countDemand = [lEvent getWaitingDemand];
+        if(countDemand == 0)
+        {
+            return 177;
+        }
+    }
     return 212;
 }
 

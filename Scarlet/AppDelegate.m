@@ -25,6 +25,10 @@
     [Fabric with:@[[Crashlytics class]]];
     [ShareAppContext sharedInstance].managedObjectContext = [self managedObjectContext];
     
+    [[UISearchBar appearance] setImage:[UIImage imageNamed:@"icnSearch"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+    
+
+    
     
     UIImage *barBackBtnImg = [[UIImage imageNamed:@"btnBack"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
 

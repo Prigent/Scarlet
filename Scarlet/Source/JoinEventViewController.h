@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+
+@class Event;
 @interface JoinEventViewController : BaseViewController
+
+@property (nonatomic, strong) Event * mEvent;
 
 @end

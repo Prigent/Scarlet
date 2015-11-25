@@ -16,6 +16,7 @@
 #import "Chat.h"
 #import "ShareAppContext.h"
 #import "User.h"
+#import "Event.h"
 
 #import <sys/utsname.h>
 #import "Toast+UIView.h"
@@ -220,17 +221,21 @@
 
 }
 
-- (void)addDemand:(NSString*) identifier partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion
+- (void)addDemand:(Event*) event partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/demand"];
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:identifier forKey:@"event_identifier"];
+    [param setObject:event.identifier forKey:@"event_identifier"];
     [param setObject:partnerIdentifier forKey:@"partner"];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
+         NSLog(@"responseObject %@",responseObject);
+         Demand * lDemand = [WSParser addDemand:[responseObject valueForKey:@"demand"]];
+         [event addDemandsObject:lDemand];
          onCompletion(nil);
          
      }
@@ -242,7 +247,7 @@
 }
 - (void)respondDemand:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion
 {
-    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/demand"];
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
@@ -454,6 +459,8 @@
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
+        NSLog(@"getMyEventsCompletion %@",responseObject);
+        
         NSArray* lAllEvents= [responseObject valueForKey:@"event"];
         for(NSDictionary * lDicEvent in lAllEvents)
         {

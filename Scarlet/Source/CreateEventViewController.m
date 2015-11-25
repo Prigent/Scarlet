@@ -14,6 +14,9 @@
 #import "FieldEventCell.h"
 #import "ShareAppContext.h"
 #import "Profile.h"
+#import "User.h"
+#import "FriendViewController.h"
+
 
 @interface CreateEventViewController ()
 
@@ -57,7 +60,7 @@
     }
     else
     {
-        self.address = @"Default address";
+        self.address = @"no address";
     }
    /* NSString *Area = [[NSString alloc]initWithString: [ShareAppContext sharedInstance].placemark.locality];
     NSString *Country = [[NSString alloc]initWithString: [ShareAppContext sharedInstance].placemark.country];
@@ -279,10 +282,8 @@
     else if(indexPath.row == 0)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
-
         ProfileListCell* cellList = (ProfileListCell*)cell;
-        [cellList configure:[WSParser getProfiles] andSelectedList:self.listProfileId];
-        
+        [cellList configure:[[ShareAppContext sharedInstance].user.friends allObjects] andSelectedList:self.listProfileId];
     }
     else
     {
@@ -292,8 +293,22 @@
 }
 
 - (IBAction)inviteFriend:(id)sender {
-    BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
-    [self.navigationController pushViewController:viewController animated:true];
+    FriendViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+    viewController.type = 2;
+    
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
+    
+    
+    [self.navigationController pushViewController:viewController animated:false];
 }
 
 

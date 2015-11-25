@@ -25,7 +25,7 @@
     self.uiRefreshControl = [[UIRefreshControl alloc] init];
     self.uiRefreshControl.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
     
-    self.uiRefreshControl.tintColor = [UIColor colorWithRed:12/255. green:156/255. blue:213/255. alpha:1.];
+    self.uiRefreshControl.tintColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
     [self.uiRefreshControl addTarget:self  action:@selector(updateData)   forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.uiRefreshControl];
     
@@ -350,23 +350,6 @@
 }
 
 
- #pragma mark - Navigation
- 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-
-    
-    UIViewController* lNext = [segue destinationViewController];
-    if([lNext isKindOfClass:[UINavigationController class]])
-    {
-        lNext =  [(UINavigationController*)lNext topViewController];
-    }
-    if([lNext respondsToSelector:@selector(configure:)])
-    {
-        [lNext performSelector:@selector(configure:) withObject:self.objectToPush];
-    }
-}
 
 
 @end

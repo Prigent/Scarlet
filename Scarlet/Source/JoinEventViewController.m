@@ -8,6 +8,8 @@
 
 #import "JoinEventViewController.h"
 #import "WSParser.h"
+#import "WSManager.h"
+#import "Event.h"
 
 
 @interface JoinEventViewController ()
@@ -27,6 +29,11 @@
 }
 
 
+-(void) configure:(id)event
+{
+    self.mEvent = event;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;
@@ -39,7 +46,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 84;
+    return 165;
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -58,7 +65,14 @@
     return cell;
 }
 - (IBAction)sendRequest:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:true];
+    
+    [[WSManager sharedInstance] addDemand:self.mEvent partner:@[] completion:^(NSError *error) {
+         [self.navigationController popToRootViewControllerAnimated:true];
+    }];
+    
+   
+    
+    
 }
 
 @end

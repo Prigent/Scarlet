@@ -36,7 +36,6 @@
     
 [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
     [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
-        
         if(error)
         {
             NSLog(@"%@", error);

@@ -10,7 +10,10 @@
 #import <MapKit/MapKit.h>
 
 @interface LocationSearchViewController : BaseViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *mSearchBar;
 @property (nonatomic, strong) NSArray * mData;
+@property (nonatomic, strong) MKLocalSearch * mLocalSearch;
+
 @end

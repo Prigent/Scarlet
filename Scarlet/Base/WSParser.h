@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User,Profile,Event, Message, FacebookProfile;
+@class User,Profile,Event, Message, FacebookProfile,Demand;
 @interface WSParser : NSObject
 
 +(User*) getUser:(NSString*) idUser;
@@ -17,5 +17,6 @@
 +(Message*) addMessage:(NSDictionary*) dicMessage;
 +(NSArray*) getProfiles;
 +(FacebookProfile*) addFacebookProfile:(NSDictionary*) dicFacebookProfile;
++(Demand*) addDemand:(NSDictionary*) dicDemand;
 @end
 

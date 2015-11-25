@@ -24,4 +24,5 @@
 @property (nonatomic, strong) UILabel * mTextLoadingGeneric;
 @property (nonatomic) BOOL customReturn;
 @property (nonatomic) BOOL hideBottom;
+@property (strong, nonatomic) NSObject* objectToPush;
 @end

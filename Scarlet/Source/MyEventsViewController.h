@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "AutoListViewController.h"
+#import "HMSegmentedControl.h"
+
 
 @interface MyEventsViewController : AutoListViewController
+@property (weak, nonatomic) IBOutlet HMSegmentedControl *mSegmentedControl;
 
 @end

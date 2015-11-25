@@ -32,7 +32,6 @@
 @property (strong, nonatomic) NSString* sectionIdentifier;
 @property (strong, nonatomic) NSString* detailIdentifier;
 @property (strong, nonatomic) NSString* showIdentifier;
-@property (strong, nonatomic) NSObject* objectToPush;
 @property (strong, nonatomic) NSDictionary* dicBase;
 @property (strong, nonatomic) UIRefreshControl* uiRefreshControl;
 
