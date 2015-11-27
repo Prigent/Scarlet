@@ -10,7 +10,9 @@
 #import "WSParser.h"
 #import "WSManager.h"
 #import "Event.h"
-
+#import "ProfileListCell.h"
+#import "ShareAppContext.h"
+#import "User.h"
 
 @interface JoinEventViewController ()
 
@@ -18,25 +20,35 @@
 
 @implementation JoinEventViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.listProfileId = [NSMutableArray array];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
--(void) configure:(id)event
+-(void) viewWillAppear:(BOOL)animated
 {
-    self.mEvent = event;
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinScarlet:) name:@"joinScarlet" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectProfile:) name:@"selectProfile" object:nil];
+    
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void) joinScarlet:(NSNotification*)notification
+{
+    self.mEvent = [notification object];
+    [self.mTableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -46,33 +58,60 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 165;
+    if(indexPath.row == 0)
+    return 145;
+    
+    return 64;
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Choose your friends";
+    return nil;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
-    if([cell respondsToSelector:@selector(configure:)])
+    if(indexPath.row==1)
     {
-        [cell performSelector:@selector(configure:) withObject:[WSParser getProfiles]];
+        return  [tableView dequeueReusableCellWithIdentifier:@"AddMoreFriend"];
     }
+    
+    UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
+    cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
+    ProfileListCell* cellList = (ProfileListCell*)cell;
+    [cellList configure:[[ShareAppContext sharedInstance].user.friends allObjects] andSelectedList:self.listProfileId];
+
     return cell;
 }
 - (IBAction)sendRequest:(id)sender {
     
-    [[WSManager sharedInstance] addDemand:self.mEvent partner:@[] completion:^(NSError *error) {
-         [self.navigationController popToRootViewControllerAnimated:true];
+    [[WSManager sharedInstance] addDemand:self.mEvent partner:self.listProfileId completion:^(NSError *error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"eventJoined" object:nil];
     }];
-    
-   
-    
-    
 }
+
+
+-(void) selectProfile:(NSNotification*) notification
+{
+    id data = [notification object];
+    
+    if([data isKindOfClass: [Profile class]])
+    {
+        Profile * profile = (Profile*)data;
+        if([self.listProfileId containsObject:profile.identifier])
+        {
+            [self.listProfileId removeObject:profile.identifier];
+        }
+        else
+        {
+            [self.listProfileId addObject:profile.identifier];
+        }
+        [self.mTableView reloadData];
+    }
+}
+
+
+
 
 @end

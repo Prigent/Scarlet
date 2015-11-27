@@ -8,14 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "AutoListViewController.h"
+#import "EventExpendView.h"
 
 @class Event;
 @interface MyEventViewController : AutoListViewController
 
 @property (strong, nonatomic) Event* mEvent;
 
-@property (weak, nonatomic) IBOutlet UILabel *mAddressLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *mLeaderImage;
-@property (weak, nonatomic) IBOutlet UILabel *mLeaderLabel;
+@property (weak, nonatomic) IBOutlet EventExpendView *mEventExpendView;
 
 @end

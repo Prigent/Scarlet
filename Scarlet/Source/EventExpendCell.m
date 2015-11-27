@@ -1,12 +1,12 @@
 //
-//  EventCell.m
+//  EventExpendCell.m
 //  Scarlet
 //
 //  Created by Prigent ROUDAUT on 22/10/2015.
 //  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
 //
 
-#import "EventCell.h"
+#import "EventExpendCell.h"
 #import "Event.h"
 #import "UIImageView+AFNetworking.h"
 #import "Profile.h"
@@ -14,25 +14,30 @@
 #import "Address.h"
 #import "ProfileCollectionCell.h"
 
-@implementation EventCell
+@implementation EventExpendCell
 
-
+- (void)awakeFromNib {
+    // Initialization code
+    self.mAnnotation = [[MKPointAnnotation alloc] init];
+    [self.mMapView addAnnotation:self.mAnnotation];
+}
 
 
 -(void) configure:(Event*) event
 {
     self.mEvent = event;
-    _mTitle.text = event.leader.firstName;
-    for(Profile * lPartner in event.partners)
-    {
-        _mTitle.text = [_mTitle.text stringByAppendingString:[NSString stringWithFormat:@", %@",lPartner.firstName]];
-    }
-    
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"EEEE, dd/MM/yyyy à HH:mm"];
-    _mSubtitle.text  = [NSString stringWithFormat:@"%@, %@",event.address.street ,[format stringFromDate:event.date] ];
     
+    _mCountPeople.text =  [NSString stringWithFormat:@"%d peoples are in",1];
+    _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
+    _mAddress.text  = [NSString stringWithFormat:@"Near %@",event.address.street];
+    _mDate.text = [format stringFromDate:event.date] ;
     
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
+    [self.mAnnotation setCoordinate: coordinate];
+    [self.mMapView setRegion:MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000) animated:true];
+
     
     NSMutableArray * listProfile = [NSMutableArray array];
     [listProfile addObject:event.leader];
@@ -40,7 +45,6 @@
     
     self.mData = listProfile;
     [self.mCollectionView reloadData];
-    self.mCount.text = [NSString stringWithFormat:@"%ld", [self.mData count]];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -52,7 +56,6 @@
     static NSString *cellID = @"ProfileCollectionCell";
     ProfileCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
     [cell configure:[self.mData objectAtIndex:indexPath.row]];
-    cell.mEvent = self.mEvent;
     return cell;
 }
 
@@ -74,6 +77,9 @@
     
 }
 
+- (IBAction)joinScarlet:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"joinScarlet" object: self.mEvent];
+}
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {

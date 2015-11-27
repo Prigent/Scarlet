@@ -137,10 +137,12 @@
 		B2AA6ED61BCCF66500DCF1A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ED41BCCF66500DCF1A4 /* LaunchScreen.storyboard */; };
 		B2AA6EE01BCCF6DA00DCF1A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA6EDE1BCCF6DA00DCF1A4 /* Fabric.framework */; };
 		B2AA6EE11BCCF6DA00DCF1A4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA6EDF1BCCF6DA00DCF1A4 /* Crashlytics.framework */; };
+		B2B375311C0778CA00B3E349 /* EventExpendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B375301C0778CA00B3E349 /* EventExpendCell.m */; };
 		B2B70D251BDE49BF00C89731 /* ProfileMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D241BDE49BF00C89731 /* ProfileMenuCell.m */; };
 		B2B70D271BDE54D500C89731 /* Event.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B70D261BDE54D500C89731 /* Event.storyboard */; };
 		B2B70D2A1BDE551A00C89731 /* CreateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D291BDE551A00C89731 /* CreateEventViewController.m */; };
 		B2B70D301BDE55A100C89731 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D2F1BDE55A100C89731 /* MyProfileViewController.m */; };
+		B2DE4AC21C08B9CB00CF3AE1 /* EventExpendView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DE4AC11C08B9CB00CF3AE1 /* EventExpendView.m */; };
 		B2E05F8E1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F8B1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m */; };
 		B2E05F8F1BDFDE450037A8ED /* RACollectionViewTripletLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F8D1BDFDE450037A8ED /* RACollectionViewTripletLayout.m */; };
 		B2E05F921BDFDEED0037A8ED /* RACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F911BDFDEED0037A8ED /* RACollectionViewCell.m */; };
@@ -434,6 +436,8 @@
 		B2AA6ED71BCCF66500DCF1A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2AA6EDE1BCCF6DA00DCF1A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		B2AA6EDF1BCCF6DA00DCF1A4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		B2B3752F1C0778CA00B3E349 /* EventExpendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventExpendCell.h; path = Source/EventExpendCell.h; sourceTree = "<group>"; };
+		B2B375301C0778CA00B3E349 /* EventExpendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventExpendCell.m; path = Source/EventExpendCell.m; sourceTree = "<group>"; };
 		B2B70D231BDE49BF00C89731 /* ProfileMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileMenuCell.h; path = Source/ProfileMenuCell.h; sourceTree = "<group>"; };
 		B2B70D241BDE49BF00C89731 /* ProfileMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileMenuCell.m; path = Source/ProfileMenuCell.m; sourceTree = "<group>"; };
 		B2B70D261BDE54D500C89731 /* Event.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Event.storyboard; sourceTree = "<group>"; };
@@ -441,6 +445,8 @@
 		B2B70D291BDE551A00C89731 /* CreateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateEventViewController.m; path = Source/CreateEventViewController.m; sourceTree = "<group>"; };
 		B2B70D2E1BDE55A100C89731 /* MyProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyProfileViewController.h; path = Source/MyProfileViewController.h; sourceTree = "<group>"; };
 		B2B70D2F1BDE55A100C89731 /* MyProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyProfileViewController.m; path = Source/MyProfileViewController.m; sourceTree = "<group>"; };
+		B2DE4AC01C08B9CB00CF3AE1 /* EventExpendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventExpendView.h; path = Source/EventExpendView.h; sourceTree = "<group>"; };
+		B2DE4AC11C08B9CB00CF3AE1 /* EventExpendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventExpendView.m; path = Source/EventExpendView.m; sourceTree = "<group>"; };
 		B2E05F8A1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACollectionViewReorderableTripletLayout.h; sourceTree = "<group>"; };
 		B2E05F8B1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACollectionViewReorderableTripletLayout.m; sourceTree = "<group>"; };
 		B2E05F8C1BDFDE450037A8ED /* RACollectionViewTripletLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACollectionViewTripletLayout.h; sourceTree = "<group>"; };
@@ -759,6 +765,8 @@
 		B23FA5D11BD5014700868D12 /* SearchEvent */ = {
 			isa = PBXGroup;
 			children = (
+				B2B3752F1C0778CA00B3E349 /* EventExpendCell.h */,
+				B2B375301C0778CA00B3E349 /* EventExpendCell.m */,
 				B2F972311BD945D300B8BF72 /* AllEvent.plist */,
 				B27F78831BD922180038B4B0 /* SearchEventViewController.h */,
 				B27F78841BD922180038B4B0 /* SearchEventViewController.m */,
@@ -806,6 +814,8 @@
 		B23FA5D31BD502EF00868D12 /* MyEvent */ = {
 			isa = PBXGroup;
 			children = (
+				B2DE4AC01C08B9CB00CF3AE1 /* EventExpendView.h */,
+				B2DE4AC11C08B9CB00CF3AE1 /* EventExpendView.m */,
 				B27AF8EE1C05E85C0085BD95 /* Mood.plist */,
 				B235856F1BDA55C400568AB9 /* Demand.plist */,
 				B2F972391BD94CFE00B8BF72 /* MyEvent.plist */,
@@ -1282,6 +1292,7 @@
 				B23FA5C71BD5011B00868D12 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				B23FA5291BD5011100868D12 /* BaseTabViewController.m in Sources */,
 				B27F78EB1BD93B260038B4B0 /* Profile.m in Sources */,
+				B2DE4AC21C08B9CB00CF3AE1 /* EventExpendView.m in Sources */,
 				B23FA5271BD5011100868D12 /* BaseNavigationViewController.m in Sources */,
 				B2F9723F1BD94E9A00B8BF72 /* MyEventCell.m in Sources */,
 				B27AF8E41C05C1860085BD95 /* FieldEventCell.m in Sources */,
@@ -1328,6 +1339,7 @@
 				B244DA531BDE9FEC0088BB1D /* JoinEventViewController.m in Sources */,
 				B23FA5AC1BD5011B00868D12 /* AFHTTPRequestOperation.m in Sources */,
 				B23FA5BB1BD5011B00868D12 /* DelegateLabel.m in Sources */,
+				B2B375311C0778CA00B3E349 /* EventExpendCell.m in Sources */,
 				B23FA5AE1BD5011B00868D12 /* AFHTTPSessionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

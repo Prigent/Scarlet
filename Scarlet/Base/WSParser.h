@@ -16,7 +16,7 @@
 +(Event*) addEvent:(NSDictionary*) dicEvent;
 +(Message*) addMessage:(NSDictionary*) dicMessage;
 +(NSArray*) getProfiles;
-+(FacebookProfile*) addFacebookProfile:(NSDictionary*) dicFacebookProfile;
++(FacebookProfile* ) addFacebookProfile:(NSDictionary*) dicFacebookProfile;
 +(Demand*) addDemand:(NSDictionary*) dicDemand;
 @end
 

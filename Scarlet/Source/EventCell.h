@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class Event;
 @interface EventCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
@@ -15,4 +15,5 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
 @property (weak, nonatomic) IBOutlet UILabel *mCount;
 @property (strong, nonatomic) NSArray *mData;
+@property (strong, nonatomic) Event* mEvent;
 @end

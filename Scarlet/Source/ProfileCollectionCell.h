@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class Profile;
+@class Profile,Event;
 @interface ProfileCollectionCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *mImage;
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
+
+@property (strong, nonatomic) Event * mEvent;
 @property (strong, nonatomic) id mData;
 @property (nonatomic) int mType;
 -(void) configure:(Profile*) profile;

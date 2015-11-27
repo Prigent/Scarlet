@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface DemandCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *mLeaderImage;
+@property (weak, nonatomic) IBOutlet UILabel *mTitle;
+@property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
 @property (weak, nonatomic) IBOutlet UILabel *mStatusLabel;
+@property (strong, nonatomic) NSArray *mData;
 
 @end

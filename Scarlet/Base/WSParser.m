@@ -56,7 +56,7 @@
     return [WSParser searchIdentifier:idFriendRequest andName:@"FriendRequest"];
 }
 
-+(FacebookProfile*) addFacebookProfile:(NSDictionary*) dicFacebookProfile
++(FacebookProfile* ) addFacebookProfile:(NSDictionary*) dicFacebookProfile
 {
     FacebookProfile* facebookProfile = [NSEntityDescription insertNewObjectForEntityForName:@"FacebookProfile" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     

@@ -29,28 +29,24 @@
 
 -(void) updateView
 {
-    Picture * picture = [self.mEvent.leader.pictures firstObject];
-    [self.mLeaderImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-    self.mLeaderLabel.text = [NSString stringWithFormat:@"%@", self.mEvent.leader.name];
-
-    
-    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
-    CLLocation * lCLLocation = [[CLLocation alloc]initWithLatitude:[self.mEvent.address.lat doubleValue] longitude:[self.mEvent.address.longi doubleValue]];
-    
-    [geocoder reverseGeocodeLocation:lCLLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-        
-        CLPlacemark * lCLPlacemark = [placemarks firstObject];
-        self.mAddressLabel.text = lCLPlacemark.addressDictionary.description;
-    }];
+    [self.mEventExpendView configure:self.mEvent];
     
     
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Demand" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
-
-    
-
 }
+
+
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 212;
+}
+
+
+
 -(void) configure:(id) event
 {
     self.mEvent = event;
@@ -61,6 +57,8 @@
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

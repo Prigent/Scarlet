@@ -12,13 +12,14 @@
 
 
 @class Event;
-@interface EventViewController : BaseViewController
+@interface EventViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) Event * mEvent;
 
-@property (weak, nonatomic) IBOutlet UIImageView *mLeaderImage;
-@property (weak, nonatomic) IBOutlet UILabel *mLeaderTitle;
-@property (weak, nonatomic) IBOutlet MKMapView *mMapView;
-@property (weak, nonatomic) IBOutlet UILabel *mMoodLabel;
+@property (weak, nonatomic) IBOutlet UITableView *mTableView;
 
+
+@property (strong, nonatomic) NSFetchedResultsController * mData;
+@property (strong, nonatomic) NSIndexPath * mIndex;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mBottomContainer;
 @end

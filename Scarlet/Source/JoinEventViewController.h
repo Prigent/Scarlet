@@ -13,5 +13,9 @@
 @interface JoinEventViewController : BaseViewController
 
 @property (nonatomic, strong) Event * mEvent;
+@property (weak, nonatomic) IBOutlet UITableView *mTableView;
+
+@property (nonatomic, strong) NSMutableArray* listProfileId;
+
 
 @end

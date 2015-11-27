@@ -48,4 +48,13 @@
 - (IBAction)selectCell:(id)sender {
    [[NSNotificationCenter defaultCenter] postNotificationName:@"profilelistselected" object:self.mData];
 }
+- (IBAction)selectEvent:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"eventselected" object:self.mEvent];
+}
+- (IBAction)selectProfile:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectProfile" object:self.mData];
+}
+
+
+
 @end

@@ -40,10 +40,11 @@
         {
             NSLog(@"%@", error);
         }
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)) AND date >= %@",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier, [NSDate date]];
         [self updateWithPredicate:lNSPredicate];
     }];
 }];
+    
     
 
 
@@ -63,7 +64,27 @@
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventselected:) name:@"eventselected" object:nil];
 }
+
+-(void) eventselected:(NSNotification*) notification
+{
+    self.objectToPush =  @[self.fetchedResultsController, [self.fetchedResultsController indexPathForObject:[notification object]]];
+    
+    [self performSegueWithIdentifier:@"showEvent" sender:self];
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -128,6 +149,14 @@
     return customPin;
 }
 
+-(NSIndexPath*) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.objectToPush = @[self.fetchedResultsController,indexPath];
+    return indexPath;
+}
+
+
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     EventPointAnnotation * lEventPoint = view.annotation;
@@ -152,10 +181,15 @@
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
     EventPointAnnotation * lEventPoint = view.annotation;
-    
-    self.objectToPush = lEventPoint.mEvent;
+    self.objectToPush =  @[self.fetchedResultsController, [self.fetchedResultsController indexPathForObject:lEventPoint.mEvent]];
     [self performSegueWithIdentifier:@"showEvent" sender:self];
 }
+
+
+
+
+
+
 /*
 #pragma mark - Navigation
 

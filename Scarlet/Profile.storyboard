@@ -53,7 +53,7 @@
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
-                                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="btnAddPicture" translatesAutoresizingMaskIntoConstraints="NO" id="sF8-Bt-DLM">
+                                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="btnAddPicture" translatesAutoresizingMaskIntoConstraints="NO" id="sF8-Bt-DLM">
                                                                 <rect key="frame" x="132" y="136" width="16" height="16"/>
                                                                 <animations/>
                                                             </imageView>
@@ -190,7 +190,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-c1-4u1" customClass="TTRangeSlider">
+                                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-c1-4u1" customClass="TTRangeSlider">
                                                     <rect key="frame" x="8" y="2" width="584" height="65"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
