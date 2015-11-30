@@ -52,9 +52,9 @@
             if([lProfile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
             {
                 switch ([lDemand.status integerValue]) {
-                    case 1: return 3;  // DEMAND ACCEPTED
-                    case 2: return 4;  // DEMAND REJECTED
-                    case 3: return 5;  // DEMAND WAITING
+                    case 1: return 6;  // DEMAND ACCEPTED
+                    case 2: return 7;  // DEMAND REJECTED
+                    case 3: return 8;  // DEMAND WAITING
                 }
             }
         }

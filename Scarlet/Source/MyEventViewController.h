@@ -15,6 +15,8 @@
 
 @property (strong, nonatomic) Event* mEvent;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mHeighEditButton;
 @property (weak, nonatomic) IBOutlet EventExpendView *mEventExpendView;
+@property (weak, nonatomic) IBOutlet UIButton *mButtonCancel;
 
 @end

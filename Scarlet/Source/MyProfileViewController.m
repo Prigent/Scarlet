@@ -315,12 +315,9 @@
     {
         image = [info objectForKey:UIImagePickerControllerCropRect];
     }
-    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInt:indexTemp] completion:^(NSError *error) {
-        [self setupPhotosArray];
-        [self.tableview reloadData];
-        [self.collectionView reloadData];
-    }];
     
+    [self sendPicture:image];
+
     
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
@@ -499,16 +496,6 @@
 }
 
 - (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didFinishPickingImages:(NSArray *)images {
-    
-    OLFacebookImage * lOLFacebookImage = [images objectAtIndex:0];
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[lOLFacebookImage bestURLForSize:CGSizeMake(800, 800)]]];
-    
-    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInt:indexTemp] completion:^(NSError *error) {
-        [self setupPhotosArray];
-        [self.tableview reloadData];
-        [self.collectionView reloadData];
-    }];
-    
     [self dismissViewControllerAnimated:YES completion:nil];
     NSLog(@"User did pick %lu images", (unsigned long) images.count);
 }
@@ -518,10 +505,35 @@
     NSLog(@"User cancelled facebook image picking");
 }
 
-- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didSelectImage:(OLFacebookImage *)image
+- (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didSelectImage:(OLFacebookImage *)imageFB
 {
+
+    
+    OLFacebookImage * lOLFacebookImage = imageFB;
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[lOLFacebookImage bestURLForSize:CGSizeMake(800, 800)]]];
+    
+    [self sendPicture:image];
+    
     [imagePicker performSelector:@selector(albumViewControllerDoneClicked:) withObject:imagePicker afterDelay:0];
 }
+
+
+-(void) sendPicture:(UIImage*) image
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Loading";
+    
+    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInt:indexTemp] completion:^(NSError *error) {
+        [self setupPhotosArray];
+        [self.tableview reloadData];
+        [self.collectionView reloadData];
+        [hud hide:YES];
+    }];
+    
+}
+
+
 - (BOOL)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker shouldSelectImage:(OLFacebookImage *)image
 {
     return true;

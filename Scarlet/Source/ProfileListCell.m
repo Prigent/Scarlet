@@ -11,6 +11,7 @@
 #import "Picture.h"
 #import "UIImageView+AFNetworking.h"
 #import "ProfileCollectionCell.h"
+#import "Demand.h"
 
 @implementation ProfileListCell
 
@@ -24,9 +25,22 @@
     // Configure the view for the selected state
 }
 
--(void) configure:(NSArray*) listProfile
+-(void) configure:(id) obj
 {
-    self.mData = listProfile;
+    if([obj isKindOfClass:[NSArray class]])
+    {
+        self.mData = obj;
+    }
+    if([obj isKindOfClass:[Demand class]])
+    {
+        Demand* lDemand = obj;
+        NSMutableArray* lArray = [NSMutableArray array];
+        [lArray addObject:lDemand.leader];
+        [lArray addObjectsFromArray:[lDemand.partners allObjects]];
+        self.mData = lArray;
+    }
+    
+    
     [_mCollectionView reloadData];
     self.mEmptyLabel.hidden = ([self.mData count]>0);
     [self.mCollectionView reloadData];
@@ -37,7 +51,10 @@
     [self configure:listProfile];
     self.mSelectedList = selectedList;
 }
-
+/*
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(90, 158);
+}*/
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -65,8 +82,6 @@
     
     return cell;
 }
-
-
 
 
 @end

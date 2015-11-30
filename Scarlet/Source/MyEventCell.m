@@ -88,6 +88,18 @@
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
             _mStatusLabel.text = @"Scarlet pending !";
             break;
+        case 6:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet accepted !";
+            break;
+        case 7:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet rejected !";
+            break;
+        case 8:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet pending !";
+            break;
         default:
             break;
     }

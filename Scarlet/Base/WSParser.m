@@ -89,7 +89,6 @@
     }
     
     [user removeFriendRequest:user.friendRequest];
-    
     if([lArrayFriendsRequest isKindOfClass:[NSArray class]])
     {
         for(NSDictionary* lFriendRequest in lArrayFriendsRequest)
@@ -99,9 +98,6 @@
     }
 
     NSArray* lArraySuggest = [dicUser valueForKey:@"suggestProfile"];
-    
-
-    
     [user removeSuggestProfile:user.suggestProfile];
     if([lArraySuggest isKindOfClass:[NSArray class]])
     {
@@ -147,6 +143,9 @@
     
     profile.birthdate = [NSDate dateWithTimeIntervalSince1970:[[dicProfile valueForKey:@"birthdate"] integerValue]];
     
+    
+    
+    [profile removePictures:profile.pictures];
     NSArray* lArrayPicture = [dicProfile valueForKey:@"picture"];
     if([lArrayPicture isKindOfClass:[NSArray class]])
     {
@@ -155,6 +154,9 @@
             [profile addPicturesObject:[self addPicture:lFileName]];
         }
     }
+    
+    
+    [profile removeFriends:profile.friends];
     NSArray* lArrayFriends = [dicProfile valueForKey:@"friends"];
     if([lArrayFriends isKindOfClass:[NSArray class]])
     {
@@ -248,7 +250,9 @@
     demand.leader = [self getProfile:[dicDemand valueForKey:@"leader_id"]];
     demand.status = [self parseNumberValue:[dicDemand valueForKey:@"status"]];
     
-    for(NSString* lProfileIdentifier in [dicDemand valueForKey:@"partners"])
+    
+    [demand removePartners:demand.partners];
+    for(NSString* lProfileIdentifier in [dicDemand valueForKey:@"partners_id"])
     {
         Profile* lProfile = [self getProfile:lProfileIdentifier];
         if(lProfile)

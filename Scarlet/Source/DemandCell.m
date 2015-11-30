@@ -31,6 +31,7 @@
 
 -(void) configure:(Demand*) demand
 {
+    self.mDemand = demand;
     _mTitle.text = demand.leader.firstName;
     for(Profile * lPartner in demand.partners)
     {
@@ -97,6 +98,9 @@
     }
     
     
+}
+- (IBAction)selectDemand:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"demandSelected" object:self.mDemand];
 }
 
 

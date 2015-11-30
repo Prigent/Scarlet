@@ -36,4 +36,17 @@
     self.pictures = tempSet;
 }
 
+- (void)removePictures:(NSOrderedSet<Picture *> *)values
+{
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.pictures];
+    for(id obj in values)
+    {
+        [tempSet removeObject:obj];
+    }
+    
+    
+    
+    self.pictures = tempSet;
+}
+
 @end

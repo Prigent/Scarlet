@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *mCountPeople;
 @property (weak, nonatomic) IBOutlet UILabel *mAddress;
 @property (weak, nonatomic) IBOutlet UILabel *mDate;
-
+@property (weak, nonatomic) IBOutlet UILabel *mStatusLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mMapView;
 @property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;

@@ -45,6 +45,53 @@
     
     self.mData = listProfile;
     [self.mCollectionView reloadData];
+    
+    switch ([event getMyStatus])
+    {
+        case 1:
+        {
+            NSInteger countWaiting = [event getWaitingDemand];
+            if(countWaiting>0)
+            {
+                _mStatusLabel.text = [NSString stringWithFormat:@"%ld new requests", countWaiting];
+                _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            }
+            else
+            {
+                _mStatusLabel.hidden = true;
+            }
+            break;
+        }
+        case 2:
+            _mStatusLabel.hidden = true;
+            break;
+        case 3:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet accepted !";
+            break;
+        case 4:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet rejected !";
+            break;
+        case 5:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet pending !";
+            break;
+        case 6:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet accepted !";
+            break;
+        case 7:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet rejected !";
+            break;
+        case 8:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet pending !";
+            break;
+        default:
+            break;
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{

@@ -13,7 +13,12 @@
 
 @property (strong, nonatomic) Demand * mDemand;
 
-@property (weak, nonatomic) IBOutlet UILabel *mTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *mLeaderImage;
+@property (weak, nonatomic) IBOutlet UILabel *mLeaderName;
+@property (strong, nonatomic) NSArray *mData;
+@property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
+
+@property (weak, nonatomic) IBOutlet UIButton *mAcceptButton;
+@property (weak, nonatomic) IBOutlet UIButton *mDeniedButton;
 
 @end
