@@ -46,8 +46,9 @@ typedef enum {
 
 - (void)addMessageCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)createEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion;
-- (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion;
 
+- (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion;
+- (void)editEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion;
 //add message
 //create event
 

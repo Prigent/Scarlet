@@ -206,6 +206,9 @@
     event.chat = [self addChat:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
     event.mood = [dicEvent valueForKey:@"mood"];
     event.address = [self addAddress:dicEvent];
+    
+    
+    [event removePartners:event.partners];
     for(NSString* lProfileIdentifier in [dicEvent valueForKey:@"partners"])
     {
         Profile* lProfile = [self getProfile:lProfileIdentifier];
@@ -214,6 +217,8 @@
             [event addPartnersObject:[self getProfile:lProfileIdentifier]];
         }
     }
+    
+    [event removeDemands:event.demands];
     for(NSDictionary* lDemandDic in [dicEvent valueForKey:@"demands"])
     {
         Demand * lDemand = [self addDemand:lDemandDic];

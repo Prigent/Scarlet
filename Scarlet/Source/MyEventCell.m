@@ -31,6 +31,7 @@
 
 -(void) configure:(Event*) event
 {
+    self.mEvent = event;
     _mTitle.text = event.leader.firstName;
     for(Profile * lPartner in event.partners)
     {
@@ -53,11 +54,13 @@
     self.mData = listProfile;
     [self.mCollectionView reloadData];
      _mStatusLabel.hidden = false;
-    
+    _mButtonEdit.hidden = true;
     switch ([event getMyStatus])
     {
         case 1:
         {
+            
+            _mButtonEdit.hidden = false;
             NSInteger countWaiting = [event getWaitingDemand];
             if(countWaiting>0)
             {
@@ -121,6 +124,12 @@
     
 }
 
+- (IBAction)openEvent:(id)sender {
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"eventselected" object:self.mEvent];
+}
+- (IBAction)editEvent:(id)sender {
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"eventedit" object:self.mEvent];
+}
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {

@@ -38,7 +38,8 @@
     
     
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
- [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    
+// [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     return YES;
 }
 

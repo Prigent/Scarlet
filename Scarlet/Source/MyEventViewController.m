@@ -29,15 +29,23 @@
 
 -(void) updateView
 {
-    [self.mEventExpendView configure:self.mEvent];
-    
-    
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Demand" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    
+    
+    
+    NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"event.identifier == %@",self.mEvent.identifier];
+    [self updateWithPredicate:lNSPredicate];
 }
 
 
+- (IBAction)editScarlet:(id)sender {
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+    [viewController configure:self.mEvent];
+    [self.navigationController pushViewController:viewController animated:true];
+}
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -56,6 +64,9 @@
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
+    [self.mEventExpendView configure:self.mEvent];
+    
+    [self.tableView reloadData];
 }
 
 

@@ -16,7 +16,8 @@
 #import "Profile.h"
 #import "User.h"
 #import "FriendViewController.h"
-
+#import "Event.h"
+#import "Address.h"
 
 @interface CreateEventViewController ()
 
@@ -35,7 +36,7 @@
     
     
     
-    self.listProfileId = [NSMutableArray array];
+   
     
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
     UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
@@ -45,8 +46,44 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    self.date = [NSDate date];
+
     
+    if(self.mEvent)
+    {
+        [self editInit];
+    }
+    else
+    {
+        [self createInit];
+    }
+}
+
+-(void) editInit
+{
+    self.date = self.mEvent.date;
+
+    self.listProfileId = [NSMutableArray array];
+    
+    for(Profile* lProfile in self.mEvent.partners)
+    {
+        [self.listProfileId addObject:lProfile.identifier];
+    }
+    
+    self.mood =self.mEvent.mood;
+
+    self.address = self.mEvent.address.street;
+
+    self.coordinate =CLLocationCoordinate2DMake([self.mEvent.address.lat floatValue], [self.mEvent.address.longi floatValue]);
+    self.title = @"Edit Scarlet";
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(createEvent)];
+    
+}
+
+-(void) createInit
+{
+    self.date = [NSDate date];
+    self.listProfileId = [NSMutableArray array];
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Mood" ofType:@"plist"];
     self.mood = [[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0];
@@ -56,26 +93,18 @@
     NSString *locatedAt = [[[ShareAppContext sharedInstance].placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
     if(locatedAt != nil)
     {
-         self.address = [[NSString alloc]initWithString:locatedAt];
+        self.address = [[NSString alloc]initWithString:locatedAt];
     }
     else
     {
         self.address = @"no address";
     }
-   /* NSString *Area = [[NSString alloc]initWithString: [ShareAppContext sharedInstance].placemark.locality];
-    NSString *Country = [[NSString alloc]initWithString: [ShareAppContext sharedInstance].placemark.country];
-    NSString *CountryArea = [NSString stringWithFormat:@"%@, %@", Area,Country];*/
-
-
     self.coordinate = [ShareAppContext sharedInstance].placemark.location.coordinate;
-    
-   
     self.title = @"New Scarlet";
-    
-    
+ 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(createEvent)];
+    
 }
-
 
 -(void) viewDidAppear:(BOOL)animated
 {
@@ -83,6 +112,10 @@
     [self.mTableView reloadData];
 }
 
+-(void) configure:(id)event
+{
+    self.mEvent = event;
+}
 
 -(void) popBack {
 
@@ -131,6 +164,11 @@
     
     NSMutableDictionary * lEventDic = [NSMutableDictionary dictionary];
 
+    if(self.mEvent)
+    {
+        [lEventDic setValue:self.mEvent.identifier forKey:@"event_identifier"];
+    }
+    
     [lEventDic setValue:self.mood forKey:@"mood"];
     [lEventDic setValue:[NSNumber numberWithDouble:self.coordinate.longitude]  forKey:@"long"];
     [lEventDic setValue:[NSNumber numberWithDouble:self.coordinate.latitude] forKey:@"lat"];
@@ -139,21 +177,39 @@
     [lEventDic setValue:self.listProfileId forKey:@"partner"];
     
     
-    
-    
-    [[WSManager sharedInstance] createEvent:lEventDic completion:^(NSError *error) {
-        
-        [hud hide:YES];
-        if(error == nil)
-        {
-            [self popBack];
-        }
-        else
-        {
-            NSLog(@"%@", error);
-        }
+    if(self.mEvent)
+    {
+        [[WSManager sharedInstance] editEvent:lEventDic completion:^(NSError *error) {
+            
+            [hud hide:YES];
+            if(error == nil)
+            {
+                [self popBack];
+            }
+            else
+            {
+                NSLog(@"%@", error);
+            }
+            
+        }];
+    }
+    else
+    {
+        [[WSManager sharedInstance] createEvent:lEventDic completion:^(NSError *error) {
+            
+            [hud hide:YES];
+            if(error == nil)
+            {
+                [self popBack];
+            }
+            else
+            {
+                NSLog(@"%@", error);
+            }
+            
+        }];
+    }
 
-    }];
 }
 
 

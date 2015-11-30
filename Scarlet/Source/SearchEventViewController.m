@@ -75,6 +75,9 @@
     [self performSegueWithIdentifier:@"showEvent" sender:self];
 }
 
+
+
+
 -(void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];

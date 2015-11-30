@@ -50,12 +50,26 @@
                 NSLog(@"%@", error);
             }
         }];
-
-    
-    
-    
-    
 }
+
+
+
+
+-(void) eventselected:(NSNotification*) notification
+{
+    self.objectToPush = [notification object];
+    [self performSegueWithIdentifier:@"showMyEvent" sender:self];
+}
+
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+
 
 - (IBAction)changeSegment:(id)sender {
     
@@ -97,6 +111,11 @@
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventselected:) name:@"eventselected" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventedit:) name:@"eventedit" object:nil];
+    
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -118,4 +137,15 @@
     viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
     [self.navigationController pushViewController:viewController animated:true];
 }
+
+
+-(void) eventedit:(NSNotification*) notification
+{
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+    [viewController configure:[notification object]];
+    [self.navigationController pushViewController:viewController animated:true];
+}
+
+
 @end

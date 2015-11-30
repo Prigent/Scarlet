@@ -45,6 +45,7 @@
         lItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         lItem.titlePositionAdjustment = UIOffsetMake(0, 100);
     }
+    self.navigationController.navigationBar.topItem.title = @"";
 }
 
 -(BOOL)hidesBottomBarWhenPushed

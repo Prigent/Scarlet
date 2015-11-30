@@ -11,8 +11,12 @@
 
 #import "BaseViewController.h"
 
+@class Event;
 @interface CreateEventViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate>
 
+
+
+@property (nonatomic, strong) Event * mEvent;
 @property (nonatomic, strong) NSDate * date;
 @property (nonatomic, strong) NSString * mood;
 @property (nonatomic, strong) NSString * address;

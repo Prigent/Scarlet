@@ -24,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"Scarlet";
+    self.title = @"Browse Scarlet";
     
     [self updateView];
     [self.mTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.mIndex.row] atScrollPosition:UITableViewScrollPositionTop animated:false];

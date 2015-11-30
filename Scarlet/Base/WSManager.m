@@ -102,7 +102,30 @@
          [self manageError:error];
          onCompletion(error);
      }];
+}
+
+- (void)editEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/event"];
     
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:eventDic];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    NSLog(@"base %@ param %@",base, param);
+    
+    [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"responseObject %@",responseObject);
+         [WSParser addEvent:[responseObject valueForKey:@"event"]];
+         onCompletion(nil);
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@" operation.responseString %@", operation.responseObject);
+         [self manageError:error];
+         onCompletion(error);
+     }];
 }
 
 
