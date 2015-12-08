@@ -15,6 +15,10 @@
 #import "Demand.h"
 #import "ProfileCollectionCell.h"
 #import "Address.h"
+#import "User.h"
+#import <MapKit/MapKit.h>
+#import "ShareAppContext.h"
+
 
 @implementation MyEventCell
 
@@ -32,19 +36,31 @@
 -(void) configure:(Event*) event
 {
     self.mEvent = event;
+    NSInteger statusEvent = [event.mystatus integerValue];
+ 
     _mTitle.text = event.leader.firstName;
     for(Profile * lPartner in event.partners)
     {
         _mTitle.text = [_mTitle.text stringByAppendingString:[NSString stringWithFormat:@", %@",lPartner.firstName]];
     }
     
-    _mSubtitle.text  = [NSString stringWithFormat:@"%@",event.address.street];
     
-    
-    
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE, dd/MM/yyyy\nHH:mm"];
-    _mDate.text = [format stringFromDate:event.date];
+
+    if(statusEvent == 1 || statusEvent == 2 || statusEvent == 3 || statusEvent == 4)
+    {
+        _mSubtitle.text  = [NSString stringWithFormat:@"%@",event.address.street];
+    }
+    else
+    {
+        CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
+        CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
+        CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+        MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
+        _mSubtitle.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:distance]];
+    }
+
+
+    _mDate.text = [event getDateString];
     _mStatusLabel.text = @"";
     
     
@@ -55,11 +71,10 @@
     [self.mCollectionView reloadData];
      _mStatusLabel.hidden = false;
     _mButtonEdit.hidden = true;
-    switch ([event getMyStatus])
+    switch (statusEvent)
     {
         case 1:
         {
-            
             _mButtonEdit.hidden = false;
             NSInteger countWaiting = [event getWaitingDemand];
             if(countWaiting>0)
@@ -77,28 +92,19 @@
             _mStatusLabel.hidden = true;
             break;
         case 3:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
-             _mStatusLabel.text = @"Scarlet accepted !";
-            break;
         case 4:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text = @"Scarlet rejected !";
-            break;
-        case 5:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
-            _mStatusLabel.text = @"Scarlet pending !";
-            break;
-        case 6:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
             _mStatusLabel.text = @"Scarlet accepted !";
             break;
-        case 7:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text = @"Scarlet rejected !";
-            break;
-        case 8:
+        case 5:
+        case 6:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
             _mStatusLabel.text = @"Scarlet pending !";
+            break;
+        case 7:
+        case 8:
+            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            _mStatusLabel.text = @"Scarlet rejected !";
             break;
         default:
             break;

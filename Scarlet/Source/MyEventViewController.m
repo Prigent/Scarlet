@@ -29,8 +29,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self updateView];
+
+    UIBarButtonItem *openChatButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnChatOn"] style:UIBarButtonItemStylePlain target:self action:@selector(openChat)];
+    self.navigationItem.rightBarButtonItem = openChatButtonItem;
+
+}
+
+
+
+-(void) openChat
+{
+    BaseViewController *viewController = nil;
+    viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ChatViewController"];
+    [viewController configure:self.mEvent.chat];
+    [self.navigationController pushViewController:viewController animated:true];
 }
 
 
@@ -39,13 +51,23 @@
     [super viewWillAppear:animated];
     
     [[self navigationController] setNavigationBarHidden:false animated:YES];
-    [self.mEventExpendView configure:self.mEvent];
-    
-    [self.tableView reloadData];
-    
+    [self updateView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(demandSelected:) name:@"demandSelected" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profilelistselected:) name:@"profilelistselected" object:nil];
+    
 }
 
+- (IBAction)switchHidden:(UISwitch*)sender {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Loading";
+    
+
+    [[WSManager sharedInstance] hideEvent:self.mEvent status:[NSNumber numberWithBool:sender.on] completion:^(NSError *error) {
+        [hud hide:YES];
+    }];
+
+}
 
 -(void) viewDidDisappear:(BOOL)animated
 {
@@ -70,15 +92,20 @@
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
     
     _mButtonCancel.hidden = true;
-    NSInteger status = [self.mEvent getMyStatus] ;
+    NSInteger status = [self.mEvent.mystatus integerValue];
     
     if(status == 1 ||status == 2)
     {
         NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"event.identifier == %@",self.mEvent.identifier];
         [self updateWithPredicate:lNSPredicate];
         
-        
+        self.title = @"Your Scarlet";
         self.cellIdentifier = @"DemandCell";
+        
+        if(status == 2)
+        {
+            self.mHeighEditButton.constant = 0;
+        }
     }
     else
     {
@@ -90,15 +117,19 @@
         self.mHeighEditButton.constant = 0;
         self.title = [NSString stringWithFormat:@"%@'s Scarlet", self.mEvent.leader.firstName];
         
-        if(status == 3 || status == 4  || status == 5 )
+        if(status == 3 || status == 5  || status == 7 )
         {
             _mButtonCancel.hidden = false;
             self.tableView.tableFooterView.backgroundColor = [UIColor whiteColor];
-        
         }
         
         self.cellIdentifier = @"ProfileListCell";
     }
+    [self.mEventExpendView configure:self.mEvent];
+    
+    
+    
+    [self.tableView reloadData];
 }
 
 
@@ -138,13 +169,33 @@
         }
     }
     
-    [[WSManager sharedInstance] respondDemand:lMyDemand.identifier status:[NSNumber numberWithInt:2] completion:^(NSError *error) {
+    [[WSManager sharedInstance] removeDemand:lMyDemand.identifier completion:^(NSError *error) {
         [hud hide:YES];
         [self.navigationController popViewControllerAnimated:true];
     }];
 }
 
 
+-(void) profilelistselected:(NSNotification*) notification
+{
+    id data = [notification object];
+    
+    if([data isKindOfClass: [Profile class]])
+    {
+        Profile * profile = (Profile*)data;
+        BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        
+        [lMain configure:profile];
+        
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+        [self.navigationController pushViewController:lMain animated:NO];
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

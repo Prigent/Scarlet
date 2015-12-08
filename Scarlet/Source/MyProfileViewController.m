@@ -216,6 +216,7 @@
     NSString* urlString =  _photosArray[indexPath.item];
     if(urlString.length>0)
     {
+        cell.imageView.image = nil;
         [cell.imageView setImageWithURL:[NSURL URLWithString:urlString]];
         cell.picto.image = [UIImage imageNamed:@"btnDeletePicture"];
     }

@@ -20,6 +20,7 @@
 -(void) configure:(Profile*) profile
 {
     Picture* picture = [profile.pictures firstObject];
+    self.mImage.image= nil;
     [self.mImage setImageWithURL:[NSURL URLWithString:picture.filename]];
     
     /*

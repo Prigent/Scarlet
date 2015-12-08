@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    if([ShareAppContext sharedInstance].firstStarted == false)
+    if([ShareAppContext sharedInstance].firstStarted == true)
     {
         [self.navigationItem setHidesBackButton:YES];
         self.title = nil;
@@ -53,11 +53,7 @@
     {
         [self.mTableView setTableHeaderView:nil];
     }
- //   [ShareAppContext sharedInstance].firstStarted = true;
-    
-
-    
-    
+ //   [ShareAppContext sharedInstance].firstStarted = true; 
 }
 
 -(void)acceptInvitation:(NSNotification*) notification
@@ -102,7 +98,6 @@
         lController.type = true;
         [self.navigationController pushViewController:lController animated:true];
     }
-
 }
 
 
@@ -166,27 +161,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-/*
--(void)newInviteRequest:(NSNotification*) notification
-{
-    self.mDataToRespond = notification.object;
-    FriendRequest* fr = self.mDataToRespond;
-    
-    UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to accept %@ as your friend?", fr.profile.firstName] message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", @"NO", nil];
-    lUIAlertView.tag = 1;
-    [lUIAlertView show];
-}
-
--(void)friendSuggestion:(NSNotification*) notification
-{
-    self.mDataToRespond = notification.object;
-    Profile* profile = self.mDataToRespond;
-    
-    UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list?", profile.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-    lUIAlertView.tag = 2;
-    [lUIAlertView show];
-}*/
 
 -(void)yourFriend:(NSNotification*) notification
 {
@@ -347,44 +321,7 @@
     [self performSegueWithIdentifier:@"showProfileList" sender:self];
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-
-/*
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (alertView.tag)
-    {
-        case 1:
-            
-            switch (buttonIndex) {
-                case 1: [self respondFriendRequest:self.mDataToRespond status:kaccept]; break;
-                case 2: [self respondFriendRequest:self.mDataToRespond status:kreject]; break;
-                default:break;
-            }
-            
-            
-            break;
-        case 2:
-            
-            switch (buttonIndex) {
-                case 1: [self addFriend:self.mDataToRespond]; break;
-                default:break;
-            }
-            
-            break;
-        case 3:break;
-        default:break;
-    }
-}*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -418,19 +355,12 @@
         {
             if([friendRequest.type intValue] == 0)
             {
-                //@"remove friend request for response"
                 [self removeFriendRequest:friendRequest];
-            }
-            else
-            {
-                //@"respond to friend request"
-                //[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list", self.mProfileToAdd.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil]show];
             }
         }
         else
         {
             [self addFriend:lProfile];
-            //[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list", self.mProfileToAdd.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil]show];
         }
     }
 }
@@ -453,14 +383,6 @@
     [[WSManager sharedInstance] respondFriend:friendRequest.identifier status:[NSNumber numberWithInt:status] completion:^(NSError *error) {
         if(error == nil)
         {
-            if(status == kaccept)
-            {
-                [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ ajouter", friendRequest.profile.firstName] message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
-            }
-            else
-            {
-                [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ refuser", friendRequest.profile.firstName] message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
-            }
             [self updateData];
         }
         else

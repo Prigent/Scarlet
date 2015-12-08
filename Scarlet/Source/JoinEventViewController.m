@@ -87,7 +87,15 @@
 - (IBAction)sendRequest:(id)sender {
     
     [[WSManager sharedInstance] addDemand:self.mEvent partner:self.listProfileId completion:^(NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"eventJoined" object:nil];
+        if(!error)
+        {
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"eventJoined" object:nil];
+        }
+        else
+        {
+            [[[UIAlertView alloc] initWithTitle:@"" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        }
+        
     }];
 }
 

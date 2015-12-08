@@ -13,6 +13,10 @@
 #import "Picture.h"
 #import "Address.h"
 #import "ProfileCollectionCell.h"
+#import "ShareAppContext.h"
+#import <MapKit/MapKit.h>
+#import "User.h"
+
 
 @implementation EventCell
 
@@ -28,9 +32,14 @@
         _mTitle.text = [_mTitle.text stringByAppendingString:[NSString stringWithFormat:@", %@",lPartner.firstName]];
     }
     
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE, dd/MM/yyyy à HH:mm"];
-    _mSubtitle.text  = [NSString stringWithFormat:@"%@, %@",event.address.street ,[format stringFromDate:event.date] ];
+ 
+
+    
+    CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
+    CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
+    CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+    MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
+    _mSubtitle.text  = [NSString stringWithFormat:@"%@, %@",[lMKDistanceFormatter stringFromDistance:distance] ,[event getDateString]];
     
     
     

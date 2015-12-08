@@ -8,6 +8,7 @@
 
 #import "ParameterViewController.h"
 #import "WSParser.h"
+#import "ShareAppContext.h"
 
 @interface ParameterViewController ()
 
@@ -94,6 +95,10 @@
 }
 */
 
+- (IBAction)disconnect:(id)sender {
+    [[ShareAppContext sharedInstance] setAccessToken:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+}
 
 
 @end

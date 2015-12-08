@@ -39,6 +39,28 @@
 {
     [self dismissViewControllerAnimated:true completion:^{
         
+        
+        NSManagedObjectContext *managedObjectContext = [ShareAppContext sharedInstance].managedObjectContext;
+
+        // retrieve the store URL
+        NSURL * storeURL = [[managedObjectContext persistentStoreCoordinator] URLForPersistentStore:[[[managedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
+        // lock the current context
+        
+        [managedObjectContext performBlockAndWait:^{
+            
+            NSError * error;
+            [managedObjectContext reset];//to drop pending changes
+            //delete the store from the current managedObjectContext
+            if ([[managedObjectContext persistentStoreCoordinator] removePersistentStore:[[[managedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error:&error])
+            {
+                // remove the file containing the data
+                [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+                //recreate the store like in the  appDelegate method
+                [[managedObjectContext persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];//recreates the persistent store
+            }
+        }];
+        
+
     }];
 }
 

@@ -27,6 +27,4 @@
 
 @property (strong, nonatomic) User* user;
 
-+ (BOOL)isConnected;
-+ (BOOL)isOnline;
 @end

@@ -20,7 +20,6 @@
 #import "MBProgressHUD.h"
 
 
-static CGFloat kImageOriginHight = 246.f;
 @interface ProfileViewController ()
 
 @end
@@ -29,8 +28,6 @@ static CGFloat kImageOriginHight = 246.f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profilelistselected:) name:@"profilelistselected" object:nil];
     
     // Do any additional setup after loading the view from its nib.
     self.mImagePager.paddingControl = 16;
@@ -70,6 +67,10 @@ static CGFloat kImageOriginHight = 246.f;
 
     [self.mTableView addSubview:self.mImagePager];
 }
+
+
+
+
 
 -(void) popBack {
     
@@ -160,9 +161,15 @@ static CGFloat kImageOriginHight = 246.f;
     
     [self.mTableView.tableHeaderView setFrame:CGRectMake(0, 0, self.mTableView.frame.size.width, self.mTableView.frame.size.width)];
     [self.mTableView setTableHeaderView:self.mTableView.tableHeaderView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profilelistselected:) name:@"profilelistselected" object:nil];
 }
 
-
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 
 -(void) updateView
@@ -316,7 +323,7 @@ static CGFloat kImageOriginHight = 246.f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-            [tableView deselectRowAtIndexPath:indexPath animated:true];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
     if(isUser)
     {
         if(indexPath.section == 2)
@@ -374,17 +381,21 @@ static CGFloat kImageOriginHight = 246.f;
             if([self.mProfile.about length]> 0)
             {
                
-                
-                
-                CGSize constraint = CGSizeMake(tableView.frame.size.width - 16, 20000.0f);
-
-                NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-                CGSize boundingBox = [self.mProfile.about boundingRectWithSize:constraint
-                                                              options:NSStringDrawingUsesLineFragmentOrigin
-                                                           attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}
-                                                              context:context].size;
-                 size += ceil(boundingBox.height);
-                
+                if(isUser)
+                {
+                    size += 20;
+                }
+                else
+                {
+                    CGSize constraint = CGSizeMake(tableView.frame.size.width - 16, 20000.0f);
+                    
+                    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+                    CGSize boundingBox = [self.mProfile.about boundingRectWithSize:constraint
+                                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}
+                                                                           context:context].size;
+                    size += ceil(boundingBox.height);
+                }
             }
             return size;
         }
@@ -392,14 +403,7 @@ static CGFloat kImageOriginHight = 246.f;
         {
             if(indexPath.row == 0)
             {
-                if([[ShareAppContext sharedInstance].user.friends count]>0)
-                {
-                    return 165;
-                }
-                else
-                {
-                    return 0;
-                }
+                return 165;
             }
             else
             {

@@ -37,6 +37,7 @@ typedef enum {
 
 - (void)saveUserCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)addDemand:(Event*) event partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion;
+- (void)removeDemand:(NSString*) demandID completion:(void (^)(NSError* error)) onCompletion;
 - (void)respondDemand:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;
 - (void)addFriend:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion;
 - (void)respondFriend:(NSString*) identifier status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;
@@ -49,6 +50,7 @@ typedef enum {
 
 - (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion;
 - (void)editEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion;
+- (void)hideEvent:(Event*) event status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;
 //add message
 //create event
 

@@ -26,6 +26,7 @@
         _mLastMessageText.text  = lMessage.text;
         _mLastMessageOwner.text = lMessage.owner.firstName;
         Picture * picture = [lMessage.owner.pictures firstObject];
+        self.mLastMessageImage.image = nil;
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         
         NSDateFormatter *formatHours = [[NSDateFormatter alloc] init];
@@ -38,6 +39,7 @@
     else
     {
         Picture * picture = [chat.event.leader.pictures firstObject];
+         self.mLastMessageImage.image = nil;
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         _mLastMessageOwner.text = chat.event.leader.firstName;
         _mLastMessageText.text  = @"No message";

@@ -13,31 +13,33 @@
 #import "Picture.h"
 #import "Address.h"
 #import "ProfileCollectionCell.h"
+#import "WSManager.h"
+#import "User.h"
+#import <MapKit/MapKit.h>
+#import "ShareAppContext.h"
+
 
 @implementation EventExpendCell
-
-- (void)awakeFromNib {
-    // Initialization code
-    self.mAnnotation = [[MKPointAnnotation alloc] init];
-    [self.mMapView addAnnotation:self.mAnnotation];
-}
 
 
 -(void) configure:(Event*) event
 {
     self.mEvent = event;
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE, dd/MM/yyyy à HH:mm"];
-    
-    _mCountPeople.text =  [NSString stringWithFormat:@"%d peoples are in",1];
-    _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
-    _mAddress.text  = [NSString stringWithFormat:@"Near %@",event.address.street];
-    _mDate.text = [format stringFromDate:event.date] ;
-    
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
-    [self.mAnnotation setCoordinate: coordinate];
-    [self.mMapView setRegion:MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000) animated:true];
 
+    
+    _mCountPeople.text =  [NSString stringWithFormat:@"%ld peoples are in",[event getCountMember]];
+    _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
+    
+    
+    CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
+    CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
+    CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+    MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
+    _mAddress.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:distance]];
+    
+
+    _mDate.text = [event getDateString];
+    
     
     NSMutableArray * listProfile = [NSMutableArray array];
     [listProfile addObject:event.leader];
@@ -45,6 +47,14 @@
     
     self.mData = listProfile;
     [self.mCollectionView reloadData];
+    
+    _mMapImageView.image = nil;
+    
+    NSString* url = [NSString stringWithFormat:@"%@/homolo/file/scarlet/event/map/%@.png",[WSManager sharedInstance].mBaseURL,event.identifier];
+    
+
+    [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
+
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{

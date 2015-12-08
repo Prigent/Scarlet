@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
 
 @class Event;
 @interface EventExpendView : UIView
@@ -18,12 +17,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *mDate;
 @property (weak, nonatomic) IBOutlet UILabel *mStatusLabel;
 
-@property (weak, nonatomic) IBOutlet MKMapView *mMapView;
 @property (weak, nonatomic) IBOutlet UICollectionView *mCollectionView;
 
 @property (strong, nonatomic) NSArray *mData;
 @property (strong, nonatomic) Event *mEvent;
-@property (strong, nonatomic) MKPointAnnotation * mAnnotation;
+@property (weak, nonatomic) IBOutlet UIImageView *mMapImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *mHideLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *mHideSwitch;
 
 -(void) configure:(Event*) event;
 

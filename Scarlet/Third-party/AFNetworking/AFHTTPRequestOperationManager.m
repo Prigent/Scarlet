@@ -107,6 +107,15 @@
     operation.securityPolicy = self.securityPolicy;
 
     [operation setCompletionBlockWithSuccess:success failure:failure];
+   /* [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *redirectRequest, NSURLResponse *redirectResponse) {
+        if ([redirectRequest.allHTTPHeaderFields objectForKey:@"Authorization"] != nil) {
+            return redirectRequest;
+        }
+        
+        NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:redirectRequest.URL cachePolicy:redirectRequest.cachePolicy timeoutInterval:redirectRequest.timeoutInterval];
+        [urlRequest setValue:[request valueForHTTPHeaderField:@"Authorization"] forHTTPHeaderField:@"Authorization"];
+        return  urlRequest;
+    }];*/
 
     return operation;
 }

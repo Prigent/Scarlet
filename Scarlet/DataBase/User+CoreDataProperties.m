@@ -18,5 +18,6 @@
 @dynamic lookingFor;
 @dynamic friendRequest;
 @dynamic suggestProfile;
-
+@dynamic longi;
+@dynamic lat;
 @end

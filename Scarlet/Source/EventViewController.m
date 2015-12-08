@@ -55,7 +55,6 @@
 
 -(void) eventJoined:(NSNotification*) notification
 {
-    [[[UIAlertView alloc] initWithTitle:@"Your request has been sent!" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     [self closeDemand:nil];
 }
 

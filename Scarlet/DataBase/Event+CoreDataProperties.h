@@ -19,11 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *identifier;
 @property (nullable, nonatomic, retain) NSString *mood;
 @property (nullable, nonatomic, retain) NSNumber *status;
+@property (nullable, nonatomic, retain) NSNumber *sort;
 @property (nullable, nonatomic, retain) Address *address;
 @property (nullable, nonatomic, retain) Chat *chat;
 @property (nullable, nonatomic, retain) NSSet<Demand *> *demands;
 @property (nullable, nonatomic, retain) Profile *leader;
 @property (nullable, nonatomic, retain) NSSet<Profile *> *partners;
+@property (nullable, nonatomic, retain) NSNumber *mystatus;
 
 @end
 

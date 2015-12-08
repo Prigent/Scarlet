@@ -80,6 +80,15 @@
     user.ageMin = [dicUser valueForKey:@"age_min"];
     
     
+    NSDictionary * gps =  [dicUser valueForKey:@"gps"];
+
+    
+    user.lat = [self parseNumberValue:[gps valueForKey:@"lat"]];
+    user.longi =  [self parseNumberValue:[gps valueForKey:@"long"]];
+    
+
+    
+    
     NSArray* lArrayFriendsRequest = [dicUser valueForKey:@"friendRequest"];
     
     NSArray* listOfFriendRequest = [user.friendRequest allObjects];
@@ -208,8 +217,13 @@
     event.chat = [self addChat:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
     event.mood = [dicEvent valueForKey:@"mood"];
     event.address = [self addAddress:dicEvent];
+    event.status = [self parseNumberValue:[dicEvent valueForKey:@"status"]];
     
-    
+    if([dicEvent valueForKey:@"sort"])
+    {
+        event.sort = [self parseNumberValue:[dicEvent valueForKey:@"sort"]];
+    }
+
     [event removePartners:event.partners];
     for(NSString* lProfileIdentifier in [dicEvent valueForKey:@"partners"])
     {
@@ -229,6 +243,14 @@
             [event addDemandsObject:lDemand];
         }
     }
+    
+    NSInteger mystatus = [event getMyStatus];
+    if(mystatus>0)
+    {
+       event.mystatus = [NSNumber numberWithInteger:mystatus];
+    }
+
+    
     return event;
 }
 
@@ -273,9 +295,7 @@
 +(Address*) addAddress:(NSDictionary*) dicAddress
 {
     Address* address = [NSEntityDescription insertNewObjectForEntityForName:@"Address" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
-
-    
-    address.longi = [dicAddress  valueForKey:@"long"];
+    address.longi = [dicAddress valueForKey:@"long"];
     address.lat = [dicAddress valueForKey:@"lat"];
     address.street =  [dicAddress valueForKey:@"address"];
     return address;
@@ -372,6 +392,52 @@
     }
     return nil;
 }
+
+
++(NSNumber*) parseDoubleNumberValue:(id) valueArray
+{
+    if([valueArray isKindOfClass:[NSArray class]])
+    {
+        for(NSDictionary* lDicValue in valueArray)
+        {
+            id value = [lDicValue valueForKey:kValue];
+            if([value isKindOfClass:[NSNumber class]])
+            {
+                return value;
+            }
+            else if([value isKindOfClass:[NSString class]])
+            {
+                return [NSNumber numberWithDouble:[[lDicValue valueForKey:kValue] doubleValue]];
+            }
+        }
+    }
+    else if([valueArray isKindOfClass:[NSDictionary class]])
+    {
+        id value = [valueArray valueForKey:kValue];
+        if([value isKindOfClass:[NSNumber class]])
+        {
+            return value;
+        }
+        else if([value isKindOfClass:[NSString class]])
+        {
+            return [NSNumber numberWithDouble:[[valueArray valueForKey:kValue] doubleValue]];
+        }
+    }
+    else if([valueArray isKindOfClass:[NSString class]])
+    {
+        id value = valueArray;
+        return [NSNumber numberWithDouble:[value doubleValue]];
+    }
+    else if([valueArray isKindOfClass:[NSNumber class]])
+    {
+        id value = valueArray;
+        return value;
+    }
+    return nil;
+}
+
+
+
 
 +(NSString*) parseStringValue:(id) valueArray
 {

@@ -24,6 +24,8 @@
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mood" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mystatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sort" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Address" inverseName="event" inverseEntity="Address" syncable="YES"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="event" inverseEntity="Chat" syncable="YES"/>
@@ -84,6 +86,8 @@
     <entity name="User" representedClassName="User" parentEntity="Profile" syncable="YES">
         <attribute name="ageMax" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="ageMin" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="longi" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lookingFor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="friendRequest" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FriendRequest" inverseName="user" inverseEntity="FriendRequest" syncable="YES"/>
         <relationship name="suggestProfile" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Profile" inverseName="suggest" inverseEntity="Profile" syncable="YES"/>
@@ -92,13 +96,13 @@
         <element name="Address" positionX="-110" positionY="-234" width="128" height="103"/>
         <element name="Chat" positionX="-236" positionY="-37" width="128" height="88"/>
         <element name="Demand" positionX="70" positionY="-97" width="128" height="148"/>
-        <element name="Event" positionX="-20" positionY="126" width="128" height="178"/>
+        <element name="Event" positionX="-20" positionY="126" width="128" height="210"/>
+        <element name="FacebookProfile" positionX="79" positionY="-441" width="128" height="103"/>
         <element name="FriendRequest" positionX="619" positionY="-394" width="128" height="135"/>
         <element name="Interest" positionX="612" positionY="-243" width="128" height="73"/>
         <element name="Message" positionX="-252" positionY="-355" width="128" height="118"/>
         <element name="Picture" positionX="612" positionY="-99" width="128" height="73"/>
         <element name="Profile" positionX="306" positionY="-360" width="128" height="328"/>
-        <element name="User" positionX="304" positionY="-558" width="128" height="118"/>
-        <element name="FacebookProfile" positionX="79" positionY="-441" width="128" height="103"/>
+        <element name="User" positionX="304" positionY="-558" width="128" height="150"/>
     </elements>
 </model>

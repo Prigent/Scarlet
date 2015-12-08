@@ -48,6 +48,16 @@
     
     self.mOccupationLabel.text = profile.occupation;
     self.mAboutLabel.text = profile.about;
+    if([profile.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    {
+        self.mAboutLabel.numberOfLines =1;
+    }
+    else
+    {
+        self.mAboutLabel.numberOfLines =0;
+    }
+    
+    
     
     self.mCountFriendLabel.text = [NSString stringWithFormat:@"%lu",[profile.mutualFriends count]];
 }

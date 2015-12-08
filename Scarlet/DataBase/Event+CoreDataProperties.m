@@ -22,5 +22,6 @@
 @dynamic demands;
 @dynamic leader;
 @dynamic partners;
-
+@dynamic sort;
+@dynamic mystatus;
 @end

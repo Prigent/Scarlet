@@ -17,6 +17,7 @@
 -(void) configure:(id) data
 {
     self.mData = data;
+    self.mImage.image = nil;
     
     if([data isKindOfClass: [FacebookProfile class]])
     {

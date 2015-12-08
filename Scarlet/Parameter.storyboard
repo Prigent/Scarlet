@@ -28,7 +28,7 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sT2-Vx-pQt">
-                                    <rect key="frame" x="0.0" y="72" width="375" height="124"/>
+                                    <rect key="frame" x="0.0" y="72" width="375" height="177"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hy8-FT-RTW">
@@ -65,6 +65,31 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </button>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXq-MS-ZPV">
+                                            <rect key="frame" x="8" y="118" width="359" height="42"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="42" id="woB-pe-kmV"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                            <state key="normal" title="Disconnect">
+                                                <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                                                    <color key="value" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="disconnect:" destination="PRU-yp-6z1" eventType="touchUpInside" id="4e3-SA-Dhu"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -74,7 +99,10 @@
                                         <constraint firstItem="Hy8-FT-RTW" firstAttribute="leading" secondItem="sT2-Vx-pQt" secondAttribute="leading" constant="8" id="Ixp-kT-mjG"/>
                                         <constraint firstAttribute="trailing" secondItem="ebL-hM-Znf" secondAttribute="trailing" constant="8" id="JN7-MV-T9Y"/>
                                         <constraint firstAttribute="trailing" secondItem="Hy8-FT-RTW" secondAttribute="trailing" constant="8" id="LQK-xc-SiJ"/>
+                                        <constraint firstAttribute="trailing" secondItem="pXq-MS-ZPV" secondAttribute="trailing" constant="8" id="QJL-gX-UBh"/>
+                                        <constraint firstItem="pXq-MS-ZPV" firstAttribute="top" secondItem="ebL-hM-Znf" secondAttribute="bottom" constant="8" id="aQU-CF-UJe"/>
                                         <constraint firstItem="ebL-hM-Znf" firstAttribute="top" secondItem="Hy8-FT-RTW" secondAttribute="bottom" constant="8" id="kmt-IR-Dfm"/>
+                                        <constraint firstItem="pXq-MS-ZPV" firstAttribute="leading" secondItem="sT2-Vx-pQt" secondAttribute="leading" constant="8" id="ohn-bh-3uE"/>
                                     </constraints>
                                 </view>
                                 <prototypes>
@@ -82,7 +110,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Fh-bJ-KyR" id="VEN-5E-3bp">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="New messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpT-hL-Awa">

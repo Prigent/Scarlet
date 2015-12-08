@@ -42,17 +42,22 @@
 
     [self changeSegment:nil];
     
+    [self updateData];
     
-    
-        [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
-            if(error)
-            {
-                NSLog(@"%@", error);
-            }
-        }];
+
 }
 
-
+-(void) updateData
+{
+    [self.uiRefreshControl beginRefreshing];
+    [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+        [self.uiRefreshControl endRefreshing];
+    }];
+}
 
 
 -(void) eventselected:(NSNotification*) notification
@@ -76,13 +81,13 @@
    
     if(self.mSegmentedControl.selectedSegmentIndex == 0)
     {
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND date > %@",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier, [NSDate date]];
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND sort == 0",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
         [self updateWithPredicate:lNSPredicate];
         
     }
     else
     {
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND date <= %@",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier, [NSDate date]];
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND sort == 1",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
         [self updateWithPredicate:lNSPredicate];
     }
 }
@@ -90,7 +95,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Event * lEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSInteger status = [lEvent getMyStatus];
+    NSInteger status = [lEvent.mystatus integerValue];
     if(status == 2)
     {
         return 177;
@@ -114,6 +119,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventselected:) name:@"eventselected" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventedit:) name:@"eventedit" object:nil];
+    
+    [self.tableView reloadData];
     
     
 }

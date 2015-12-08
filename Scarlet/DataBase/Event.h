@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Insert code here to declare functionality of your managed object subclass
 -(NSInteger) getMyStatus;
 -(NSInteger) getWaitingDemand;
-
-
+-(NSInteger) getCountMember;
+-(NSString*) getDateString;
 @end
 
 NS_ASSUME_NONNULL_END

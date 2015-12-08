@@ -72,23 +72,6 @@
 
 
 
-+ (BOOL)isConnected
-{
-    bool connected = ([[NSUserDefaults standardUserDefaults] valueForKey:@"user"]!= nil);
-    return connected;
-}
-
-+ (BOOL)isOnline
-{
-    NSDictionary * lUser = [[NSUserDefaults standardUserDefaults] valueForKey:@"user"];
-    NSString * lDateString = [lUser valueForKey:@"end_date_om_tv_online"];
-    NSDateFormatter * lDateFormater =  [[NSDateFormatter alloc] init];
-    [lDateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *lDateAbonnement = [lDateFormater dateFromString:lDateString];
-
-    bool online = ([lDateAbonnement compare:[NSDate date]] == NSOrderedDescending);
-    return online;
-}
 
 - (void)setUserIdentifier:(NSString* )userIdentifier {
     _userIdentifier = userIdentifier;

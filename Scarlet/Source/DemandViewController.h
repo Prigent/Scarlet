@@ -21,4 +21,5 @@
 @property (weak, nonatomic) IBOutlet UIButton *mAcceptButton;
 @property (weak, nonatomic) IBOutlet UIButton *mDeniedButton;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mHeighCollection;
 @end

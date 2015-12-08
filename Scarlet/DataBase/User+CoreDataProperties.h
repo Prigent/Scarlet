@@ -14,7 +14,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface User (CoreDataProperties)
-
+@property (nullable, nonatomic, retain) NSNumber *lat;
+@property (nullable, nonatomic, retain) NSNumber *longi;
 @property (nullable, nonatomic, retain) NSNumber *ageMax;
 @property (nullable, nonatomic, retain) NSNumber *ageMin;
 @property (nullable, nonatomic, retain) NSNumber *lookingFor;

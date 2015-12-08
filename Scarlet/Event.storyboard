@@ -42,11 +42,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="icnMood" translatesAutoresizingMaskIntoConstraints="NO" id="Itp-Mh-TF3">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="icnMood" translatesAutoresizingMaskIntoConstraints="NO" id="Itp-Mh-TF3">
                                                     <rect key="frame" x="8" y="12" width="20" height="20"/>
                                                     <animations/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XiX-7y-oFM">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XiX-7y-oFM">
                                                     <rect key="frame" x="36" y="13" width="38" height="18"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -177,6 +177,13 @@
                                                         <outlet property="dataSource" destination="mcZ-d3-dLh" id="FUV-sw-K2C"/>
                                                     </connections>
                                                 </collectionView>
+                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.55000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add few friends to have the best Scarlet’s experience" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrk-Fi-ayl">
+                                                    <rect key="frame" x="32" y="65" width="311" height="36"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add friends to your Scarlet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9s6-RW-JiC">
                                                     <rect key="frame" x="36" y="9" width="184" height="18"/>
                                                     <animations/>
@@ -191,10 +198,13 @@
                                                 <constraint firstAttribute="trailing" secondItem="7Mi-ol-dni" secondAttribute="trailing" id="JP5-P5-Hk3"/>
                                                 <constraint firstItem="9s6-RW-JiC" firstAttribute="centerY" secondItem="tZV-0e-wfi" secondAttribute="centerY" id="QYx-Me-GIa"/>
                                                 <constraint firstItem="7Mi-ol-dni" firstAttribute="leading" secondItem="tfM-8A-b9v" secondAttribute="leading" id="Rsf-g9-vmj"/>
+                                                <constraint firstItem="mrk-Fi-ayl" firstAttribute="centerY" secondItem="tfM-8A-b9v" secondAttribute="centerY" id="UkZ-DW-ejI"/>
                                                 <constraint firstItem="tZV-0e-wfi" firstAttribute="leading" secondItem="tfM-8A-b9v" secondAttribute="leadingMargin" id="VZc-Vv-8cf"/>
                                                 <constraint firstItem="9s6-RW-JiC" firstAttribute="leading" secondItem="tZV-0e-wfi" secondAttribute="trailing" constant="8" id="bKV-eQ-m2E"/>
                                                 <constraint firstItem="7Mi-ol-dni" firstAttribute="top" secondItem="tZV-0e-wfi" secondAttribute="bottom" constant="8" id="enA-x7-uhL"/>
                                                 <constraint firstItem="7Mi-ol-dni" firstAttribute="top" secondItem="tfM-8A-b9v" secondAttribute="top" constant="50" id="fOl-R2-0yq"/>
+                                                <constraint firstItem="mrk-Fi-ayl" firstAttribute="leading" secondItem="tfM-8A-b9v" secondAttribute="leading" constant="32" id="hdd-NN-o71"/>
+                                                <constraint firstAttribute="trailing" secondItem="mrk-Fi-ayl" secondAttribute="trailing" constant="32" id="mlB-aN-DjI"/>
                                                 <constraint firstAttribute="bottom" secondItem="7Mi-ol-dni" secondAttribute="bottom" id="qBM-eb-S6z"/>
                                                 <constraint firstItem="tZV-0e-wfi" firstAttribute="top" secondItem="tfM-8A-b9v" secondAttribute="topMargin" id="zIa-Cg-ynV"/>
                                             </constraints>
@@ -208,6 +218,7 @@
                                         <animations/>
                                         <connections>
                                             <outlet property="mCollectionView" destination="7Mi-ol-dni" id="amW-cg-3o3"/>
+                                            <outlet property="mEmptyLabel" destination="mrk-Fi-ayl" id="amP-nd-Ufl"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddMoreFriend" rowHeight="64" id="CYM-cG-QRd" customClass="ProfileMenuCell">

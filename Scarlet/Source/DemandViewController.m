@@ -28,12 +28,59 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.mData = [[self.mDemand partners] allObjects];
+    if([self.mData count] == 0)
+    {
+        self.mHeighCollection.constant = 20;
+    }
+    
     [self updateView];
 }
+
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectProfile:) name:@"selectProfile" object:nil];
+    
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+
+-(void) selectProfile:(NSNotification*) notification
+{
+    id data = [notification object];
+    
+    if([data isKindOfClass: [Profile class]])
+    {
+        Profile * profile = (Profile*)data;
+        BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        
+        [lMain configure:profile];
+        
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+        [self.navigationController pushViewController:lMain animated:NO];
+    }
+}
+
+
+
+
 
 -(void) updateView
 {
     Picture * picture = [self.mDemand.leader.pictures firstObject];
+    self.mLeaderImage.image= nil;
     [self.mLeaderImage setImageWithURL:[NSURL URLWithString:picture.filename]];
     
     NSDateComponents* ageComponents = [[NSCalendar currentCalendar]
@@ -46,7 +93,7 @@
     
     self.title = [NSString stringWithFormat:@"%@'s Team",self.mDemand.leader.firstName];
 
-    if([[ShareAppContext sharedInstance].userIdentifier isEqualToString:self.mDemand.event.leader.identifier])
+    if([[ShareAppContext sharedInstance].userIdentifier isEqualToString:self.mDemand.event.leader.identifier] && [self.mDemand.status intValue] == kwaiting)
     {
         self.mAcceptButton.hidden = false;
         self.mDeniedButton.hidden = false;
@@ -58,6 +105,18 @@
     }
 }
 - (IBAction)selectLeader:(id)sender {
+    Profile * profile = self.mDemand.leader;
+    BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+    
+    [lMain configure:profile];
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    [self.navigationController pushViewController:lMain animated:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,6 +141,7 @@
     
     return cell;
 }
+
 
 
 

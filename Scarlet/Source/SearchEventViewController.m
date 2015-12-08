@@ -29,29 +29,14 @@
     self.mSearchField.layer.borderWidth = 1;
     self.mSearchField.layer.borderColor = [[UIColor whiteColor] CGColor];
     
+    [self updateData];
     
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"AllEvent" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
     
-[[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
-    [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0)) AND date >= %@",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier, [NSDate date]];
-        [self updateWithPredicate:lNSPredicate];
-    }];
-}];
-    
-    
 
-
-    
     [self.mMapView setShowsUserLocation:true];
-    
-    
     if([ShareAppContext sharedInstance].firstStarted == true)
     {
         BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
@@ -59,6 +44,28 @@
         [self.navigationController pushViewController:viewController animated:false];
     }
 }
+
+
+-(void) updateData
+{
+    [self.uiRefreshControl beginRefreshing];
+    
+    [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
+        if(error==nil)
+        {
+            [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
+                if(error)
+                {
+                    NSLog(@"%@", error);
+                }
+                NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0))AND status == 1",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+                [self updateWithPredicate:lNSPredicate];
+                [self.uiRefreshControl endRefreshing];
+            }];
+        }
+    }];
+}
+
 
 -(void) viewWillAppear:(BOOL)animated
 {
@@ -118,9 +125,7 @@
     self.mButtonList.selected = false;
     self.mButtonMap.selected = true;
     self.tableView.bounces = false;
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE, dd/MM/yyyy\nHH:mm"];
-    
+
     
     [self.mMapView removeAnnotations:self.mMapView.annotations];
     for( Event * event in [self.fetchedResultsController fetchedObjects])
@@ -130,7 +135,7 @@
         CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
         [annotation setCoordinate: coordinate];
         
-        [annotation setTitle:[NSString stringWithFormat:@"%@ : le %@",event.leader.firstName, [format stringFromDate:event.date] ]];
+        [annotation setTitle:[NSString stringWithFormat:@"%@ : %@",event.leader.firstName, [event getDateString] ]];
         
         [self.mMapView addAnnotation:annotation];
     }

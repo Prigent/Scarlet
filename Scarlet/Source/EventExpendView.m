@@ -13,31 +13,64 @@
 #import "Picture.h"
 #import "Address.h"
 #import "ProfileCollectionCell.h"
+#import "WSManager.h"
+#import "User.h"
+#import <MapKit/MapKit.h>
+#import "ShareAppContext.h"
+
 
 @implementation EventExpendView
-
-- (void)awakeFromNib {
-    // Initialization code
-    self.mAnnotation = [[MKPointAnnotation alloc] init];
-    [self.mMapView addAnnotation:self.mAnnotation];
-}
 
 
 -(void) configure:(Event*) event
 {
     self.mEvent = event;
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE, dd/MM/yyyy à HH:mm"];
     
-    _mCountPeople.text =  [NSString stringWithFormat:@"%d peoples are in",1];
-    _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
-    _mAddress.text  = [NSString stringWithFormat:@"Near %@",event.address.street];
-    _mDate.text = [format stringFromDate:event.date] ;
-    
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
-    [self.mAnnotation setCoordinate: coordinate];
-    [self.mMapView setRegion:MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000) animated:true];
+    NSInteger statusEvent = [event.mystatus integerValue];
 
+    _mCountPeople.text =  [NSString stringWithFormat:@"%ld peoples are in",[event getCountMember]];
+    _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
+    
+    
+    if(statusEvent == 1 || statusEvent == 2 || statusEvent == 3 || statusEvent == 4)
+    {
+        _mAddress.text  = [NSString stringWithFormat:@"Near %@",event.address.street];
+    }
+    else
+    {
+        CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
+        CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
+        CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+        MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
+        _mAddress.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:distance]];
+    }
+
+    if(statusEvent == 1)
+    {
+        self.mHideSwitch.enabled = true;
+    }
+    else
+    {
+        self.mHideSwitch.enabled = false;
+    }
+    
+    [_mHideSwitch setOn:[event.status boolValue]];
+    
+    
+    _mDate.text = [event getDateString];
+    
+    
+    _mMapImageView.image = nil;
+    
+    NSString* url = [NSString stringWithFormat:@"%@/homolo/file/scarlet/event/map/%@.png",[WSManager sharedInstance].mBaseURL,event.identifier];
+    
+    
+    [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
+
+    
+    
+    
+    
     
     NSMutableArray * listProfile = [NSMutableArray array];
     [listProfile addObject:event.leader];
@@ -46,7 +79,7 @@
     self.mData = listProfile;
     [self.mCollectionView reloadData];
     
-    switch ([event getMyStatus])
+    switch (statusEvent)
     {
         case 1:
         {
@@ -66,28 +99,19 @@
             _mStatusLabel.hidden = true;
             break;
         case 3:
+        case 4:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
             _mStatusLabel.text = @"Scarlet accepted !";
-            break;
-        case 4:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text = @"Scarlet rejected !";
             break;
         case 5:
+        case 6:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
             _mStatusLabel.text = @"Scarlet pending !";
-            break;
-        case 6:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
-            _mStatusLabel.text = @"Scarlet accepted !";
             break;
         case 7:
+        case 8:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
             _mStatusLabel.text = @"Scarlet rejected !";
-            break;
-        case 8:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
-            _mStatusLabel.text = @"Scarlet pending !";
             break;
         default:
             break;
