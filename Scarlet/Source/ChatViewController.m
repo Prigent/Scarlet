@@ -11,7 +11,8 @@
 #import "Chat.h"
 #import "Message.h"
 #import "ProfileViewController.h"
-
+#import "ShareAppContext.h"
+#import "Profile.h"
 
 @interface ChatViewController ()
 
@@ -32,11 +33,40 @@
     NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"chat.identifier == %@", self.mChat.identifier];
     [self updateWithPredicate:lNSPredicate];
     
-    
-    [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
-    }];
-    
+   
+    [self updateData];
 }
+
+
+
+-(void) updateData
+{
+    [self.uiRefreshControl beginRefreshing];
+    [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+        [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
+        [self.uiRefreshControl endRefreshing];
+        
+        [self.tableView reloadData];
+    }];
+}
+
+
+-(void) scroolToBottom
+{
+    CGFloat yOffset = 0;
+    
+    if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
+        yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+    }
+    
+    [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+}
+
+
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -44,7 +74,6 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOffScreen:) name:UIKeyboardWillHideNotification object:nil];
-    
 }
 
 -(void)keyboardOnScreen:(NSNotification *)notification
@@ -88,11 +117,18 @@
 
 - (IBAction)sendMessage:(id)sender {
     [_mTextField resignFirstResponder];
+    
+    [[WSManager sharedInstance] addMessage:self.mChat message:self.mTextField.text completion:^(NSError *error) {
+        [self updateData];
+        [self.mTextField setText:nil];
+    }];
 }
 /*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [_mTextField resignFirstResponder];
 }*/
+
+
 
 -(void) viewDidDisappear:(BOOL)animated
 {
@@ -104,17 +140,61 @@
     self.mChat = chat;
 }
 
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    UITableViewCell* cell = nil;
+    Message* message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    
+    if([message.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%@2",self.cellIdentifier]];
+    }
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+    }
+    
+
+    if([cell respondsToSelector:@selector(configure:)])
+    {
+        [cell performSelector:@selector(configure:) withObject:message];
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Message* message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if([message.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    {
+        CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 28 ,1000);
+        CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+        return 16+expectedLabelSize.height;
+    }
+    else
+    {
+        CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 36-8-28 ,1000);
+        CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+        return 46+expectedLabelSize.height;
+    }
+}
+
+
+
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     Message* lMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    
-   
-    
-    BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
-    
-    [lMain configure:lMessage.owner];
-    [self.navigationController pushViewController:lMain animated:true];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    if(![lMessage.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    {
+        BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        [lMain configure:lMessage.owner];
+        [self.navigationController pushViewController:lMain animated:true];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

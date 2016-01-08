@@ -9,6 +9,8 @@
 #import "BaseViewController.h"
 
 @interface DateViewController : BaseViewController
+
+@property (nonatomic) BOOL filter;
 @property (nonatomic, strong) NSDate * mDate;
 @property (weak, nonatomic) IBOutlet UIDatePicker *mDatePicker;
 @property (weak, nonatomic) IBOutlet UILabel *mDateLabel;

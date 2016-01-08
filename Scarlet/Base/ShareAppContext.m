@@ -7,6 +7,7 @@
 //
 
 #import "ShareAppContext.h"
+#import "User.h"
 
 @implementation ShareAppContext
 
@@ -22,6 +23,9 @@
         self.queue = [[NSOperationQueue alloc] init];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
+        self.locationManager.distanceFilter = 100;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        
         if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             [self.locationManager requestWhenInUseAuthorization];
         }
@@ -33,7 +37,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    [manager stopUpdatingLocation];
+    //[manager stopUpdatingLocation];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
     [geocoder reverseGeocodeLocation:[locations objectAtIndex:0] completionHandler:^(NSArray *placemarks, NSError *error)
      {
@@ -41,22 +45,30 @@
          {
              self.placemark = [placemarks objectAtIndex:0];
          }
-         /*---- For more results
-          placemark.region);
-          placemark.country);
-          placemark.locality);
-          placemark.name);
-          placemark.ocean);
-          placemark.postalCode);
-          placemark.subLocality);
-          placemark.location);
-          ------*/
      }];
 }
 
 
 
 
+-(void) updatePlacemark
+{
+    if(_placemark==nil)
+    {
+        CLLocationCoordinate2D location2D = CLLocationCoordinate2DMake([[ShareAppContext sharedInstance].user.lat doubleValue], [[ShareAppContext sharedInstance].user.longi doubleValue]);
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:location2D.latitude longitude:location2D.longitude];
+        
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+         {
+             if (!(error))
+             {
+                 CLPlacemark * lCLPlacemark = [placemarks objectAtIndex:0];
+                 _placemark = lCLPlacemark;
+             }
+         }];
+    }
+}
 
 
 

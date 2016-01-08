@@ -86,7 +86,9 @@
     }
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [NSFetchedResultsController deleteCacheWithName:self.cellIdentifier];
+
+    
+   // [NSFetchedResultsController deleteCacheWithName:self.cellIdentifier];
 
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -130,7 +132,7 @@
         sectionKey = self.sectionKeyProperty;
     }
    
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:sectionKey cacheName:self.cellIdentifier];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:appDelegate.managedObjectContext sectionNameKeyPath:sectionKey cacheName:nil];
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     
@@ -268,7 +270,7 @@
 -(void) updatePredicate:(NSString*) predicateValue
 {
     self.predicateProperty = predicateValue;
-    [NSFetchedResultsController deleteCacheWithName:self.cellIdentifier];
+    //[NSFetchedResultsController deleteCacheWithName:self.cellIdentifier];
     if(self.predicateProperty  !=nil && [self.predicateProperty length]>0)
     {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateValue];
@@ -299,7 +301,7 @@
 
 -(void) updateWithPredicate:(NSPredicate*) predicate
 {
-    [NSFetchedResultsController deleteCacheWithName:self.cellIdentifier];
+    //[NSFetchedResultsController deleteCacheWithName:self.cellIdentifier];
     [[self fetchedResultsController].fetchRequest setPredicate:predicate];
     
     NSError *error = nil;

@@ -27,7 +27,12 @@
 
 +(Message*) addMessage:(NSDictionary*) dicMessage
 {
-    Message* message  = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    Message* message = [WSParser getMessage:[dicMessage valueForKey:@"identifier"]];
+    if(message == nil)
+    {
+        message  = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    }
+
     message.date = [NSDate dateWithTimeIntervalSince1970:[[dicMessage valueForKey:@"date"] integerValue]];
     message.identifier = [dicMessage valueForKey:@"identifier"];
     message.text = [dicMessage valueForKey:@"message"];
@@ -55,6 +60,12 @@
 {
     return [WSParser searchIdentifier:idFriendRequest andName:@"FriendRequest"];
 }
+
++(Message*) getMessage:(NSString*) idMessage
+{
+    return [WSParser searchIdentifier:idMessage andName:@"Message"];
+}
+
 
 +(FacebookProfile* ) addFacebookProfile:(NSDictionary*) dicFacebookProfile
 {
@@ -214,7 +225,7 @@
     Profile* lLeader = [self getProfile:[self parseStringValue:[dicEvent valueForKey:@"leader_id"]]];
     event.leader = lLeader;
     
-    event.chat = [self addChat:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
+    event.chat = [self addChatObject:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
     event.mood = [dicEvent valueForKey:@"mood"];
     event.address = [self addAddress:dicEvent];
     event.status = [self parseNumberValue:[dicEvent valueForKey:@"status"]];
@@ -250,6 +261,16 @@
        event.mystatus = [NSNumber numberWithInteger:mystatus];
     }
 
+    CLLocation * lCLLocationA = [ShareAppContext sharedInstance].placemark.location;
+    
+    NSLog(@"lCLLocationA %@", lCLLocationA);
+    
+    CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
+    CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+    
+    
+    event.distance = [NSNumber numberWithDouble:distance];
+    
     
     return event;
 }
@@ -301,7 +322,7 @@
     return address;
 }
 
-+(Chat*) addChat:(NSString*) chatId
++(Chat*) addChatObject:(NSString*) chatId
 {
     Chat* chat = [WSParser getChat:chatId];
     if(chat == nil)
@@ -309,6 +330,27 @@
         chat = [NSEntityDescription insertNewObjectForEntityForName:@"Chat" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     }
     chat.identifier = chatId;
+    return chat;
+}
+
+
++(Chat*) addChat:(NSDictionary*) chatDic
+{
+    Chat* chat = [WSParser getChat:[chatDic valueForKey:@"identifier"]];
+    if(chat == nil)
+    {
+        chat = [NSEntityDescription insertNewObjectForEntityForName:@"Chat" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    }
+    chat.identifier = [chatDic valueForKey:@"identifier"];
+    chat.isMine = [NSNumber numberWithBool:true];
+    NSDictionary* lLastMessage = [chatDic valueForKey:@"lastMessage"];
+    if([lLastMessage isKindOfClass:[NSDictionary class]])
+    {
+        [chat removeMessages:chat.messages];
+        [chat addMessagesObject:[WSParser addMessage:lLastMessage]];
+    }
+    
+    
     return chat;
 }
 
@@ -336,6 +378,15 @@
     return anArray;
 }
 
+
++(NSArray*) getEvents
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    return anArray;
+}
 
 +(id) searchIdentifier:(id) identifier andName:(NSString*) name
 {

@@ -13,5 +13,23 @@
 @implementation Chat
 
 // Insert code here to add functionality to your managed object subclass
+- (void)addMessagesObject:(Message *)value  {
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.messages];
+    [tempSet addObject:value];
+    self.messages = tempSet;
+}
+
+- (void)removeMessages:(NSOrderedSet<Message *> *)values
+{
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.messages];
+    for(id obj in values)
+    {
+        [tempSet removeObject:obj];
+    }
+    
+    
+    
+    self.messages = tempSet;
+}
 
 @end

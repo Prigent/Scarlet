@@ -25,7 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *mHideLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *mHideSwitch;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mTopSwitch;
 -(void) configure:(Event*) event;
 
 

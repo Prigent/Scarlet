@@ -8,11 +8,11 @@
 		<key>entityName</key>
 		<string>Message</string>
 		<key>sortProperty</key>
-		<string>identifier</string>
+		<string>date</string>
 		<key>cellIdentifier</key>
 		<string>MessageCell</string>
 		<key>sortOrder</key>
-		<false/>
+		<true/>
 	</dict>
 </array>
 </plist>

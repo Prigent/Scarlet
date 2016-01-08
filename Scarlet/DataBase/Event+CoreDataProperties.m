@@ -24,4 +24,6 @@
 @dynamic partners;
 @dynamic sort;
 @dynamic mystatus;
+@dynamic distance;
+@dynamic distanceCustom;
 @end

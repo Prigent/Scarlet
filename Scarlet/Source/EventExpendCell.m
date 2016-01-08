@@ -30,12 +30,9 @@
     _mCountPeople.text =  [NSString stringWithFormat:@"%ld peoples are in",[event getCountMember]];
     _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
     
-    
-    CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
-    CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
-    CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+
     MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
-    _mAddress.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:distance]];
+    _mAddress.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:[event.distance doubleValue]]];
     
 
     _mDate.text = [event getDateString];
@@ -52,7 +49,7 @@
     
     NSString* url = [NSString stringWithFormat:@"%@/homolo/file/scarlet/event/map/%@.png",[WSManager sharedInstance].mBaseURL,event.identifier];
     
-
+    NSLog(@"%@",url);
     [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
 
 }

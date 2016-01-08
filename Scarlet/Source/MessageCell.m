@@ -24,21 +24,8 @@
     Picture * picture = [message.owner.pictures firstObject];
     
     _mUserImage.image= nil;
-    _mProfileImage.image= nil;
-    if([message.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
-    {
-        [self.mUserImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-        
-    }
-    else
-    {
-        [self.mProfileImage setImageWithURL:[NSURL URLWithString:picture.filename]];
-    }
+    [self.mUserImage setImageWithURL:[NSURL URLWithString:picture.filename]];
 
-    
-    
-    
-    
 }
 - (void)awakeFromNib {
     // Initialization code

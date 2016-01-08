@@ -20,9 +20,9 @@
 {
     NSDateFormatter *formatDate = [[NSDateFormatter alloc] init];
     [formatDate setDateFormat:@"dd/MM/yyyy"];
-    if([[chat.messages allObjects] count]>0)
+    if([chat.messages count]>0)
     {
-        Message* lMessage = [[chat.messages allObjects] firstObject];
+        Message* lMessage = [chat.messages lastObject];
         _mLastMessageText.text  = lMessage.text;
         _mLastMessageOwner.text = lMessage.owner.firstName;
         Picture * picture = [lMessage.owner.pictures firstObject];
@@ -45,6 +45,25 @@
         _mLastMessageText.text  = @"No message";
         _mDateMessage.text = [formatDate stringFromDate:chat.event.date];
         _mHoursMessage.text = @"";
+    }
+    
+    self.mProfileListText.text = @"";
+    for(int i=0 ; i< [chat.event.partners count] ; i++)
+    {
+        Profile* lProfile = [[chat.event.partners allObjects]objectAtIndex:i];
+        i++;
+        if( i == 1)
+        {
+            self.mProfileListText.text = lProfile.firstName;
+        }
+        else if( i == [chat.event.partners count])
+        {
+            self.mProfileListText.text = [NSString stringWithFormat:@"%@ %@ %@",self.mProfileListText.text , @"and", lProfile.firstName ];
+        }
+        else
+        {
+            self.mProfileListText.text = [NSString stringWithFormat:@"%@, %@",self.mProfileListText.text, lProfile.firstName ];
+        }
     }
     
 }

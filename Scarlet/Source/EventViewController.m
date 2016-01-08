@@ -25,10 +25,31 @@
     // Do any additional setup after loading the view.
     
     self.title = @"Browse Scarlet";
-    
     [self updateView];
-    [self.mTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.mIndex.row] atScrollPosition:UITableViewScrollPositionTop animated:false];
+    self.mTableView.alpha = 0;
 }
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    
+    if(init == false)
+    {
+        init = true;
+        [self.mTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.mIndex.row] atScrollPosition:UITableViewScrollPositionTop animated:false];
+        
+        
+        [UIView animateWithDuration:.3 animations:^{  self.mTableView.alpha = 1; } completion:^(BOOL finished) {
+            self.mWhiteView.hidden = true;
+        }];
+        
+    }
+    
+    
+ 
+}
+
 
 -(void) viewWillAppear:(BOOL)animated
 {
@@ -37,6 +58,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profilelistselected:) name:@"profilelistselected" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinScarlet:) name:@"joinScarlet" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventJoined:) name:@"eventJoined" object:nil];
+    
 }
 
 -(void) viewDidDisappear:(BOOL)animated
@@ -56,6 +78,7 @@
 -(void) eventJoined:(NSNotification*) notification
 {
     [self closeDemand:nil];
+    [self.mTableView reloadData];
 }
 
 -(IBAction)closeDemand:(id)sender
@@ -107,13 +130,21 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSLog(@"numberOfSectionsInTableView %d", [self.mData.fetchedObjects count]);
     return [self.mData.fetchedObjects count];
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:section inSection:0]];
-    return [NSString stringWithFormat:@"%@'s Scarlet", lEvent.leader.firstName];
+    if([self.mData.fetchedObjects count]> section)
+    {
+        Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:section inSection:0]];
+        return [NSString stringWithFormat:@"%@'s Scarlet", lEvent.leader.firstName];
+    }
+    else
+    {
+        return @"";
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -141,7 +172,10 @@
     return 8;
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return tableView.frame.size.height-34;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -156,8 +190,16 @@
     UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"EventExpendCell"];
     if([cell respondsToSelector:@selector(configure:)])
     {
-        Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
-        [cell performSelector:@selector(configure:) withObject:lEvent];
+        NSLog(@"cellForRowAtIndexPath %d %d", [self.mData.fetchedObjects count],  indexPath.section);
+        if([self.mData.fetchedObjects count]> indexPath.section)
+        {
+            Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
+            [cell performSelector:@selector(configure:) withObject:lEvent];
+        }
+        else
+        {
+            [self.mTableView reloadData];
+        }
     }
     return cell;
 }

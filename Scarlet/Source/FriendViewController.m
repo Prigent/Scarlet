@@ -113,7 +113,6 @@
         NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
         self.mFriendRequestData = [[[ShareAppContext sharedInstance].user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
     }
-
     
     
     self.mSuggestData = [[ShareAppContext sharedInstance].user.suggestProfile allObjects];

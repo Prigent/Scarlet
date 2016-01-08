@@ -44,8 +44,7 @@ typedef enum {
 
 - (void)sendPicture:(UIImage*) picture position:(NSNumber*) position completion:(void (^)(NSError* error)) onCompletion;
 - (void)removePicture:(NSNumber*) position completion:(void (^)(NSError* error)) onCompletion;
-
-- (void)addMessageCompletion:(void (^)(NSError* error)) onCompletion;
+- (void)addMessage:(Chat*) chat message:(NSString*) message completion:(void (^)(NSError* error)) onCompletion;
 - (void)createEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion;
 
 - (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion;

@@ -9,11 +9,12 @@
 #import "BaseViewController.h"
 #import <MapKit/MapKit.h>
 
-@interface LocationSearchViewController : BaseViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+@class LocationSearchDataSource;
+
+@interface LocationSearchViewController : BaseViewController
 
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *mSearchBar;
-@property (nonatomic, strong) NSArray * mData;
-@property (nonatomic, strong) MKLocalSearch * mLocalSearch;
+@property (strong, nonatomic)  LocationSearchDataSource* mLocationSearchDataSource;
 
 @end

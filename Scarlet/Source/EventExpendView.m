@@ -32,17 +32,15 @@
     _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
     
     
+
+    MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
     if(statusEvent == 1 || statusEvent == 2 || statusEvent == 3 || statusEvent == 4)
     {
-        _mAddress.text  = [NSString stringWithFormat:@"Near %@",event.address.street];
+        _mAddress.text  = [NSString stringWithFormat:@"%@ (%@)",event.address.street,[lMKDistanceFormatter stringFromDistance:[event.distance doubleValue]]];
     }
     else
     {
-        CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
-        CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
-        CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
-        MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
-        _mAddress.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:distance]];
+        _mAddress.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:[event.distance doubleValue]]];
     }
 
     if(statusEvent == 1)
@@ -52,6 +50,21 @@
     else
     {
         self.mHideSwitch.enabled = false;
+    }
+    
+    
+    if(statusEvent > 2)
+    {
+        self.mHideSwitch.hidden = true;
+        self.mHideLabel.text = @"";
+        self.mHideLabel.hidden = true;
+        self.mTopSwitch.constant = 0;
+    }
+    else
+    {
+        self.mHideSwitch.hidden = false;
+        self.mHideLabel.hidden = false;
+        self.mTopSwitch.constant = 32;
     }
     
     [_mHideSwitch setOn:[event.status boolValue]];

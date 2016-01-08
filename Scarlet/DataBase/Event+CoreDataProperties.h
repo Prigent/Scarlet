@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) Profile *leader;
 @property (nullable, nonatomic, retain) NSSet<Profile *> *partners;
 @property (nullable, nonatomic, retain) NSNumber *mystatus;
+@property (nullable, nonatomic, retain) NSNumber *distance;
+@property (nullable, nonatomic, retain) NSNumber *distanceCustom;
 
 @end
 

@@ -52,11 +52,8 @@
     }
     else
     {
-        CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
-        CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
-        CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
         MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
-        _mSubtitle.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:distance]];
+        _mSubtitle.text  = [NSString stringWithFormat:@"%@",[lMKDistanceFormatter stringFromDistance:[event.distance doubleValue]]];
     }
 
 

@@ -9,6 +9,7 @@
 #import "LocationSearchViewController.h"
 #import "ShareAppContext.h"
 #import "WSManager.h"
+#import "LocationSearchDataSource.h"
 
 @interface LocationSearchViewController ()
 
@@ -38,6 +39,15 @@
     self.mSearchBar.layer.borderColor = [[UIColor whiteColor] CGColor];
     
     
+    self.mLocationSearchDataSource=  [[LocationSearchDataSource alloc]init];
+    _mLocationSearchDataSource.mTableView = self.mTableView;
+    _mLocationSearchDataSource.mSearchBar = self.mSearchBar;
+    
+    self.mSearchBar.delegate = _mLocationSearchDataSource;
+    self.mTableView.dataSource = _mLocationSearchDataSource;
+    self.mTableView.delegate = _mLocationSearchDataSource;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popBack) name:@"locationChanged" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,68 +67,9 @@
 }
 
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [self search];
-}
 
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [self search];
-    [self.mSearchBar resignFirstResponder];
-}
 
--(void) search
-{
-    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
-    request.naturalLanguageQuery = self.mSearchBar.text;
-    
-    [self.mLocalSearch cancel];
-    self.mLocalSearch = [[MKLocalSearch alloc] initWithRequest:request];
-    [self.mLocalSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
-        // check for error and process the response
-        self.mData = response.mapItems;
-        [self.mTableView reloadData];
-    }];
- 
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [_mSearchBar resignFirstResponder];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.mData count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AddressCell"];
-    
-    MKMapItem * lItem = [self.mData objectAtIndex:indexPath.row];
-    CLPlacemark* aPlacemark = lItem.placemark;
-    NSString *locatedAt = [[aPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
-    if(locatedAt != nil)
-    {
-        cell.textLabel.text =  [[NSString alloc]initWithString:locatedAt];
-    }
-    else
-    {
-        cell.textLabel.text =  @"";
-    }
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
-    MKMapItem * lItem = [self.mData objectAtIndex:indexPath.row];
-    CLPlacemark* aPlacemark = lItem.placemark;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:aPlacemark];
-    [self popBack];
-}
 
 
 /*

@@ -33,6 +33,7 @@
     UIBarButtonItem *openChatButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnChatOn"] style:UIBarButtonItemStylePlain target:self action:@selector(openChat)];
     self.navigationItem.rightBarButtonItem = openChatButtonItem;
 
+    [self.uiRefreshControl removeFromSuperview];
 }
 
 

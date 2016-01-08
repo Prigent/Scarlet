@@ -13,7 +13,11 @@
 @end
 
 @implementation DateViewController
-
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[self navigationController] setNavigationBarHidden:false animated:YES];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -28,11 +32,17 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
+    if(self.mDate == nil)
+    {
+        self.mDate = [NSDate date];
+    }
     [self.mDatePicker setDate:self.mDate animated:true];
     
+    NSString* datePart = [NSDateFormatter localizedStringFromDate: self.mDate dateStyle: NSDateFormatterShortStyle timeStyle: NSDateFormatterShortStyle];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"EEEE dd MMMM  h:mm a"];
-    _mDateLabel.text = [format stringFromDate:self.mDate];
+    
+    _mDateLabel.text = [datePart capitalizedString];
     
     [self.mDatePicker setMinimumDate:[NSDate date]];
 }
@@ -67,7 +77,15 @@
     
     self.mDate = sender.date;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"dateChanged" object:self.mDate];
+    if(self.filter)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"dateFilterChanged" object:self.mDate];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"dateChanged" object:self.mDate];
+    }
+
 }
 
 /*

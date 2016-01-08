@@ -7,6 +7,7 @@
 //
 
 #import "MyChatsViewController.h"
+#import "WSManager.h"
 
 @interface MyChatsViewController ()
 
@@ -21,15 +22,34 @@
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Chat" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
-    [self.tableView reloadData];
     
-    [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    [[self navigationController] setNavigationBarHidden:false animated:YES];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBarHidden =true;
+    self.navigationController.navigationBarHidden =false;
+    [self updateData];
+    
+    
+}
 
+-(void) updateData
+{
+    [self.uiRefreshControl beginRefreshing];
+    [[WSManager sharedInstance] getChatsCompletion:^(NSError *error) {
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+        [self.uiRefreshControl endRefreshing];
+    }];
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -90,41 +90,17 @@
     
     
     CLPlacemark* lCLPlacemark = [ShareAppContext sharedInstance].placemark;
-    if(lCLPlacemark == nil)
+    self.coordinate = CLLocationCoordinate2DMake(lCLPlacemark.location.coordinate.latitude,lCLPlacemark.location.coordinate.longitude);
+    NSString *locatedAt = [[lCLPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+    if(locatedAt != nil)
     {
-        self.coordinate = CLLocationCoordinate2DMake([[ShareAppContext sharedInstance].user.lat doubleValue], [[ShareAppContext sharedInstance].user.longi doubleValue]);
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
-        [geocoder reverseGeocodeLocation:[[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]] completionHandler:^(NSArray *placemarks, NSError *error)
-         {
-             if (!(error))
-             {
-                 CLPlacemark * lCLPlacemark = [placemarks objectAtIndex:0];
-                 NSString *locatedAt = [[lCLPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
-                 if(locatedAt != nil)
-                 {
-                     self.address = [[NSString alloc]initWithString:locatedAt];
-                 }
-                 else
-                 {
-                     self.address = @"no address";
-                 }
-                 [self.mTableView reloadData];
-             }
-         }];
+        self.address = [[NSString alloc]initWithString:locatedAt];
     }
     else
     {
-        self.coordinate = CLLocationCoordinate2DMake(lCLPlacemark.location.coordinate.latitude,lCLPlacemark.location.coordinate.longitude);
-        NSString *locatedAt = [[lCLPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
-        if(locatedAt != nil)
-        {
-            self.address = [[NSString alloc]initWithString:locatedAt];
-        }
-        else
-        {
-            self.address = @"no address";
-        }
+        self.address = @"no address";
     }
+
     
     self.title = @"New Scarlet";
  
@@ -199,7 +175,7 @@
     [lEventDic setValue:[NSNumber numberWithDouble:self.coordinate.longitude]  forKey:@"long"];
     [lEventDic setValue:[NSNumber numberWithDouble:self.coordinate.latitude] forKey:@"lat"];
     [lEventDic setValue:self.address forKey:@"address"];
-    [lEventDic setValue:[NSNumber numberWithInt:[self.date timeIntervalSince1970]+60*60] forKey:@"date"];
+    [lEventDic setValue:[NSNumber numberWithInt:[self.date timeIntervalSince1970]] forKey:@"date"];
     [lEventDic setValue:self.listProfileId forKey:@"partner"];
     
     
@@ -335,10 +311,9 @@
             {
                 cellField.mIcn.image =[UIImage imageNamed:@"icnCalendar"];
                 
-                NSDateFormatter *format = [[NSDateFormatter alloc] init];
-                [format setDateFormat:@"EEEE dd MMMM  h:mm a"];
                 
-                cellField.mTitle.text = [format stringFromDate:self.date];
+                NSString* datePart = [NSDateFormatter localizedStringFromDate: self.date dateStyle: NSDateFormatterShortStyle timeStyle: NSDateFormatterShortStyle];
+                cellField.mTitle.text = [datePart capitalizedString];
             }
             break;
             case 1:

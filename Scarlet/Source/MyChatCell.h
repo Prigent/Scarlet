@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *mLastMessageText;
 @property (weak, nonatomic) IBOutlet UILabel *mLastMessageOwner;
 @property (weak, nonatomic) IBOutlet UILabel *mDateMessage;
+@property (weak, nonatomic) IBOutlet UILabel *mProfileListText;
 
 @end

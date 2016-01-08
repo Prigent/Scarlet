@@ -77,8 +77,7 @@
         return  [tableView dequeueReusableCellWithIdentifier:@"AddMoreFriend"];
     }
     
-    UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
-    cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
     ProfileListCell* cellList = (ProfileListCell*)cell;
     [cellList configure:[[ShareAppContext sharedInstance].user.friends allObjects] andSelectedList:self.listProfileId];
 

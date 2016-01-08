@@ -77,6 +77,7 @@
 		B27389801BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389711BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m */; };
 		B27389811BE65D4200AF1209 /* OLPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389731BE65D4200AF1209 /* OLPhotoViewController.m */; };
 		B27389821BE65D4200AF1209 /* OLPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B27389741BE65D4200AF1209 /* OLPhotoViewController.xib */; };
+		B27828EF1C28709300A33D05 /* MapEventCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B27828EE1C28709300A33D05 /* MapEventCollectionCell.m */; };
 		B27AF8E41C05C1860085BD95 /* FieldEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8E31C05C1860085BD95 /* FieldEventCell.m */; };
 		B27AF8E71C05D37E0085BD95 /* MoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8E61C05D37E0085BD95 /* MoodViewController.m */; };
 		B27AF8EA1C05D38C0085BD95 /* DateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8E91C05D38C0085BD95 /* DateViewController.m */; };
@@ -130,6 +131,7 @@
 		B290FBE91BE92B2200868F02 /* AllProfile.plist in Resources */ = {isa = PBXBuildFile; fileRef = B290FBE81BE92B2200868F02 /* AllProfile.plist */; };
 		B290FBEC1BE9345500868F02 /* ProfileCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBEB1BE9345500868F02 /* ProfileCollectionCell.m */; };
 		B2A44B931C16F22E0098D661 /* NSDate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A44B921C16F22E0098D661 /* NSDate+Utilities.m */; };
+		B2A44B961C188C440098D661 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2A44B981C188C440098D661 /* Localizable.strings */; };
 		B2AA6EC51BCCF66500DCF1A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6EC41BCCF66500DCF1A4 /* main.m */; };
 		B2AA6EC81BCCF66500DCF1A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6EC71BCCF66500DCF1A4 /* AppDelegate.m */; };
 		B2AA6ECE1BCCF66500DCF1A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ECC1BCCF66500DCF1A4 /* Main.storyboard */; };
@@ -144,6 +146,7 @@
 		B2B70D2A1BDE551A00C89731 /* CreateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D291BDE551A00C89731 /* CreateEventViewController.m */; };
 		B2B70D301BDE55A100C89731 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D2F1BDE55A100C89731 /* MyProfileViewController.m */; };
 		B2BB3C121C15BDA600014E9D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BB3C111C15BDA600014E9D /* NSData+Base64.m */; };
+		B2C8C7961C3BFC6A005B656B /* LocationSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C8C7951C3BFC6A005B656B /* LocationSearchDataSource.m */; };
 		B2DE4AC21C08B9CB00CF3AE1 /* EventExpendView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DE4AC11C08B9CB00CF3AE1 /* EventExpendView.m */; };
 		B2E05F8E1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F8B1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m */; };
 		B2E05F8F1BDFDE450037A8ED /* RACollectionViewTripletLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F8D1BDFDE450037A8ED /* RACollectionViewTripletLayout.m */; };
@@ -156,9 +159,9 @@
 		B2EE9C661BFF821D002BCD96 /* TTRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EE9C641BFF821D002BCD96 /* TTRangeSlider.m */; };
 		B2EE9C691BFF8425002BCD96 /* AgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EE9C681BFF8425002BCD96 /* AgeCell.m */; };
 		B2EE9C6C1BFF8435002BCD96 /* SexCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EE9C6B1BFF8435002BCD96 /* SexCell.m */; };
-		B2EF3B641BFB492200830C4B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2EF3B631BFB492200830C4B /* Localizable.strings */; };
 		B2F3A3FF1BEBC84F006F76B1 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */; };
 		B2F3A4031BEBD4EB006F76B1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */; };
+		B2F7ED3D1C21EA7900070656 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F7ED3C1C21EA7900070656 /* FilterViewController.m */; };
 		B2F972321BD945D300B8BF72 /* AllEvent.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F972311BD945D300B8BF72 /* AllEvent.plist */; };
 		B2F972351BD9468200B8BF72 /* AutoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972341BD9468200B8BF72 /* AutoListViewController.m */; };
 		B2F972381BD946B800B8BF72 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972371BD946B800B8BF72 /* EventCell.m */; };
@@ -336,6 +339,8 @@
 		B27389721BE65D4200AF1209 /* OLPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLPhotoViewController.h; sourceTree = "<group>"; };
 		B27389731BE65D4200AF1209 /* OLPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLPhotoViewController.m; sourceTree = "<group>"; };
 		B27389741BE65D4200AF1209 /* OLPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OLPhotoViewController.xib; sourceTree = "<group>"; };
+		B27828ED1C28709300A33D05 /* MapEventCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapEventCollectionCell.h; sourceTree = "<group>"; };
+		B27828EE1C28709300A33D05 /* MapEventCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapEventCollectionCell.m; sourceTree = "<group>"; };
 		B27AF8E21C05C1860085BD95 /* FieldEventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldEventCell.h; sourceTree = "<group>"; };
 		B27AF8E31C05C1860085BD95 /* FieldEventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FieldEventCell.m; sourceTree = "<group>"; };
 		B27AF8E51C05D37E0085BD95 /* MoodViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoodViewController.h; path = Source/MoodViewController.h; sourceTree = "<group>"; };
@@ -429,6 +434,9 @@
 		B290FBEB1BE9345500868F02 /* ProfileCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileCollectionCell.m; path = Source/ProfileCollectionCell.m; sourceTree = "<group>"; };
 		B2A44B911C16F22E0098D661 /* NSDate+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utilities.h"; sourceTree = "<group>"; };
 		B2A44B921C16F22E0098D661 /* NSDate+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utilities.m"; sourceTree = "<group>"; };
+		B2A44B971C188C440098D661 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B2A44B991C188C480098D661 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B2A44B9A1C188C550098D661 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2AA6EC01BCCF66500DCF1A4 /* Scarlet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scarlet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2AA6EC41BCCF66500DCF1A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B2AA6EC61BCCF66500DCF1A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -451,6 +459,8 @@
 		B2B70D2F1BDE55A100C89731 /* MyProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyProfileViewController.m; path = Source/MyProfileViewController.m; sourceTree = "<group>"; };
 		B2BB3C101C15BDA500014E9D /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		B2BB3C111C15BDA600014E9D /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		B2C8C7941C3BFC6A005B656B /* LocationSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationSearchDataSource.h; sourceTree = "<group>"; };
+		B2C8C7951C3BFC6A005B656B /* LocationSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchDataSource.m; sourceTree = "<group>"; };
 		B2DE4AC01C08B9CB00CF3AE1 /* EventExpendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventExpendView.h; path = Source/EventExpendView.h; sourceTree = "<group>"; };
 		B2DE4AC11C08B9CB00CF3AE1 /* EventExpendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventExpendView.m; path = Source/EventExpendView.m; sourceTree = "<group>"; };
 		B2E05F8A1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACollectionViewReorderableTripletLayout.h; sourceTree = "<group>"; };
@@ -475,10 +485,11 @@
 		B2EE9C681BFF8425002BCD96 /* AgeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeCell.m; sourceTree = "<group>"; };
 		B2EE9C6A1BFF8435002BCD96 /* SexCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SexCell.h; sourceTree = "<group>"; };
 		B2EE9C6B1BFF8435002BCD96 /* SexCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SexCell.m; sourceTree = "<group>"; };
-		B2EF3B631BFB492200830C4B /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		B2F3A4011BEBD4EB006F76B1 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		B2F7ED3B1C21EA7900070656 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilterViewController.h; path = Source/FilterViewController.h; sourceTree = "<group>"; };
+		B2F7ED3C1C21EA7900070656 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FilterViewController.m; path = Source/FilterViewController.m; sourceTree = "<group>"; };
 		B2F972311BD945D300B8BF72 /* AllEvent.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AllEvent.plist; path = Source/AllEvent.plist; sourceTree = "<group>"; };
 		B2F972331BD9468200B8BF72 /* AutoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoListViewController.h; sourceTree = "<group>"; };
 		B2F972341BD9468200B8BF72 /* AutoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoListViewController.m; sourceTree = "<group>"; };
@@ -787,6 +798,10 @@
 				B235857B1BDCDDC900568AB9 /* EventPointAnnotation.m */,
 				B244DA511BDE9FEC0088BB1D /* JoinEventViewController.h */,
 				B244DA521BDE9FEC0088BB1D /* JoinEventViewController.m */,
+				B2F7ED3B1C21EA7900070656 /* FilterViewController.h */,
+				B2F7ED3C1C21EA7900070656 /* FilterViewController.m */,
+				B27828ED1C28709300A33D05 /* MapEventCollectionCell.h */,
+				B27828EE1C28709300A33D05 /* MapEventCollectionCell.m */,
 			);
 			name = SearchEvent;
 			sourceTree = "<group>";
@@ -848,6 +863,8 @@
 				B27AF8E91C05D38C0085BD95 /* DateViewController.m */,
 				B27AF8EB1C05D39E0085BD95 /* LocationSearchViewController.h */,
 				B27AF8EC1C05D39E0085BD95 /* LocationSearchViewController.m */,
+				B2C8C7941C3BFC6A005B656B /* LocationSearchDataSource.h */,
+				B2C8C7951C3BFC6A005B656B /* LocationSearchDataSource.m */,
 			);
 			name = MyEvent;
 			sourceTree = "<group>";
@@ -1081,7 +1098,7 @@
 				B2AA6ED71BCCF66500DCF1A4 /* Info.plist */,
 				B2AA6EC61BCCF66500DCF1A4 /* AppDelegate.h */,
 				B2AA6EC71BCCF66500DCF1A4 /* AppDelegate.m */,
-				B2EF3B631BFB492200830C4B /* Localizable.strings */,
+				B2A44B981C188C440098D661 /* Localizable.strings */,
 				B23FA5DA1BD5042700868D12 /* Constants.h */,
 				B23FA5DB1BD5042700868D12 /* Prefix.pch */,
 				B27F78D91BD937690038B4B0 /* Json */,
@@ -1171,6 +1188,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = B2AA6EB71BCCF66500DCF1A4;
 			productRefGroup = B2AA6EC11BCCF66500DCF1A4 /* Products */;
@@ -1212,7 +1230,7 @@
 				B2F972321BD945D300B8BF72 /* AllEvent.plist in Resources */,
 				B2E060021BE104D20037A8ED /* myevents.json in Resources */,
 				B27F77F31BD8036F0038B4B0 /* FacebookSDKStrings.bundle in Resources */,
-				B2EF3B641BFB492200830C4B /* Localizable.strings in Resources */,
+				B2A44B961C188C440098D661 /* Localizable.strings in Resources */,
 				B2AA6ED31BCCF66500DCF1A4 /* Assets.xcassets in Resources */,
 				B23FA5B81BD5011B00868D12 /* README.txt in Resources */,
 				B2AA6ECE1BCCF66500DCF1A4 /* Main.storyboard in Resources */,
@@ -1256,6 +1274,7 @@
 				B23FA5B11BD5011B00868D12 /* AFURLConnectionOperation.m in Sources */,
 				B23FA5C91BD5011B00868D12 /* UIButton+AFNetworking.m in Sources */,
 				B2AA6EC81BCCF66500DCF1A4 /* AppDelegate.m in Sources */,
+				B2C8C7961C3BFC6A005B656B /* LocationSearchDataSource.m in Sources */,
 				B23FA5D91BD5037000868D12 /* IntroViewController.m in Sources */,
 				B27F78C61BD9236F0038B4B0 /* Event.m in Sources */,
 				B23838611BFD0B4800E4A42D /* FacebookProfile.m in Sources */,
@@ -1263,8 +1282,10 @@
 				B27389801BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m in Sources */,
 				B27F78071BD914F60038B4B0 /* ProfileViewController.m in Sources */,
 				B2B70D2A1BDE551A00C89731 /* CreateEventViewController.m in Sources */,
+				B27828EF1C28709300A33D05 /* MapEventCollectionCell.m in Sources */,
 				B23FA5BF1BD5011B00868D12 /* StretchedLocalizedButton.m in Sources */,
 				B27F78CD1BD9236F0038B4B0 /* Message+CoreDataProperties.m in Sources */,
+				B2F7ED3D1C21EA7900070656 /* FilterViewController.m in Sources */,
 				B27F78D81BD9236F0038B4B0 /* Demand.m in Sources */,
 				B23585771BDCCEA000568AB9 /* MessageCell.m in Sources */,
 				B27AF8EA1C05D38C0085BD95 /* DateViewController.m in Sources */,
@@ -1368,6 +1389,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		B2A44B981C188C440098D661 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2A44B971C188C440098D661 /* Base */,
+				B2A44B991C188C480098D661 /* en */,
+				B2A44B9A1C188C550098D661 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B2AA6ECC1BCCF66500DCF1A4 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1492,7 +1523,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5f674f0d-e877-4623-b4fb-f0a736b84f46";
+				PROVISIONING_PROFILE = "7f5c29c5-6b42-428a-a480-65aed8e5ee1f";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1519,7 +1550,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5f674f0d-e877-4623-b4fb-f0a736b84f46";
+				PROVISIONING_PROFILE = "7f5c29c5-6b42-428a-a480-65aed8e5ee1f";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

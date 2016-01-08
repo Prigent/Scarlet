@@ -13,7 +13,10 @@
 
 @class Event;
 @interface EventViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate>
-
+{
+    bool init;
+}
+@property (weak, nonatomic) IBOutlet UIView *mWhiteView;
 
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 

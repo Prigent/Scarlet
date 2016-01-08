@@ -34,7 +34,11 @@
 
 }
 
-
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[self navigationController] setNavigationBarHidden:false animated:YES];
+}
 -(void) configure:(id)mood
 {
     self.mMood = mood;
@@ -81,8 +85,30 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
-    self.mMood = [self.mData objectAtIndex:indexPath.row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"moodChanged" object:self.mMood];
+    
+    if([self.mMood isEqualToString:[self.mData objectAtIndex:indexPath.row]])
+    {
+        if(self.filter)
+        {
+            self.mMood = nil;
+        }
+    }
+    else
+    {
+        self.mMood = [self.mData objectAtIndex:indexPath.row];
+    }
+
+    
+    if(self.filter)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"moodFilterChanged" object:self.mMood];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"moodChanged" object:self.mMood];
+    }
+    
+
     [tableView reloadData];
 }
 

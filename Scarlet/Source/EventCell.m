@@ -35,11 +35,9 @@
  
 
     
-    CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:[[ShareAppContext sharedInstance].user.lat doubleValue] longitude:[[ShareAppContext sharedInstance].user.longi doubleValue]];
-    CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
-    CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+
     MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
-    _mSubtitle.text  = [NSString stringWithFormat:@"%@, %@",[lMKDistanceFormatter stringFromDistance:distance] ,[event getDateString]];
+    _mSubtitle.text  = [NSString stringWithFormat:@"%@, %@",[lMKDistanceFormatter stringFromDistance:[event.distance doubleValue]] ,[event getDateString]];
     
     
     
@@ -69,9 +67,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-   
     switch ([self.mData count]) {
-            
         case 1:
             return  CGSizeMake( collectionView.frame.size.width, collectionView.frame.size.height);
         case 2:
@@ -79,8 +75,6 @@
         default:
             return  CGSizeMake(  collectionView.frame.size.width/2.2, collectionView.frame.size.height);
     }
-    
-    
 }
 
 

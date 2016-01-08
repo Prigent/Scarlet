@@ -76,10 +76,6 @@
     return responseObject;
 }
 
-- (void)addMessageCompletion:(void (^)(NSError* error)) onCompletion
-{
-    
-}
 
 - (void)createEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion
 {
@@ -298,6 +294,8 @@
          {
              Demand * lDemand = [WSParser addDemand:[responseObject valueForKey:@"demand"]];
              [event addDemandsObject:lDemand];
+             NSInteger mystatus = [event getMyStatus];
+             event.mystatus = [NSNumber numberWithInteger:mystatus];
          }
          [self manageError:error];
          onCompletion(error);
@@ -308,6 +306,40 @@
          onCompletion(error);
      }];
 }
+
+
+- (void)addMessage:(Chat*) chat message:(NSString*) message completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/message"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setObject:chat.identifier forKey:@"chat_request_identifier"];
+    [param setObject:message forKey:@"message"];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+
+    
+    
+    [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             NSLog(@"checkResponse %@",responseObject);
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
+
+
 
 
 
@@ -436,6 +468,9 @@
     
     NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:[[ShareAppContext sharedInstance].user getDictionary]];
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    NSLog(@"saveUserCompletion %@", param);
+    
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
@@ -471,6 +506,7 @@
         if(error == nil)
         {
             [ShareAppContext sharedInstance].user = [WSParser addUser:[responseObject valueForKey:@"user"]];
+            [[ShareAppContext sharedInstance] updatePlacemark];
         }
         [self manageError:error];
         onCompletion(error);
@@ -561,6 +597,8 @@
             NSArray* lAllMessage= [responseObject valueForKey:@"message"];
             [chat removeMessages:chat.messages];
             
+            NSLog(@"lAllMessage %@", lAllMessage);
+            
             for(NSDictionary * lDicMessage in lAllMessage)
             {
                 [chat addMessagesObject:[WSParser addMessage:lDicMessage]];
@@ -611,23 +649,33 @@
 
 - (void)getChatsCompletion:(void (^)(NSError* error)) onCompletion
 {
-    //NSString* base= nil;
-    //AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
-    //[manager GET:base parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
-    {
-        NSDictionary* reponseObject = [self getDataFromFile:@"chats.json"];
-        
-        NSArray* lAllEvents= [reponseObject valueForKey:@"event"];
-        for(NSDictionary * lDicEvent in lAllEvents)
-        {
-            [WSParser addEvent:lDicEvent];
-        }
-        onCompletion(nil);
-    }
-    /*failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/chat"];
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-     onCompletion(nil);
-     }];*/
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             NSArray* lAllChats= [responseObject valueForKey:@"chat"];
+             for(NSDictionary * lDicChat in lAllChats)
+             {
+                 NSLog(@"lDicChat %@",lDicChat);
+                 [WSParser addChat:lDicChat];
+             }
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
 }
 
 - (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion
@@ -667,8 +715,8 @@
 
 -(void) manageError:(NSError*) error
 {
-    NSLog(@"%@", error);
-    if(error.code == -1011 || error.code == -2)
+    [[ShareAppContext sharedInstance].managedObjectContext save:nil];
+    if(error.code == -2)
     {
         [[ShareAppContext sharedInstance] setAccessToken:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];

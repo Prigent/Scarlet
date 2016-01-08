@@ -233,7 +233,6 @@
 {
     NSString* urlString =  _photosArray[indexPath.item];
     indexTemp = indexPath.row+1;
-    NSLog(@"indexTemp %d", indexTemp);
     
     if(urlString.length==0)
     {
@@ -252,7 +251,6 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"%d", buttonIndex);
     if(actionSheet.tag == 1)
     {
         switch (buttonIndex) {
@@ -403,7 +401,11 @@
         case 2:
         {
             SexCell * cellSex = [tableView dequeueReusableCellWithIdentifier:@"SexCell"];
-            [cellSex.sexSegment setSelectedSegmentIndex:[[ShareAppContext sharedInstance].user.lookingFor intValue]-1];
+            int index = ![[ShareAppContext sharedInstance].user.lookingFor boolValue];
+            NSLog(@"SexCell look %@", [ShareAppContext sharedInstance].user.lookingFor);
+            
+            NSLog(@"SexCell %d", index);
+            [cellSex.sexSegment setSelectedSegmentIndex:index];
              return cellSex;
             break;
         }
@@ -483,7 +485,16 @@
         
     }
 
-    
+    if(textView.tag == 1)
+    {
+        NSString *newString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+        [ShareAppContext sharedInstance].user.about = newString;
+    }
+    else if(textView.tag == 2)
+    {
+        NSString *newString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+        [ShareAppContext sharedInstance].user.occupation = newString;
+    }
     
     return YES;
 }
@@ -570,7 +581,10 @@
 }
 
 - (IBAction)sexChanged:(UISegmentedControl*)sender {
-    [ShareAppContext sharedInstance].user.lookingFor = [NSNumber numberWithInt:sender.selectedSegmentIndex+1];
+    
+    int index = !sender.selectedSegmentIndex;
+    
+    [ShareAppContext sharedInstance].user.lookingFor = [NSNumber numberWithInt:index];
 }
 
 
