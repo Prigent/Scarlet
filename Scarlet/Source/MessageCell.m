@@ -25,6 +25,10 @@
     
     _mUserImage.image= nil;
     [self.mUserImage setImageWithURL:[NSURL URLWithString:picture.filename]];
+    
+    NSString* datePart = [NSDateFormatter localizedStringFromDate:message.date dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
+    self.mDate.text = [datePart uppercaseString];
+    
 
 }
 - (void)awakeFromNib {

@@ -30,7 +30,11 @@
     
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Mood" ofType:@"plist"];
-    self.mData = [[NSArray alloc] initWithContentsOfFile:plistFile];
+    self.mData = [NSMutableArray arrayWithArray:[[NSArray alloc] initWithContentsOfFile:plistFile]];
+    if(self.filter)
+    {
+        [self.mData insertObject:@"Whatever" atIndex:0];
+    }
 
 }
 

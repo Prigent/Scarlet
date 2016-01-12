@@ -13,6 +13,7 @@
 #import "ProfileViewController.h"
 #import "ShareAppContext.h"
 #import "Profile.h"
+#import "Event.h"
 
 @interface ChatViewController ()
 
@@ -35,23 +36,45 @@
     
    
     [self updateData];
+    
+    NSString * customTitle= self.mChat.event.leader.firstName;
+    for(int i=0 ; i< [self.mChat.event.partners count] ; i++)
+    {
+        Profile* lProfile = [[self.mChat.event.partners allObjects]objectAtIndex:i];
+        i++;
+        if( i == [self.mChat.event.partners count])
+        {
+            customTitle = [NSString stringWithFormat:@"%@ %@ %@",customTitle , NSLocalizedString(@"and", @"and"), lProfile.firstName ];
+        }
+        else
+        {
+            customTitle = [NSString stringWithFormat:@"%@, %@",customTitle, lProfile.firstName ];
+        }
+    }
+    self.title = customTitle;
 }
 
 
 
 -(void) updateData
 {
-    [self.uiRefreshControl beginRefreshing];
-    [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-        [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
-        [self.uiRefreshControl endRefreshing];
-        
-        [self.tableView reloadData];
-    }];
+    if(!self.uiRefreshControl.isRefreshing)
+    {
+        [self.uiRefreshControl beginRefreshing];
+        [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
+            if(error)
+            {
+                NSLog(@"%@", error);
+            }
+            [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
+            [self.uiRefreshControl endRefreshing];
+            
+            
+            //[self performSelector:@selector(updateData) withObject:nil afterDelay:10];
+            
+            [self.tableView reloadData];
+        }];
+    }
 }
 
 
@@ -146,15 +169,38 @@
     
     UITableViewCell* cell = nil;
     Message* message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    int date = 60*10;
+    if(indexPath.row > 0)
+    {
+        Message* messageBefore = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section]];
+        date = message.date.timeIntervalSince1970 - messageBefore.date.timeIntervalSince1970;
+    }
     
+
     
     if([message.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%@2",self.cellIdentifier]];
+        if(date >= (60*10))
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%@2WithDate",self.cellIdentifier]];
+        }
+        else
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%@2",self.cellIdentifier]];
+        }
+
     }
     else
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+        if(date >= (60*10))
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"%@WithDate",self.cellIdentifier]];
+        }
+        else
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+        }
+
     }
     
 
@@ -169,17 +215,40 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Message* message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    int date = 60*10;
+    if(indexPath.row > 0)
+    {
+        Message* messageBefore = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section]];
+        date = message.date.timeIntervalSince1970 - messageBefore.date.timeIntervalSince1970;
+    }
+    
     if([message.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
         CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 28 ,1000);
         CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
-        return 16+expectedLabelSize.height;
+        if(date >= (60*10))
+        {
+            return 16+expectedLabelSize.height +40;
+        }
+        else
+        {
+            return 16+expectedLabelSize.height;
+        }
     }
     else
     {
         CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 36-8-28 ,1000);
         CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
-        return 46+expectedLabelSize.height;
+        
+        
+        if(date >= (60*10))
+        {
+            return 46+expectedLabelSize.height +40;
+        }
+        else
+        {
+            return 46+expectedLabelSize.height;
+        }
     }
 }
 

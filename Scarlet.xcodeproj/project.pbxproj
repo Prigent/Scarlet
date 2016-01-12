@@ -140,6 +140,7 @@
 		B2AA6ED61BCCF66500DCF1A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ED41BCCF66500DCF1A4 /* LaunchScreen.storyboard */; };
 		B2AA6EE01BCCF6DA00DCF1A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA6EDE1BCCF6DA00DCF1A4 /* Fabric.framework */; };
 		B2AA6EE11BCCF6DA00DCF1A4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA6EDF1BCCF6DA00DCF1A4 /* Crashlytics.framework */; };
+		B2AF44541C4568CA00B0F0F8 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AF44531C4568CA00B0F0F8 /* NotificationCell.m */; };
 		B2B375311C0778CA00B3E349 /* EventExpendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B375301C0778CA00B3E349 /* EventExpendCell.m */; };
 		B2B70D251BDE49BF00C89731 /* ProfileMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D241BDE49BF00C89731 /* ProfileMenuCell.m */; };
 		B2B70D271BDE54D500C89731 /* Event.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B70D261BDE54D500C89731 /* Event.storyboard */; };
@@ -448,6 +449,8 @@
 		B2AA6ED71BCCF66500DCF1A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2AA6EDE1BCCF6DA00DCF1A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		B2AA6EDF1BCCF6DA00DCF1A4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		B2AF44521C4568CA00B0F0F8 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
+		B2AF44531C4568CA00B0F0F8 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		B2B3752F1C0778CA00B3E349 /* EventExpendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventExpendCell.h; path = Source/EventExpendCell.h; sourceTree = "<group>"; };
 		B2B375301C0778CA00B3E349 /* EventExpendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventExpendCell.m; path = Source/EventExpendCell.m; sourceTree = "<group>"; };
 		B2B70D231BDE49BF00C89731 /* ProfileMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileMenuCell.h; path = Source/ProfileMenuCell.h; sourceTree = "<group>"; };
@@ -1026,6 +1029,8 @@
 			children = (
 				B27F78991BD922F30038B4B0 /* ParameterViewController.h */,
 				B27F789A1BD922F30038B4B0 /* ParameterViewController.m */,
+				B2AF44521C4568CA00B0F0F8 /* NotificationCell.h */,
+				B2AF44531C4568CA00B0F0F8 /* NotificationCell.m */,
 			);
 			name = Parameter;
 			sourceTree = "<group>";
@@ -1352,6 +1357,7 @@
 				B27F788B1BD9225A0038B4B0 /* MyChatsViewController.m in Sources */,
 				B23FA5B31BD5011B00868D12 /* AFURLResponseSerialization.m in Sources */,
 				B27F78C51BD9236F0038B4B0 /* Event+CoreDataProperties.m in Sources */,
+				B2AF44541C4568CA00B0F0F8 /* NotificationCell.m in Sources */,
 				B273897F1BE65D4200AF1209 /* OLFacebookImagePickerController.m in Sources */,
 				B2E4EB071BFD47C800D1CCA2 /* InterestListCell.m in Sources */,
 				B23FA52A1BD5011100868D12 /* BaseViewController.m in Sources */,

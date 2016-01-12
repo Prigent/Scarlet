@@ -51,7 +51,7 @@
 
 
 
--(void) updatePlacemark
+-(void) updatePlacemark:(void (^)(NSError* error)) onCompletion
 {
     if(_placemark==nil)
     {
@@ -61,12 +61,17 @@
         
         [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
          {
-             if (!(error))
+             if (!error)
              {
                  CLPlacemark * lCLPlacemark = [placemarks objectAtIndex:0];
                  _placemark = lCLPlacemark;
              }
+             onCompletion(nil);
          }];
+    }
+    else
+    {
+        onCompletion(nil);
     }
 }
 

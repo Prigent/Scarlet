@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
 @property (weak, nonatomic) IBOutlet UILabel *mMessage;
+@property (weak, nonatomic) IBOutlet UILabel *mDate;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mUserImage;
 

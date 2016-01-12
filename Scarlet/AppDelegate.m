@@ -11,6 +11,8 @@
 #import <Crashlytics/Crashlytics.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "ShareAppContext.h"
+#import "WSManager.h"
+
 @interface AppDelegate ()
 
 @end
@@ -40,6 +42,10 @@
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
     
 // [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    
+    UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+    
     return YES;
 }
 
@@ -51,6 +57,26 @@
             ];
 }
 
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString *tokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:tokenString forKey:@"DeviceToken"];
+        
+        if([ShareAppContext sharedInstance].user != nil)
+        {
+            [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
+                
+            }];
+        }
+    }
+}
+
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

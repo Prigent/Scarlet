@@ -310,9 +310,7 @@
             case 0:
             {
                 cellField.mIcn.image =[UIImage imageNamed:@"icnCalendar"];
-                
-                
-                NSString* datePart = [NSDateFormatter localizedStringFromDate: self.date dateStyle: NSDateFormatterShortStyle timeStyle: NSDateFormatterShortStyle];
+                NSString* datePart = [NSDateFormatter localizedStringFromDate: self.date dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
                 cellField.mTitle.text = [datePart capitalizedString];
             }
             break;

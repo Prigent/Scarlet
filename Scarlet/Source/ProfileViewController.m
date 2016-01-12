@@ -53,7 +53,8 @@
     {
         self.title = self.mProfile.firstName;
         [[WSManager sharedInstance] getMutualfriend:self.mProfile completion:^(NSError *error) {
-            [self updateView];
+            
+            [self.mTableView reloadData];
         }];
         
         UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];

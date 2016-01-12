@@ -48,7 +48,7 @@
         }
         else if( i == [self.mData count])
         {
-          self.mTitleLabel.text = [NSString stringWithFormat:@"%@ %@ %@",self.mTitleLabel.text , @"and", lProfile.firstName ];
+          self.mTitleLabel.text = [NSString stringWithFormat:@"%@ %@ %@",self.mTitleLabel.text ,  NSLocalizedString(@"and", @"and"), lProfile.firstName ];
         }
         else
         {

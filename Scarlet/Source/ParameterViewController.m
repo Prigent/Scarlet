@@ -9,7 +9,7 @@
 #import "ParameterViewController.h"
 #import "WSParser.h"
 #import "ShareAppContext.h"
-
+#import "WSManager.h"
 @interface ParameterViewController ()
 
 @end
@@ -20,7 +20,24 @@
     [super viewDidLoad];
     self.title = @"Settings";
     // Do any additional setup after loading the view.
+    
+    [[WSManager sharedInstance] getNotificationConfiguration:^(NSError *error) {
+        [self.mTableView reloadData];
+    }];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 1 && buttonIndex == 1)
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }
+}
+
+
+
+
+
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -33,7 +50,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [[[ShareAppContext sharedInstance].notificationDic allKeys] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -51,13 +68,37 @@
     return @"Notifications";
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    
+    NSString * lKey = [[[ShareAppContext sharedInstance].notificationDic allKeys] objectAtIndex:indexPath.row];
+    
+    NSNumber * lValue = [[[ShareAppContext sharedInstance].notificationDic allValues] objectAtIndex:indexPath.row];
+    lValue = [NSNumber numberWithBool:![lValue boolValue]];
+
+    
+    if(![[UIApplication sharedApplication] isRegisteredForRemoteNotifications])
+    {
+        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"no_push_configuration", nil) delegate:self cancelButtonTitle:@"Annuler" otherButtonTitles:@"Configurer", nil];
+        lUIAlertView.tag = 1;
+        [lUIAlertView show];
+    }
+    else
+    {
+        [[WSManager sharedInstance] setNotificationConfiguration:lKey andValue:lValue completion:^(NSError *error) {
+            [self.mTableView reloadData];
+        }];
+    }
+
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NotificationCell"];
     if([cell respondsToSelector:@selector(configure:)])
     {
-        [cell performSelector:@selector(configure:) withObject:[WSParser getProfiles]];
+        [cell performSelector:@selector(configure:) withObject:@[[[[ShareAppContext sharedInstance].notificationDic allKeys] objectAtIndex:indexPath.row],[[[ShareAppContext sharedInstance].notificationDic allValues] objectAtIndex:indexPath.row] ]];
     }
     return cell;
 }

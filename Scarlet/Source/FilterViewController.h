@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *mCurrentRadiusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mCurrentMoodLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mCurrentTimeLabel;
+@property (weak, nonatomic) IBOutlet UISlider *mCurrentRadiusSlider;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "LocationSearchDataSource.h"
+#import "ShareAppContext.h"
 
 @implementation LocationSearchDataSource
 
@@ -14,6 +15,8 @@
 {
     if ((self = [super init])) {
         //self.mTimer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(searchLocation) userInfo:nil repeats:true];
+        
+        self.mData = [NSMutableArray arrayWithObject: [[MKMapItem alloc] initWithPlacemark:[ShareAppContext sharedInstance].placemark]];
     }
     return self;
 }
@@ -35,15 +38,27 @@
     
     MKMapItem * lItem = [self.mData objectAtIndex:indexPath.row];
     CLPlacemark* aPlacemark = lItem.placemark;
-    NSString *locatedAt = [[aPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
-    if(locatedAt != nil)
+    if(indexPath.row == 0)
     {
-        cell.textLabel.text =  [[NSString alloc]initWithString:locatedAt];
+        cell.textLabel.text =  @"Around me";
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icoLocation"]];
+        cell.accessoryView = imageView;
     }
     else
     {
-        cell.textLabel.text =  @"";
+        NSString *locatedAt = [[aPlacemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+        if(locatedAt != nil)
+        {
+            cell.textLabel.text =  [[NSString alloc]initWithString:locatedAt];
+        }
+        else
+        {
+            cell.textLabel.text =  @"";
+        }
+        cell.accessoryView = nil;
     }
+    
+
     return cell;
 }
 
@@ -52,8 +67,15 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     MKMapItem * lItem = [self.mData objectAtIndex:indexPath.row];
-    CLPlacemark* aPlacemark = lItem.placemark;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:aPlacemark];
+    if(indexPath.row == 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:[ShareAppContext sharedInstance].placemark];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:lItem.placemark];
+    }
+
     
     [self.mSearchBar resignFirstResponder];
 }
@@ -63,7 +85,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(searchLocation) withObject:nil afterDelay:0.3];
+    [self performSelector:@selector(searchLocation) withObject:nil afterDelay:0.5];
 }
 
 
@@ -77,7 +99,7 @@
     if([self.mSearchBar.text length] == 0 && self.mLastSearch !=nil)
     {
         self.mLastSearch = nil;
-        self.mData = @[];
+        self.mData = [NSMutableArray arrayWithObject: [[MKMapItem alloc] initWithPlacemark:[ShareAppContext sharedInstance].placemark]];
         [self.mTableView reloadData];
     }
     else if(![self.mSearchBar.text isEqualToString:self.mLastSearch])
@@ -96,8 +118,10 @@
     self.mLocalSearch = [[MKLocalSearch alloc] initWithRequest:request];
     [self.mLocalSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error)
      {
-         self.mData = response.mapItems;
-         NSLog(@"search %@",self.mData);
+         self.mData = [NSMutableArray arrayWithArray:response.mapItems];
+         [self.mData  insertObject:[[MKMapItem alloc] initWithPlacemark:[ShareAppContext sharedInstance].placemark] atIndex:0];
+         
+
          [self.mTableView reloadData];
      }];
 }

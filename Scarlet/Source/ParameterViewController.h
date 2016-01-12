@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-@interface ParameterViewController : BaseViewController
+@interface ParameterViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
+@property (weak, nonatomic) IBOutlet UITableView *mTableView;
 
 @end

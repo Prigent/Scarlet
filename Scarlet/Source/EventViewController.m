@@ -97,6 +97,12 @@
 
 -(void) profilelistselected:(NSNotification*) notification
 {
+    if(self.mBottomContainer.constant == 0)
+    {
+        [self closeDemand:nil];
+        return;
+    }
+    
     id data = [notification object];
     
     if([data isKindOfClass: [Profile class]])

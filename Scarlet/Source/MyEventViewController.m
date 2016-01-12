@@ -106,6 +106,17 @@
         if(status == 2)
         {
             self.mHeighEditButton.constant = 0;
+            CGRect frame = self.tableView.tableHeaderView.frame;
+            frame.size.height = 600;
+            [self.tableView.tableHeaderView setFrame:frame];
+            [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
+        }
+        else
+        {
+            CGRect frame = self.tableView.tableHeaderView.frame;
+            frame.size.height = 642;
+            [self.tableView.tableHeaderView setFrame:frame];
+            [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         }
     }
     else
@@ -113,8 +124,12 @@
         NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(event.identifier == %@) AND ((leader.identifier == %@) OR ( ANY partners.identifier == %@) )",self.mEvent.identifier, [ShareAppContext sharedInstance].userIdentifier , [ShareAppContext sharedInstance].userIdentifier];
         [self updateWithPredicate:lNSPredicate];
         
+        CGRect frame = self.tableView.tableHeaderView.frame;
+        frame.size.height = 570;
+        [self.tableView.tableHeaderView setFrame:frame];
+        [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         
-
+        
         self.mHeighEditButton.constant = 0;
         self.title = [NSString stringWithFormat:@"%@'s Scarlet", self.mEvent.leader.firstName];
         

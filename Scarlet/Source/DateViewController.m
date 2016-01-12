@@ -38,10 +38,7 @@
     }
     [self.mDatePicker setDate:self.mDate animated:true];
     
-    NSString* datePart = [NSDateFormatter localizedStringFromDate: self.mDate dateStyle: NSDateFormatterShortStyle timeStyle: NSDateFormatterShortStyle];
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE dd MMMM  h:mm a"];
-    
+    NSString* datePart = [NSDateFormatter localizedStringFromDate: self.mDate dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
     _mDateLabel.text = [datePart capitalizedString];
     
     [self.mDatePicker setMinimumDate:[NSDate date]];
@@ -71,11 +68,15 @@
 
 - (IBAction)pickDate:(UIDatePicker*)sender {
     
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"EEEE dd MMMM  h:mm a"];
-    _mDateLabel.text = [format stringFromDate:sender.date];
     
     self.mDate = sender.date;
+    
+    
+    NSString* datePart = [NSDateFormatter localizedStringFromDate: self.mDate dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
+    _mDateLabel.text = [datePart capitalizedString];
+    
+
+
     
     if(self.filter)
     {

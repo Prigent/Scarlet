@@ -204,8 +204,21 @@
             [[ShareAppContext sharedInstance] setFirstStarted:[[responseObject valueForKey:@"is_new"] boolValue]];
             [self getProfilsCompletion:^(NSError *error) {
                 [self getUserCompletion:^(NSError *error) {
-                    [[ShareAppContext sharedInstance].managedObjectContext save:nil];
-                    onCompletion(nil);
+                    
+                    if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] != nil) {
+                        if([ShareAppContext sharedInstance].user != nil)
+                        {
+                            [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
+                                [[ShareAppContext sharedInstance].managedObjectContext save:nil];
+                                onCompletion(nil);
+                            }];
+                        }
+                    }
+                    else
+                    {
+                        [[ShareAppContext sharedInstance].managedObjectContext save:nil];
+                        onCompletion(nil);
+                    }
                 }];
             }];
         }
@@ -506,10 +519,16 @@
         if(error == nil)
         {
             [ShareAppContext sharedInstance].user = [WSParser addUser:[responseObject valueForKey:@"user"]];
-            [[ShareAppContext sharedInstance] updatePlacemark];
+            [[ShareAppContext sharedInstance] updatePlacemark:^(NSError *error) {
+                    onCompletion(error);
+            }];
+        }
+        else
+        {
+            onCompletion(error);
         }
         [self manageError:error];
-        onCompletion(error);
+
     }
     failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
@@ -677,6 +696,62 @@
          onCompletion(error);
      }];
 }
+
+
+- (void)getNotificationConfiguration:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/notification"];
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             NSDictionary* lAllNotification= [responseObject valueForKey:@"notifications"];
+             [ShareAppContext sharedInstance].notificationDic = lAllNotification;
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
+- (void)setNotificationConfiguration:(NSString*) key andValue:(NSNumber*) value completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/notification"];
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    [param setObject:value forKey:key];
+    
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             NSDictionary* lAllNotification= [responseObject valueForKey:@"notifications"];
+             [ShareAppContext sharedInstance].notificationDic = lAllNotification;
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
 
 - (void)getMutualfriend:(Profile*) profile completion:(void (^)(NSError* error)) onCompletion
 {

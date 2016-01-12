@@ -23,6 +23,7 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar
      setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:76/255. alpha:1]}];
+
     
    // self.mLoadingViewGeneric = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil] objectAtIndex:0];
     CGRect frameLoading = self.view.frame;

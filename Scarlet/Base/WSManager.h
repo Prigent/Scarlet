@@ -34,7 +34,9 @@ typedef enum {
 - (void)getMessagesForChat:(Chat*) chat completion:(void (^)(NSError* error)) onCompletion;
 - (void)getChatsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion;
+- (void)getNotificationConfiguration:(void (^)(NSError* error)) onCompletion;
 
+- (void)setNotificationConfiguration:(NSString*) key andValue:(NSNumber*) value completion:(void (^)(NSError* error)) onCompletion;
 - (void)saveUserCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)addDemand:(Event*) event partner:(NSArray*) partnerIdentifier completion:(void (^)(NSError* error)) onCompletion;
 - (void)removeDemand:(NSString*) demandID completion:(void (^)(NSError* error)) onCompletion;

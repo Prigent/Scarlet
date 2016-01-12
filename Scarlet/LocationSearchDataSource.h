@@ -11,7 +11,7 @@
 
 @interface LocationSearchDataSource : NSObject<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>
 
-@property (nonatomic, strong) NSArray * mData;
+@property (nonatomic, strong) NSMutableArray * mData;
 @property (nonatomic, strong) MKLocalSearch * mLocalSearch;
 @property (nonatomic, strong) UITableView * mTableView;
 @property (nonatomic, strong) UISearchBar * mSearchBar;

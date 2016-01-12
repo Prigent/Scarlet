@@ -42,23 +42,19 @@
          self.mLastMessageImage.image = nil;
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         _mLastMessageOwner.text = chat.event.leader.firstName;
-        _mLastMessageText.text  = @"No message";
+        _mLastMessageText.text  = @"";
         _mDateMessage.text = [formatDate stringFromDate:chat.event.date];
         _mHoursMessage.text = @"";
     }
     
-    self.mProfileListText.text = @"";
+    self.mProfileListText.text = chat.event.leader.firstName;
     for(int i=0 ; i< [chat.event.partners count] ; i++)
     {
         Profile* lProfile = [[chat.event.partners allObjects]objectAtIndex:i];
         i++;
-        if( i == 1)
+        if( i == [chat.event.partners count])
         {
-            self.mProfileListText.text = lProfile.firstName;
-        }
-        else if( i == [chat.event.partners count])
-        {
-            self.mProfileListText.text = [NSString stringWithFormat:@"%@ %@ %@",self.mProfileListText.text , @"and", lProfile.firstName ];
+            self.mProfileListText.text = [NSString stringWithFormat:@"%@ %@ %@",self.mProfileListText.text , NSLocalizedString(@"and", @"and"), lProfile.firstName ];
         }
         else
         {

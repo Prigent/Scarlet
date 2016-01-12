@@ -9,7 +9,7 @@
 #import "BaseViewController.h"
 
 @interface MoodViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, strong) NSArray * mData;
+@property (nonatomic, strong) NSMutableArray * mData;
 @property (nonatomic, strong) NSString * mMood;
 @property ( nonatomic) BOOL filter;
 @end

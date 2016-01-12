@@ -1,10 +1,12 @@
 "menu.search" = "Search";
 "menu.addfriend" = "Browse Scarlet members";
+"menu.chat" = "Conversations";
+"menu.message" = "Conversations";
 "menu.event" = "Your Scarlet";
 "at" = "à";
 "today" = "aujourd'hui";
 "tomorrow" = "demain";
-
+"and" = "et";
 
 "ecranOnboarding01" = "Check out other Scarlet group profiles in your area";
 "ecranOnboarding02" = "Create your team and send an invite to a group you like";

@@ -23,12 +23,12 @@
 @property (strong, nonatomic) NSString* userIdentifier;
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (strong, nonatomic) CLPlacemark *placemark;
-
+@property (strong, nonatomic) NSDictionary* notificationDic;
 @property (strong, nonatomic) NSString* currentMood;
 @property (strong, nonatomic) NSDate* currentDate;
 @property (nonatomic) double currentRadius;
 
--(void) updatePlacemark;
+-(void) updatePlacemark:(void (^)(NSError* error)) onCompletion;
 
 @property (strong, nonatomic) User* user;
 
