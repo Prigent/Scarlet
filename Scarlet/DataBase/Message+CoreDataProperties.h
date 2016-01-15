@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *text;
 @property (nullable, nonatomic, retain) Chat *chat;
 @property (nullable, nonatomic, retain) Profile *owner;
-
+@property (nullable, nonatomic, retain) NSNumber* readStatus;
 @end
 
 NS_ASSUME_NONNULL_END

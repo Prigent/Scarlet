@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *isMine;
 @property (nullable, nonatomic, retain) Event *event;
 @property (nullable, nonatomic, retain) NSOrderedSet<Message *> *messages;
+@property (nullable, nonatomic, retain) NSDate * lastMessageDate;
 
 @end
 

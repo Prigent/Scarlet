@@ -17,5 +17,5 @@
 @dynamic isMine;
 @dynamic event;
 @dynamic messages;
-
+@dynamic lastMessageDate;
 @end

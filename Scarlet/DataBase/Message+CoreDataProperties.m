@@ -18,5 +18,5 @@
 @dynamic text;
 @dynamic chat;
 @dynamic owner;
-
+@dynamic readStatus;
 @end

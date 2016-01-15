@@ -55,6 +55,10 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
 
+    
+    UIBarButtonItem *backButtonItemSave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(saveBack)];
+    self.navigationItem.rightBarButtonItem = backButtonItemSave;
+    
     self.title = @"Edit profile";
 }
 
@@ -64,7 +68,29 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Loading";
+    
+    [[ShareAppContext sharedInstance].user.managedObjectContext refreshObject:[ShareAppContext sharedInstance].user mergeChanges:NO];
+     
+     
+     [hud hide:YES];
+     CATransition* transition = [CATransition animation];
+     transition.duration = 0.5;
+     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+     transition.type = kCATransitionReveal; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+     transition.subtype = kCATransitionFromBottom; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+     [self.navigationController.view.layer addAnimation:transition forKey:nil];
+     
+     [self.navigationController popViewControllerAnimated:NO];
+    
+}
 
+
+-(void) saveBack {
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Loading";
+    
     
     [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
         
@@ -81,6 +107,9 @@
         
     }];
 }
+
+
+
 
 
 -(void) viewDidLayoutSubviews

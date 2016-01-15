@@ -13,7 +13,7 @@
 #import "Picture.h"
 #import "Message.h"
 #import "UIImageView+AFNetworking.h"
-
+#import "Address.h"
 @implementation MyChatCell
 
 -(void) configure:(Chat*) chat
@@ -29,12 +29,11 @@
         self.mLastMessageImage.image = nil;
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         
-        NSDateFormatter *formatHours = [[NSDateFormatter alloc] init];
-        [formatHours setDateFormat:@"HH:mm"];
-     
+        NSString* datePart = [NSDateFormatter localizedStringFromDate:lMessage.date dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
+        self.mDateMessage.text = [datePart uppercaseString];
+
         
-        _mDateMessage.text = [formatDate stringFromDate:lMessage.date];
-        _mHoursMessage.text = [formatHours stringFromDate:lMessage.date];
+        _mReadStatus.hidden = [lMessage.readStatus boolValue];
     }
     else
     {
@@ -43,7 +42,7 @@
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         _mLastMessageOwner.text = chat.event.leader.firstName;
         _mLastMessageText.text  = @"";
-        _mDateMessage.text = [formatDate stringFromDate:chat.event.date];
+        _mDateMessage.text = @"";
         _mHoursMessage.text = @"";
     }
     
@@ -61,6 +60,12 @@
             self.mProfileListText.text = [NSString stringWithFormat:@"%@, %@",self.mProfileListText.text, lProfile.firstName ];
         }
     }
+    
+    
+    
+    _mAdressLabel.text  = [NSString stringWithFormat:@"%@",chat.event.address.street];
+    _mSheduleLabel.text = [chat.event getDateString];
+    
     
 }
 

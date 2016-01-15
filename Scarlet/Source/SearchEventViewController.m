@@ -46,7 +46,7 @@ const int kDefaultRadius = 7000;
         if ([object isKindOfClass:[UITextField class]])
         {
             UITextField *textFieldObject = (UITextField *)object;
-            textFieldObject.textColor =  [UIColor colorWithWhite:0.2 alpha:1];
+            textFieldObject.textColor =  [UIColor colorWithWhite:0.2 alpha:0.7];
             textFieldObject.font = [UIFont systemFontOfSize:16];
             textFieldObject.layer.borderColor = [[UIColor colorWithWhite:0.87 alpha:1] CGColor];
             textFieldObject.layer.borderWidth = 1.0;

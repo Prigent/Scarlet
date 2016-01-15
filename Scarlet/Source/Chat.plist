@@ -8,7 +8,7 @@
 		<key>entityName</key>
 		<string>Chat</string>
 		<key>sortProperty</key>
-		<string>identifier</string>
+		<string>lastMessageDate</string>
 		<key>cellIdentifier</key>
 		<string>MyChatCell</string>
 		<key>sortOrder</key>

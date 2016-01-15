@@ -343,13 +343,14 @@
     }
     chat.identifier = [chatDic valueForKey:@"identifier"];
     chat.isMine = [NSNumber numberWithBool:true];
+    
     NSDictionary* lLastMessage = [chatDic valueForKey:@"lastMessage"];
     if([lLastMessage isKindOfClass:[NSDictionary class]])
     {
         [chat removeMessages:chat.messages];
         [chat addMessagesObject:[WSParser addMessage:lLastMessage]];
     }
-    
+    chat.lastMessageDate = [chat.messages lastObject].date;
     
     return chat;
 }

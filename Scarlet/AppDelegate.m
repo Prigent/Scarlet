@@ -42,9 +42,10 @@
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
     
 // [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
     
-    UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+    
+    NSLog(@"Token %@", [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]);
     
     return YES;
 }
@@ -58,12 +59,25 @@
 }
 
 
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    //register to receive notifications
+    [application registerForRemoteNotifications];
+}
+
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSString *tokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    
+    NSLog(@"tokenString : %@", tokenString);
+    
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] == nil) {
         [[NSUserDefaults standardUserDefaults] setValue:tokenString forKey:@"DeviceToken"];
-        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"%@",tokenString);
         if([ShareAppContext sharedInstance].user != nil)
         {
             [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
@@ -75,7 +89,7 @@
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError %@" , error);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

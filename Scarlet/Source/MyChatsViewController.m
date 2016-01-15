@@ -29,9 +29,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =false;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [self updateData];
-    
-    
 }
 
 -(void) updateData
@@ -43,24 +46,18 @@
             NSLog(@"%@", error);
         }
         [self.uiRefreshControl endRefreshing];
+        
+        [self.tableView reloadData];
     }];
 }
 
--(void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.tableView reloadData];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [self.mSearchField resignFirstResponder];
-}
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [_mSearchField resignFirstResponder];

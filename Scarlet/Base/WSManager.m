@@ -681,6 +681,8 @@
          if(error == nil)
          {
              NSArray* lAllChats= [responseObject valueForKey:@"chat"];
+             
+              NSLog(@"lAllChats %@",lAllChats);
              for(NSDictionary * lDicChat in lAllChats)
              {
                  NSLog(@"lDicChat %@",lDicChat);

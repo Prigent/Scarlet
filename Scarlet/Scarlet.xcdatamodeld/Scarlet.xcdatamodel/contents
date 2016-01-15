@@ -9,6 +9,7 @@
     <entity name="Chat" representedClassName="Chat" syncable="YES">
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isMine" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="lastMessageDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="chat" inverseEntity="Event" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Message" inverseName="chat" inverseEntity="Message" syncable="YES"/>
     </entity>
@@ -57,6 +58,7 @@
     <entity name="Message" representedClassName="Message" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="readStatus" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="messages" inverseEntity="Chat" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Profile" inverseName="messages" inverseEntity="Profile" syncable="YES"/>
@@ -97,13 +99,13 @@
     </entity>
     <elements>
         <element name="Address" positionX="-110" positionY="-234" width="128" height="103"/>
-        <element name="Chat" positionX="-236" positionY="-37" width="128" height="105"/>
+        <element name="Chat" positionX="-236" positionY="-37" width="128" height="118"/>
         <element name="Demand" positionX="70" positionY="-97" width="128" height="148"/>
         <element name="Event" positionX="-20" positionY="126" width="128" height="240"/>
         <element name="FacebookProfile" positionX="79" positionY="-441" width="128" height="103"/>
         <element name="FriendRequest" positionX="619" positionY="-394" width="128" height="135"/>
         <element name="Interest" positionX="612" positionY="-243" width="128" height="73"/>
-        <element name="Message" positionX="-252" positionY="-355" width="128" height="118"/>
+        <element name="Message" positionX="-234" positionY="-441" width="128" height="133"/>
         <element name="Picture" positionX="612" positionY="-99" width="128" height="73"/>
         <element name="Profile" positionX="306" positionY="-360" width="128" height="328"/>
         <element name="User" positionX="304" positionY="-558" width="128" height="150"/>

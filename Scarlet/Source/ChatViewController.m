@@ -29,6 +29,7 @@
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Message" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
     
+    self.tableView.alpha = 0;
     
     
     NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"chat.identifier == %@", self.mChat.identifier];
@@ -54,32 +55,61 @@
     self.title = customTitle;
 }
 
+-(void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
+    [self performSelector:@selector(updateData) withObject:nil afterDelay:10];
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
 
 
 -(void) updateData
 {
-    if(!self.uiRefreshControl.isRefreshing)
-    {
-        [self.uiRefreshControl beginRefreshing];
-        [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
+    NSInteger currentCount = [self.mChat.messages count];
+
+    [self.uiRefreshControl beginRefreshing];
+    [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
             if(error)
             {
                 NSLog(@"%@", error);
             }
-            [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
+            
+            NSInteger newCount = [self.mChat.messages count];
+            if(currentCount != newCount)
+            {
+                [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
+            }
+
             [self.uiRefreshControl endRefreshing];
-            
-            
-            //[self performSelector:@selector(updateData) withObject:nil afterDelay:10];
-            
+
+            for(Message* lMessage in self.mChat.messages)
+            {
+                lMessage.readStatus = [NSNumber numberWithBool:true];
+            }
             [self.tableView reloadData];
-        }];
-    }
+        
+        
+        
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
+            [self performSelector:@selector(updateData) withObject:nil afterDelay:10];
+            
+    }];
 }
 
 
 -(void) scroolToBottom
 {
+    self.tableView.alpha = 1;
+    
+    
     CGFloat yOffset = 0;
     
     if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
@@ -111,7 +141,7 @@
     
 
     
-    [_mBottomLayout setConstant:(8+keyboardFrame.size.height)];
+    [_mBottomLayout setConstant:(8+keyboardFrame.size.height-50)];
     [UIView animateWithDuration:0.5
                      animations:^{
                          [self.view layoutIfNeeded]; // Called on parent view
@@ -153,11 +183,6 @@
 
 
 
--(void) viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 -(void) configure:(Chat*) chat
 {
     self.mChat = chat;
@@ -237,7 +262,7 @@
     }
     else
     {
-        CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 36-8-28 ,1000);
+        CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 38-8-28 ,1000);
         CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
         
         
