@@ -22,6 +22,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mTopFilter;
 @property (weak, nonatomic) IBOutlet UICollectionView *mMapList;
 @property (strong, nonatomic) CLPlacemark* mLocationSearch;
+@property (strong, nonatomic) NSTimer* mUpdateFilter;
+@property (strong, nonatomic) NSMutableArray* mEventInMap;
+@property (strong, nonatomic) NSArray* mEvents;
+
 
 @property (weak, nonatomic) IBOutlet UITableView *mTableViewLocation;
 @property (strong, nonatomic)  LocationSearchDataSource* mLocationSearchDataSource;

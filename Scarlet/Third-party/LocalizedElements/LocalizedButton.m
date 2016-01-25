@@ -15,8 +15,8 @@
     {
         [self setTitle:NSLocalizedString(self.titleLabel.text, @"") forState:UIControlStateNormal];
         
-        self.layer.cornerRadius = 5;
-        self.clipsToBounds = YES;
+        //self.layer.cornerRadius = 5;
+        //self.clipsToBounds = YES;
         /*
         UIColor* color = self.backgroundColor;
         [self setBackgroundImage:[self imageFromColor:color] forState:UIControlStateNormal];

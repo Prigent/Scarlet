@@ -54,15 +54,15 @@
     {
         case 1:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
-            _mStatusLabel.text = @"Request accepted !";
+            _mStatusLabel.text = NSLocalizedString(@"request_accepted", nil);
             break;
         case 2:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text = @"Request rejected !";
+            _mStatusLabel.text =  NSLocalizedString(@"request_rejected", nil);
             break;
         case 3:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
-            _mStatusLabel.text = @"Request pending !";
+            _mStatusLabel.text =  NSLocalizedString(@"request_pending", nil);
             break;
         default:
             break;

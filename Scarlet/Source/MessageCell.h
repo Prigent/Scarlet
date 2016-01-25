@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class Message;
 @interface MessageCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
 @property (weak, nonatomic) IBOutlet UILabel *mMessage;
 @property (weak, nonatomic) IBOutlet UILabel *mDate;
-
+@property (weak, nonatomic) IBOutlet UITextView *mMessageView;
 @property (weak, nonatomic) IBOutlet UIImageView *mUserImage;
 
+@property (strong, nonatomic) Message * mMessageObject;
 
 @end

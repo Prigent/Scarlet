@@ -56,10 +56,10 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
 
     
-    UIBarButtonItem *backButtonItemSave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(saveBack)];
+    UIBarButtonItem *backButtonItemSave = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save",nil) style:UIBarButtonItemStyleDone target:self action:@selector(saveBack)];
     self.navigationItem.rightBarButtonItem = backButtonItemSave;
     
-    self.title = @"Edit profile";
+    self.mCustomTitle = NSLocalizedString(@"edit_profile",nil);//@"Edit profile";
 }
 
 
@@ -67,7 +67,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading",nil);
     
     [[ShareAppContext sharedInstance].user.managedObjectContext refreshObject:[ShareAppContext sharedInstance].user mergeChanges:NO];
      
@@ -89,7 +89,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading",nil);
     
     
     [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
@@ -397,10 +397,10 @@
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:return @"Occupation";
-        case 1:return @"About you";
-        case 2:return @"Looking for";
-        case 3:return @"Aged between";
+        case 0:return NSLocalizedString(@"occupation",nil);//@"Occupation";
+        case 1:return NSLocalizedString(@"about_you",nil);//@"About you";
+        case 2:return NSLocalizedString(@"looking_for",nil);//@"Looking for";
+        case 3:return NSLocalizedString(@"aged_between",nil);//@"Aged between";
             
         default:return @"";
     }
@@ -431,9 +431,6 @@
         {
             SexCell * cellSex = [tableView dequeueReusableCellWithIdentifier:@"SexCell"];
             int index = ![[ShareAppContext sharedInstance].user.lookingFor boolValue];
-            NSLog(@"SexCell look %@", [ShareAppContext sharedInstance].user.lookingFor);
-            
-            NSLog(@"SexCell %d", index);
             [cellSex.sexSegment setSelectedSegmentIndex:index];
              return cellSex;
             break;
@@ -538,12 +535,10 @@
 
 - (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didFinishPickingImages:(NSArray *)images {
     [self dismissViewControllerAnimated:YES completion:nil];
-    NSLog(@"User did pick %lu images", (unsigned long) images.count);
 }
 
 - (void)facebookImagePickerDidCancelPickingImages:(OLFacebookImagePickerController *)imagePicker {
     [self dismissViewControllerAnimated:YES completion:nil];
-    NSLog(@"User cancelled facebook image picking");
 }
 
 - (void)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker didSelectImage:(OLFacebookImage *)imageFB

@@ -34,7 +34,13 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self updateData];
+    [[WSManager sharedInstance] getChatsCompletion:^(NSError *error) {
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+        [self.tableView reloadData];
+    }];
 }
 
 -(void) updateData

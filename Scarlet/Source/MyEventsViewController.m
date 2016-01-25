@@ -26,7 +26,7 @@
     self.navigationController.navigationBarHidden =true;
     
     
-    [self.mSegmentedControl setSectionTitles:@[@"INCOMMING",@"PAST"] ];
+    [self.mSegmentedControl setSectionTitles:@[NSLocalizedString(@"incomming",nil),NSLocalizedString(@"past",nil)] ];
     self.mSegmentedControl.textColor = [UIColor lightGrayColor];
     self.mSegmentedControl.selectedTextColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
     self.mSegmentedControl.selectionIndicatorColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
@@ -41,10 +41,6 @@
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
 
     [self changeSegment:nil];
-    
-    [self updateData];
-    
-
 }
 
 -(void) updateData
@@ -67,6 +63,8 @@
 }
 
 
+
+
 -(void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -81,13 +79,13 @@
    
     if(self.mSegmentedControl.selectedSegmentIndex == 0)
     {
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND sort == 0",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"isMine == 1 AND sort == 0"];
         [self updateWithPredicate:lNSPredicate];
         
     }
     else
     {
-        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0) AND sort == 1",[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier];
+        NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"isMine == 1 AND sort == 1"];
         [self updateWithPredicate:lNSPredicate];
     }
 }
@@ -122,6 +120,7 @@
     
     [self.tableView reloadData];
     
+    [self updateData];
     
 }
 - (void)didReceiveMemoryWarning {

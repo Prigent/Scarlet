@@ -32,5 +32,5 @@
 @dynamic pictures;
 @dynamic suggest;
 @dynamic mutualFriends;
-
+@dynamic didUpdate;
 @end

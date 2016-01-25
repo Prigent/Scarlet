@@ -165,7 +165,7 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading",nil);
     
 
     [[WSManager sharedInstance] authentification: [FBSDKAccessToken currentAccessToken].tokenString completion:^(NSError *error) {
@@ -173,11 +173,14 @@
         {
             [hud hide:YES];
             [self performSegueWithIdentifier:@"showTabView" sender:self];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+            
+            [[ShareAppContext sharedInstance] startLocation];
         }
         else
         {
             [hud hide:YES];
-            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:@"Retry", nil];
+            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"retry",nil), nil];
             [lUIAlertView show];
         }
     }];

@@ -32,6 +32,7 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
+
     
     
     [self.mSearchBar setBackgroundImage:[[UIImage alloc]init]];
@@ -65,7 +66,6 @@
     
     [self.navigationController popViewControllerAnimated:NO];
 }
-
 
 
 

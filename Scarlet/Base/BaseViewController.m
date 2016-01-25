@@ -46,7 +46,10 @@
         lItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         lItem.titlePositionAdjustment = UIOffsetMake(0, 100);
     }
-    self.navigationController.navigationBar.topItem.title = @"";
+   // if(self.navigationItem.backBarButtonItem !=nil)
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:self.navigationItem.backBarButtonItem.style target:nil action:nil];
+  //  [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+ //   self.navigationController.navigationBar.topItem.title = @"";
 }
 
 -(BOOL)hidesBottomBarWhenPushed
@@ -73,8 +76,14 @@
     [super viewWillAppear:animated];
     if(self.customReturn && [self.navigationController.viewControllers count]>1)
     {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Fermer" style:UIBarButtonItemStyleDone target:self action:@selector(close)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"close", nil) style:UIBarButtonItemStyleDone target:self action:@selector(close)];
     }
+    
+    if(self.mCustomTitle.length>0 )
+    {
+        [self setTitle:self.mCustomTitle];
+    }
+
 }
 
 -(void) close
@@ -96,9 +105,12 @@
     self.mViewDictionnary = dic;
     if([dic isKindOfClass:[NSDictionary class]])
     {
-        self.title = [NSLocalizedString([dic valueForKey:@"name"],[dic valueForKey:@"name"]) capitalizedString];
+        self.mCustomTitle =  [NSLocalizedString([dic valueForKey:@"name"],[dic valueForKey:@"name"]) capitalizedString];;
+        self.title = self.mCustomTitle;
     }
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

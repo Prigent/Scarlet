@@ -17,6 +17,8 @@
 #import "ShareAppContext.h"
 #import "User.h"
 #import "Event.h"
+#import "Message.h"
+
 #import "NSData+Base64.h"
 
 #import <sys/utsname.h>
@@ -88,16 +90,14 @@
          NSError * error  =  [self checkResponse:responseObject];
          if(error == nil)
          {
-            [WSParser addEvent:[responseObject valueForKey:@"event"]];
+            Event * lEvent = [WSParser addEvent:[responseObject valueForKey:@"event"]];
+            lEvent.isMine = [NSNumber numberWithBool:true];
          }
          [self manageError:error];
          onCompletion(error);
      }
           failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         
-         NSString* newStr = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
-         NSLog(@" operation.responseString %@ %@ %@ %@ %@", operation.responseString, operation.responseObject, operation.responseData,newStr, operation.response);
          [self manageError:error];
          onCompletion(error);
      }];
@@ -112,19 +112,16 @@
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-          NSLog(@"editEvent %@ %@",param,responseObject);
-         
          NSError * error  =  [self checkResponse:responseObject];
          if(error == nil)
          {
-             [WSParser addEvent:[responseObject valueForKey:@"event"]];
+             [WSParser editEvent:[responseObject valueForKey:@"event"]];
          }
          [self manageError:error];
          onCompletion(error);
      }
           failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         NSLog(@" operation.responseString %@", operation.responseObject);
          [self manageError:error];
          onCompletion(error);
      }];
@@ -143,19 +140,16 @@
     
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-         NSLog(@"hideEvent %@ %@",param,responseObject);
-         
          NSError * error  =  [self checkResponse:responseObject];
          if(error == nil)
          {
-             [WSParser addEvent:[responseObject valueForKey:@"event"]];
+             [WSParser editEvent:[responseObject valueForKey:@"event"]];
          }
          [self manageError:error];
          onCompletion(error);
      }
          failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         NSLog(@" operation.responseString %@", operation.responseObject);
          [self manageError:error];
          onCompletion(error);
      }];
@@ -202,7 +196,6 @@
             [[ShareAppContext sharedInstance] setUserIdentifier:[responseObject valueForKey:@"profile_id"]];
             [[ShareAppContext sharedInstance] setAccessToken:[responseObject valueForKey:@"access_token"]];
             [[ShareAppContext sharedInstance] setFirstStarted:[[responseObject valueForKey:@"is_new"] boolValue]];
-            [self getProfilsCompletion:^(NSError *error) {
                 [self getUserCompletion:^(NSError *error) {
                     
                     if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] != nil) {
@@ -220,7 +213,6 @@
                         onCompletion(nil);
                     }
                 }];
-            }];
         }
         else
         {
@@ -328,7 +320,9 @@
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setObject:chat.identifier forKey:@"chat_request_identifier"];
-    [param setObject:message forKey:@"message"];
+    
+    NSData *msgData = [message dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+    [param setObject:[msgData base64EncodedString] forKey:@"message"];
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
 
@@ -371,14 +365,13 @@
          NSError * error  =  [self checkResponse:responseObject];
          if(error == nil)
          {
-             [WSParser addEvent:[responseObject valueForKey:@"event"]];
+             [WSParser editEvent:[responseObject valueForKey:@"event"]];
          }
          [self manageError:error];
          onCompletion(error);
      }
             failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         NSLog(@"removeDemand %@ %@", error, operation.responseObject);
          [self manageError:error];
          onCompletion(error);
      }];
@@ -481,9 +474,7 @@
     
     NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:[[ShareAppContext sharedInstance].user getDictionary]];
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
-    
-    NSLog(@"saveUserCompletion %@", param);
-    
+
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
@@ -518,6 +509,12 @@
         NSError * error  =  [self checkResponse:responseObject];
         if(error == nil)
         {
+            NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
+            for(NSDictionary * lDicProfile in lAllProfiles)
+            {
+                [WSParser addProfile:lDicProfile];
+            }
+            
             [ShareAppContext sharedInstance].user = [WSParser addUser:[responseObject valueForKey:@"user"]];
             [[ShareAppContext sharedInstance] updatePlacemark:^(NSError *error) {
                     onCompletion(error);
@@ -549,11 +546,22 @@
         NSError * error  =  [self checkResponse:responseObject];
         if(error == nil)
         {
+            NSLog(@"%@", responseObject);
+            
+            NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
+            for(NSDictionary * lDicProfile in lAllProfiles)
+            {
+                [WSParser addProfile:lDicProfile];
+            }
+            
+            [WSParser removeEventNotOwn];
+            
             NSArray* lAllEvents= [responseObject valueForKey:@"event"];
             for(NSDictionary * lDicEvent in lAllEvents)
             {
                 [WSParser addEvent:lDicEvent];
             }
+            NSLog(@"NB EVENT NOT OWN %ld", [lAllEvents count]);
         }
         [self manageError:error];
         onCompletion(error);
@@ -573,18 +581,19 @@
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
-    
-    
+
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSError * error  =  [self checkResponse:responseObject];
         if(error == nil)
         {
+            [WSParser resetProfileUpdate];
             NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
             for(NSDictionary * lDicProfile in lAllProfiles)
             {
                 [WSParser addProfile:lDicProfile];
             }
+            [WSParser removeProfileNotUpdate];
         }
         [self manageError:error];
         onCompletion(error);
@@ -616,11 +625,10 @@
             NSArray* lAllMessage= [responseObject valueForKey:@"message"];
             [chat removeMessages:chat.messages];
             
-            NSLog(@"lAllMessage %@", lAllMessage);
-            
             for(NSDictionary * lDicMessage in lAllMessage)
             {
-                [chat addMessagesObject:[WSParser addMessage:lDicMessage]];
+                Message * lMessage = [WSParser addMessage:lDicMessage];
+                [chat addMessagesObject:lMessage];
             }
         }
         [self manageError:error];
@@ -650,10 +658,18 @@
         NSError * error  =  [self checkResponse:responseObject];
         if(error == nil)
         {
+            NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
+            for(NSDictionary * lDicProfile in lAllProfiles)
+            {
+                [WSParser addProfile:lDicProfile];
+            }
+            
+            [WSParser removeEventOwn];
             NSArray* lAllEvents= [responseObject valueForKey:@"event"];
             for(NSDictionary * lDicEvent in lAllEvents)
             {
-                [WSParser addEvent:lDicEvent];
+                Event* lEvent = [WSParser addEvent:lDicEvent];
+                lEvent.isMine = [NSNumber numberWithBool:true];
             }
         }
         [self manageError:error];
@@ -678,17 +694,31 @@
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
+         int countUnRead = 0;
          if(error == nil)
          {
-             NSArray* lAllChats= [responseObject valueForKey:@"chat"];
+             NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
+             for(NSDictionary * lDicProfile in lAllProfiles)
+             {
+                 [WSParser addProfile:lDicProfile];
+             }
              
-              NSLog(@"lAllChats %@",lAllChats);
+             NSArray* lAllChats= [responseObject valueForKey:@"chat"];
              for(NSDictionary * lDicChat in lAllChats)
              {
-                 NSLog(@"lDicChat %@",lDicChat);
-                 [WSParser addChat:lDicChat];
+                 Chat * lChat = [WSParser addChat:lDicChat];
+                 Message * lMessage = [lChat.messages lastObject];
+                 if(lMessage !=nil && [lMessage.readStatus boolValue] == false)
+                 {
+                     countUnRead++;
+                 }
              }
          }
+         
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnread" object:[NSNumber numberWithInt:countUnRead]];
+         
+         
          [self manageError:error];
          onCompletion(error);
      }

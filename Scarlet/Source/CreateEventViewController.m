@@ -51,6 +51,7 @@
     if(self.mEvent)
     {
         [self editInit];
+        [self.mButton setTitle:NSLocalizedString(@"save_scarlet", nil) forState:UIControlStateNormal];
     }
     else
     {
@@ -74,10 +75,8 @@
     self.address = self.mEvent.address.street;
 
     self.coordinate =CLLocationCoordinate2DMake([self.mEvent.address.lat floatValue], [self.mEvent.address.longi floatValue]);
-    self.title = @"Edit Scarlet";
+    self.title = NSLocalizedString(@"edit_scarlet", nil);
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(createEvent)];
-    
 }
 
 -(void) createInit
@@ -98,14 +97,11 @@
     }
     else
     {
-        self.address = @"no address";
+        self.address = NSLocalizedString(@"no_address", nil);
     }
 
     
-    self.title = @"New Scarlet";
- 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(createEvent)];
-    
+    self.title = NSLocalizedString(@"new_scarlet", nil);
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -156,11 +152,11 @@
 }
 */
 
-- (void)createEvent {
+- (IBAction)createEvent:(id)sender {
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText =  NSLocalizedString(@"loading", nil);
     
 
     
@@ -386,7 +382,7 @@
     }
     else
     {
-        self.address = @"Default address";
+        self.address =  NSLocalizedString(@"no_address", nil);
     }
     self.coordinate = lLocation.location.coordinate;
     

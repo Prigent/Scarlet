@@ -30,9 +30,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UIBarButtonItem *openChatButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnChatOn"] style:UIBarButtonItemStylePlain target:self action:@selector(openChat)];
-    self.navigationItem.rightBarButtonItem = openChatButtonItem;
-
+    
+    NSInteger statusEvent = [self.mEvent.mystatus integerValue];
+    
+    if(statusEvent == 1 || statusEvent == 2 || statusEvent == 3 || statusEvent == 4)
+    {
+        UIBarButtonItem *openChatButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnChatOn"] style:UIBarButtonItemStylePlain target:self action:@selector(openChat)];
+        self.navigationItem.rightBarButtonItem = openChatButtonItem;
+    }
     [self.uiRefreshControl removeFromSuperview];
 }
 
@@ -61,7 +66,7 @@
 - (IBAction)switchHidden:(UISwitch*)sender {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading",nil);
     
 
     [[WSManager sharedInstance] hideEvent:self.mEvent status:[NSNumber numberWithBool:sender.on] completion:^(NSError *error) {
@@ -100,21 +105,21 @@
         NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"event.identifier == %@",self.mEvent.identifier];
         [self updateWithPredicate:lNSPredicate];
         
-        self.title = @"Your Scarlet";
+        self.title = NSLocalizedString(@"your_scarlet",nil);//@"Your Scarlet";
         self.cellIdentifier = @"DemandCell";
         
         if(status == 2)
         {
             self.mHeighEditButton.constant = 0;
             CGRect frame = self.tableView.tableHeaderView.frame;
-            frame.size.height = 600;
+            frame.size.height = 610;
             [self.tableView.tableHeaderView setFrame:frame];
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         }
         else
         {
             CGRect frame = self.tableView.tableHeaderView.frame;
-            frame.size.height = 642;
+            frame.size.height = 652;
             [self.tableView.tableHeaderView setFrame:frame];
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         }
@@ -125,7 +130,7 @@
         [self updateWithPredicate:lNSPredicate];
         
         CGRect frame = self.tableView.tableHeaderView.frame;
-        frame.size.height = 570;
+        frame.size.height = 580;
         [self.tableView.tableHeaderView setFrame:frame];
         [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         
@@ -173,7 +178,7 @@
 - (IBAction)cancelScarlet:(id)sender {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading",nil);
     
     Demand* lMyDemand = nil;
     

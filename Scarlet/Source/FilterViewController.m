@@ -38,7 +38,7 @@
     
     if( [ShareAppContext sharedInstance].currentMood == nil)
     {
-        _mCurrentMoodLabel.text = @"Select your mood";
+        _mCurrentMoodLabel.text = NSLocalizedString(@"select_mood",nil); //@"Select your mood";
         _mCurrentMoodLabel.alpha = 0.5;
     }
     else
@@ -49,7 +49,7 @@
 
     if( [ShareAppContext sharedInstance].currentDate == nil)
     {
-        _mCurrentTimeLabel.text = @"Select your date";
+        _mCurrentTimeLabel.text = NSLocalizedString(@"select_date",nil); //@"Select your date";
         _mCurrentTimeLabel.alpha = 0.5;
     }
     else

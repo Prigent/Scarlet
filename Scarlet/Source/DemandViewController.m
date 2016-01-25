@@ -152,7 +152,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading", nil);
     
     [[WSManager sharedInstance] respondDemand:self.mDemand.identifier status:[NSNumber numberWithInt:1] completion:^(NSError *error) {
         [hud hide:YES];
@@ -164,7 +164,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString(@"loading", nil);
     
     [[WSManager sharedInstance] respondDemand:self.mDemand.identifier status:[NSNumber numberWithInt:2] completion:^(NSError *error) {
         [hud hide:YES];

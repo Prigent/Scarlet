@@ -26,9 +26,17 @@
 {
     self.mEvent = event;
 
-    
-    _mCountPeople.text =  [NSString stringWithFormat:@"%ld peoples are in",[event getCountMember]];
-    _mMood.text =  [NSString stringWithFormat:@"Mood : %@",event.mood];
+    NSInteger countMember = [event getCountMember];
+    if(countMember >1 )
+    {
+        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember], NSLocalizedString(@"people_are", nil)]; //peoples are in
+    }
+    else
+    {
+        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember],NSLocalizedString(@"people_is", nil)];
+    }
+
+    _mMood.text =  [NSString stringWithFormat:@"%@ : %@",NSLocalizedString(@"mood", nil),event.mood];
     
 
     MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
@@ -48,8 +56,6 @@
     _mMapImageView.image = nil;
     
     NSString* url = [NSString stringWithFormat:@"%@/homolo/file/scarlet/event/map/%@.png",[WSManager sharedInstance].mBaseURL,event.identifier];
-    
-    NSLog(@"%@",url);
     [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
 
 }

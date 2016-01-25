@@ -31,7 +31,8 @@
 {
     self.mEvent = event;
     NSMutableArray * listProfile = [NSMutableArray array];
-    [listProfile addObject:event.leader];
+    if(event.leader)
+        [listProfile addObject:event.leader];
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     
     self.mData = listProfile;

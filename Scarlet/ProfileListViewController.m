@@ -36,12 +36,28 @@
     
     
     [self updateWithPredicate:predicate];
-    
+    [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
+        if(error==nil)
+        {
+        }
+    }];
   
     [self.mSearchField setBackgroundImage:[[UIImage alloc]init]];
     self.mSearchField.layer.borderWidth = 1;
     self.mSearchField.layer.borderColor = [[UIColor whiteColor] CGColor];
 }
+
+-(void) updateData
+{
+    [self.uiRefreshControl beginRefreshing];
+    [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
+        if(error==nil)
+        {
+        }
+        [self.uiRefreshControl endRefreshing];
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -73,7 +89,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   // self.mProfileToAdd = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     Profile* lProfile =  [[self fetchedResultsController] objectAtIndexPath:indexPath];
     
     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
@@ -95,26 +110,15 @@
         }
         else
         {
-            //@"respond to friend request"
-            //[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list", self.mProfileToAdd.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil]show];
         }
     }
     else
     {
         [self addFriend:lProfile];
-        //[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Do you want to add %@ in your friend list", self.mProfileToAdd.firstName] message:nil delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil]show];
     }
     
 }
-/*
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 1: [self addFriend:self.mProfileToAdd]; break;
-        default:break;
-    }
-}
-*/
+
 
 -(void) addFriend:(Profile*) profile
 {

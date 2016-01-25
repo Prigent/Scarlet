@@ -163,14 +163,14 @@
                                                         <outlet property="dataSource" destination="mcZ-d3-dLh" id="FUV-sw-K2C"/>
                                                     </connections>
                                                 </collectionView>
-                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.55000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add few friends to have the best Scarlet’s experience" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrk-Fi-ayl">
+                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.55000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="add_morefriends_detail" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrk-Fi-ayl" customClass="LocalizedLabel">
                                                     <rect key="frame" x="32" y="65" width="311" height="36"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add friends to your Scarlet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9s6-RW-JiC">
-                                                    <rect key="frame" x="36" y="9" width="184" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="add_friend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9s6-RW-JiC" customClass="LocalizedLabel">
+                                                    <rect key="frame" x="147" y="9" width="73" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -210,13 +210,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jt5-Al-gfY">
+                                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jt5-Al-gfY" customClass="LocalizedButton">
                                                     <rect key="frame" x="8" y="11" width="359" height="42"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="42" id="IG0-F4-2cf"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                                    <state key="normal" title="ADD MORE FRIENDS">
+                                                    <state key="normal" title="add_morefriends_btn">
                                                         <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <userDefinedRuntimeAttributes>
@@ -257,17 +257,35 @@
                                     <outlet property="delegate" destination="C8K-cG-3EU" id="GLd-rf-7aF"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQG-dL-3uL" customClass="LocalizedButton">
+                                <rect key="frame" x="0.0" y="625" width="375" height="42"/>
+                                <color key="backgroundColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="k09-Er-zae"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                <state key="normal" title="create_scarlet">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="createEvent:" destination="C8K-cG-3EU" eventType="touchUpInside" id="h8s-pd-TeN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tU7-hO-yMN" secondAttribute="trailing" id="8NB-La-cJ6"/>
                             <constraint firstItem="wRx-tV-9aY" firstAttribute="top" secondItem="tU7-hO-yMN" secondAttribute="bottom" id="BGr-28-sQb"/>
+                            <constraint firstItem="wRx-tV-9aY" firstAttribute="top" secondItem="rQG-dL-3uL" secondAttribute="bottom" id="BIc-jP-2tQ"/>
+                            <constraint firstItem="rQG-dL-3uL" firstAttribute="leading" secondItem="mEQ-MW-dHZ" secondAttribute="leading" id="GrT-59-F2k"/>
+                            <constraint firstAttribute="trailing" secondItem="rQG-dL-3uL" secondAttribute="trailing" id="RaW-M1-Wpm"/>
                             <constraint firstItem="tU7-hO-yMN" firstAttribute="top" secondItem="mEQ-MW-dHZ" secondAttribute="top" id="U18-pU-sLN"/>
                             <constraint firstItem="tU7-hO-yMN" firstAttribute="leading" secondItem="mEQ-MW-dHZ" secondAttribute="leading" id="tFS-sq-m6w"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="mButton" destination="rQG-dL-3uL" id="Z9G-k7-pzi"/>
                         <outlet property="mTableView" destination="tU7-hO-yMN" id="OlD-6k-0tV"/>
                     </connections>
                 </viewController>

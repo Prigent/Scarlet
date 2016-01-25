@@ -17,7 +17,7 @@
 -(void) configure:(id) dic;
 -(void) close;
 
-
+@property (nonatomic, strong) NSString* mCustomTitle;
 @property (nonatomic, strong) NSDictionary* mViewDictionnary;
 @property (nonatomic, strong) UIView* mLoadingViewGeneric;
 @property (nonatomic, strong) UIActivityIndicatorView * mIndicatorViewGeneric;

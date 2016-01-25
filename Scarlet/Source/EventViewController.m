@@ -24,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"Browse Scarlet";
+    self.title = NSLocalizedString(@"browse_scarlet",nil);
     [self updateView];
     self.mTableView.alpha = 0;
 }
@@ -136,7 +136,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"numberOfSectionsInTableView %d", [self.mData.fetchedObjects count]);
     return [self.mData.fetchedObjects count];
 }
 
@@ -145,7 +144,7 @@
     if([self.mData.fetchedObjects count]> section)
     {
         Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:section inSection:0]];
-        return [NSString stringWithFormat:@"%@'s Scarlet", lEvent.leader.firstName];
+        return [NSString stringWithFormat: NSLocalizedString(@"own_scarlet",nil), lEvent.leader.firstName]; //'s Scarlet
     }
     else
     {
@@ -196,7 +195,6 @@
     UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"EventExpendCell"];
     if([cell respondsToSelector:@selector(configure:)])
     {
-        NSLog(@"cellForRowAtIndexPath %d %d", [self.mData.fetchedObjects count],  indexPath.section);
         if([self.mData.fetchedObjects count]> indexPath.section)
         {
             Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];

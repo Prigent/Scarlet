@@ -14,6 +14,8 @@
 +(User*) addUser:(NSDictionary*) dicUser;
 +(Profile*) addProfile:(NSDictionary*) dicProfile;
 +(Event*) addEvent:(NSDictionary*) dicEvent;
++(Event*) editEvent:(NSDictionary*) dicEvent;
+
 +(Message*) addMessage:(NSDictionary*) dicMessage;
 +(NSArray*) getProfiles;
 +(FacebookProfile* ) addFacebookProfile:(NSDictionary*) dicFacebookProfile;
@@ -21,5 +23,11 @@
 +(Chat*) addChat:(NSDictionary*) chatDic;
 
 +(NSArray*) getEvents;
++(NSArray*) getEventsNotOwn;
++(void) removeEventNotOwn;
++(void) removeEventOwn;
+
++(void) resetProfileUpdate;
++(void) removeProfileNotUpdate;
 @end
 

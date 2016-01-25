@@ -11,6 +11,7 @@
 #define kOverlayHeight      15
 
 #import "KIImagePager.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface KIImagePagerDefaultImageSource : NSObject <KIImagePagerImageSource>
 @end
@@ -97,8 +98,6 @@
         [sub setFrame:CGRectMake( self.frame.size.width*i, 0, self.frame.size.width, self.frame.size.height)];
         i++;
     }
-    
-    NSLog(@"with %f",self.frame.size.width);
 }
 
 
@@ -147,11 +146,34 @@
 
 - (void) reloadData
 {
-    for (UIView *view in _scrollView.subviews)
-        [view removeFromSuperview];
+    if([[_dataSource arrayWithImages:self] count] > 0 && ([_scrollView.subviews count] == [[_dataSource arrayWithImages:self] count]))
+    {
+        [self updateData];
+    }
+    else
+    {
+        
+        for (UIView *view in _scrollView.subviews)
+            [view removeFromSuperview];
+        
+        [self loadData];
+        [self checkWetherToToggleSlideshowTimer];
+    }
 
-    [self loadData];
-    [self checkWetherToToggleSlideshowTimer];
+}
+
+
+-(void) updateData
+{
+    NSArray *aImageUrls = (NSArray *)[_dataSource arrayWithImages:self];
+    for (int i = 0; i < [aImageUrls count]; i++)
+    {
+        
+        UIImageView *imageView = [_scrollView.subviews objectAtIndex:i];
+        // Asynchronously retrieve image
+        NSURL * imageUrl  = [[aImageUrls objectAtIndex:i] isKindOfClass:[NSURL class]] ? [aImageUrls objectAtIndex:i] : [NSURL URLWithString:(NSString *)[aImageUrls objectAtIndex:i]];
+        [imageView setImageWithURL:imageUrl];
+    }
 }
 
 #pragma mark - ScrollView Initialization

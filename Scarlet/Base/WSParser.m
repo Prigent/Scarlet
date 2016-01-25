@@ -35,7 +35,15 @@
 
     message.date = [NSDate dateWithTimeIntervalSince1970:[[dicMessage valueForKey:@"date"] integerValue]];
     message.identifier = [dicMessage valueForKey:@"identifier"];
+    
+    
+    NSLog(@"%@ %@",dicMessage, [dicMessage valueForKey:@"message"]);
     message.text = [dicMessage valueForKey:@"message"];
+    
+    
+    
+    
+    
     message.owner = [self getProfile:[dicMessage valueForKey:@"profile_id"]];
     return message;
 }
@@ -160,7 +168,7 @@
     profile.pictures = [NSOrderedSet orderedSet];
     profile.occupation = [dicProfile valueForKey:@"occupation"];
     profile.about = [dicProfile valueForKey:@"about"];
-    
+    profile.didUpdate = [NSNumber numberWithBool:true];
     profile.birthdate = [NSDate dateWithTimeIntervalSince1970:[[dicProfile valueForKey:@"birthdate"] integerValue]];
     
     
@@ -175,20 +183,23 @@
         }
     }
     
-    
-    [profile removeFriends:profile.friends];
-    NSArray* lArrayFriends = [dicProfile valueForKey:@"friends"];
-    if([lArrayFriends isKindOfClass:[NSArray class]])
+    if([profile isKindOfClass:[User class]])
     {
-        for(NSString* lIdentifier in lArrayFriends)
+        [profile removeFriends:profile.friends];
+        NSArray* lArrayFriends = [dicProfile valueForKey:@"friends"];
+        if([lArrayFriends isKindOfClass:[NSArray class]])
         {
-            Profile* lProfile = [self getProfile:lIdentifier];
-            if(lProfile)
+            for(NSString* lIdentifier in lArrayFriends)
             {
-                [profile addFriendsObject:lProfile];
+                Profile* lProfile = [self getProfile:lIdentifier];
+                if(lProfile)
+                {
+                    [profile addFriendsObject:lProfile];
+                }
             }
         }
     }
+
     
     [profile removeInterests:profile.interests];
     NSArray* lArrayInterest = [dicProfile valueForKey:@"interests"];
@@ -211,9 +222,69 @@
     return [WSParser searchIdentifier:idProfile andName:@"Profile"];
 }
 
-+(Event*) addEvent:(NSDictionary*) dicEvent
++(Event*) editEvent:(NSDictionary*) dicEvent
 {
     Event* event = [WSParser getEvent:[dicEvent valueForKey:@"identifier"]];
+    if(event == nil)
+    {
+        event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    }
+    event.identifier = [self parseStringValue:[dicEvent valueForKey:@"identifier"]];
+    event.date = [NSDate dateWithTimeIntervalSince1970:[[dicEvent valueForKey:@"date"] integerValue]];
+    
+    
+    Profile* lLeader = [self getProfile:[self parseStringValue:[dicEvent valueForKey:@"leader_id"]]];
+    event.leader = lLeader;
+    
+    event.chat = [self addChatObject:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
+    event.mood = [dicEvent valueForKey:@"mood"];
+    event.address = [self addAddress:dicEvent];
+    event.status = [self parseNumberValue:[dicEvent valueForKey:@"status"]];
+    
+    if([dicEvent valueForKey:@"sort"])
+    {
+        event.sort = [self parseNumberValue:[dicEvent valueForKey:@"sort"]];
+    }
+    
+    [event removePartners:event.partners];
+    for(NSString* lProfileIdentifier in [dicEvent valueForKey:@"partners"])
+    {
+        Profile* lProfile = [self getProfile:lProfileIdentifier];
+        if(lProfile)
+        {
+            [event addPartnersObject:[self getProfile:lProfileIdentifier]];
+        }
+    }
+    
+    [event removeDemands:event.demands];
+    for(NSDictionary* lDemandDic in [dicEvent valueForKey:@"demands"])
+    {
+        Demand * lDemand = [self addDemand:lDemandDic];
+        if(lDemand)
+        {
+            [event addDemandsObject:lDemand];
+        }
+    }
+    
+    NSInteger mystatus = [event getMyStatus];
+    if(mystatus>0)
+    {
+        event.mystatus = [NSNumber numberWithInteger:mystatus];
+    }
+    
+    CLLocation * lCLLocationA = [ShareAppContext sharedInstance].placemark.location;
+    CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
+    CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
+    
+    
+    event.distance = [NSNumber numberWithDouble:distance];
+    
+    
+    return event;
+}
++(Event*) addEvent:(NSDictionary*) dicEvent
+{
+    Event* event = nil;//[WSParser getEvent:[dicEvent valueForKey:@"identifier"]];
     if(event == nil)
     {
         event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
@@ -262,9 +333,6 @@
     }
 
     CLLocation * lCLLocationA = [ShareAppContext sharedInstance].placemark.location;
-    
-    NSLog(@"lCLLocationA %@", lCLLocationA);
-    
     CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[event.address.lat doubleValue] longitude:[event.address.longi doubleValue]];
     CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
     
@@ -274,6 +342,96 @@
     
     return event;
 }
+
+
++(void) removeEventOwn
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMine == 1"];
+    [fetchRequest setPredicate:predicate];
+    
+    
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    for (NSManagedObject *object in anArray) {
+        [[ShareAppContext sharedInstance].managedObjectContext deleteObject:object];
+        
+    }
+    
+
+    
+    [[ShareAppContext sharedInstance].managedObjectContext performBlockAndWait:^{
+        NSError *saveError = nil;
+        [[ShareAppContext sharedInstance].managedObjectContext save:&saveError];
+    }];
+
+}
+
++(NSArray*) getEventsNotOwn
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMine == 0"];
+    [fetchRequest setPredicate:predicate];
+    
+    return anArray;
+}
+
++(void) resetProfileUpdate
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Profile" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    for (Profile *object in anArray)
+    {
+        object.didUpdate = [NSNumber numberWithBool:false];
+    }
+}
++(void) removeProfileNotUpdate
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Profile" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didUpdate == 0"];
+    [fetchRequest setPredicate:predicate];
+    
+    
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    for (NSManagedObject *object in anArray) {
+        [[ShareAppContext sharedInstance].managedObjectContext deleteObject:object];
+        
+    }
+    [[ShareAppContext sharedInstance].managedObjectContext save:nil];
+}
+
++(void) removeEventNotOwn
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMine == 0"];
+    [fetchRequest setPredicate:predicate];
+    
+    
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    for (NSManagedObject *object in anArray) {
+        [[ShareAppContext sharedInstance].managedObjectContext deleteObject:object];
+        
+    }
+    [[ShareAppContext sharedInstance].managedObjectContext save:nil];
+}
+
 
 +(Event*) getEvent:(NSString*) idEvent
 {

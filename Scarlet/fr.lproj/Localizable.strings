@@ -3,11 +3,118 @@
 "menu.chat" = "Conversations";
 "menu.message" = "Conversations";
 "menu.event" = "Your Scarlet";
-"at" = "à";
-"today" = "aujourd'hui";
-"tomorrow" = "demain";
+"at" = "at";
+"today" = "today";
+"tomorrow" = "tomorrow";
 "and" = "and";
+"close" = "Close";
+"edit_scarlet" = "Edit Scarlet";
+
 
 "ecranOnboarding01" = "Check out other Scarlet group profiles in your area";
 "ecranOnboarding02" = "Create your team and send an invite to a group you like";
 "ecranOnboarding03" = "And get together for a Scarlet event.";
+
+"no_address" = "no address";
+"new_scarlet"= "New Scarlet";
+"loading" = "Loading";
+"time" ="Time";
+"save" = "Save";
+"request_accepted" = "Request Accepted !";
+"request_rejected" = "Request Rejected !";
+"request_pending" = "Request Pending !";
+
+"people_are" = "peoples are in";
+
+"people_is"= "peoples is in";
+
+"mood" = "Mood";
+
+
+"scarlet_accepted"= "Scarlet Accepted !";
+"scarlet_pending"= "Scarlet Pending !";
+"scarlet_rejected"= "Scarlet Rejected !";
+
+"browse_scarlet" = "Browse Scarlet";
+"own_scarlet"= "%@'s Scarlet";
+
+"select_mood" = "Select your mood";
+"select_date"= "Select your date";
+
+"friends" = "Friends";
+"add_morefriends" = "Add More Friends";
+
+"skip" = "Skip";
+"welcome_scarlet" = "Welcome to scarlet";
+"welcome_scarlet2" = "Few of your friends are already on Scarlet. Invite them now.";
+"welcome_scarlet3" = "More friends is more fun!";
+"welcome_scarlet4" = "Add few friends to have the best scarlet's experience.";
+
+"invitation" = "Invitation";
+"facebook_friend" = "Facebook friend already on Scarlet";
+
+"next" = "Next";
+"mail_message" = "Hey, take a look to scarlet APP !";
+"retry" = "Retry";
+
+"incomming" = "INCOMMING";
+"past" = "PAST";
+
+"your_scarlet" = "Your Scarlet";
+
+"occupation" ="Occupation";
+"about_you"  = "About you";
+"looking_for" = "Looking for";
+"aged_between" = "Aged between";
+
+"cancel" = "Cancel";
+"configure" = "Configure";
+"settings" = "Settings";
+"no_push_configuration" = "No push configuration";
+
+"parameters" = "Parameters";
+"parameters_detail" = "Notifications, account and others";
+
+"whatever" = "Whatever";
+
+"hide_scarlet" = "Hide this Scarlet from search page";
+"login_facebook" = "LOG IN WITH FACEBOOK";
+"login_facebook_detail" = "We don't post anything to Facebook";
+"edit_scarlet_btn" = "EDIT SCARLET";
+"cancel_scarlet_btn" = "CANCEL SCARLET";
+"your_team" = "Your team";
+"accept" = "Accept";
+"denied" = "Denied";
+"choose_friends" = "Choose friends to this Scarlet";
+"add_morefriends_btn" = "ADD MORE FRIENDS";
+"add_friend" = "Add friends to your Scarlet";
+"add_morefriends_detail" = "Add few friends to have the best Scarlet’s experience";
+"join_scarlet"="JOIN THIS SCARLET";
+"your_friends" = "Your Scarlets friends";
+"facebook_friends" = "Facebook mutual friends";
+"interests" = "Interests";
+"edit" ="Edit";
+"filter"= "Filter";
+"search_radius" = "Search radius";
+"done" = "Done";
+"create"= "Create";
+"create_scarlet" = "CREATE SCARLET";
+"accept_invite" = "ACCEPT";
+"decline_invite" = "DECLINE";
+"invite_sms" = "Invite via SMS";
+"invite_facebook" = "Invite via Facebook";
+"disconnect"=  "Disconnect";
+"sync_facebook"= "Sync with facebook";
+"desactivate_account"= "Desactivate my account";
+"man" = "MAN";
+"woman" = "WOMAN";
+"no_result" = "No result";
+"notifications" = "Notifications";
+"edit_profile" = "Edit profile";
+
+
+
+"no_scarlet_seach" = "No Scarlet available for your search";
+"save_scarlet" = "SAVE";
+
+

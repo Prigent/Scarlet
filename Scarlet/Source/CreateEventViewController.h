@@ -23,5 +23,6 @@
 @property (nonatomic) CLLocationCoordinate2D coordinate;
 @property (nonatomic, strong) NSMutableArray* listProfileId;
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
+@property (weak, nonatomic) IBOutlet UIButton *mButton;
 
 @end

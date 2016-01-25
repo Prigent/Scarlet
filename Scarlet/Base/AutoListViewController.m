@@ -23,7 +23,7 @@
      NSError *error = nil;
     
     self.uiRefreshControl = [[UIRefreshControl alloc] init];
-    self.uiRefreshControl.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    self.uiRefreshControl.backgroundColor = [UIColor clearColor];
     
     self.uiRefreshControl.tintColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
     [self.uiRefreshControl addTarget:self  action:@selector(updateData)   forControlEvents:UIControlEventValueChanged];
@@ -263,6 +263,7 @@
     NSInteger count = [sectionInfo numberOfObjects];
     
     self.emptyStateView.hidden = (count != 0);
+    self.emptyStateView2.hidden = (count != 0);
     
     return count;
 }

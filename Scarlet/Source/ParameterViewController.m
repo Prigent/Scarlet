@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Settings";
+    self.mCustomTitle = NSLocalizedString(@"settings",nil);//@"Settings";
     // Do any additional setup after loading the view.
     
     [[WSManager sharedInstance] getNotificationConfiguration:^(NSError *error) {
@@ -65,7 +65,7 @@
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Notifications";
+    return NSLocalizedString(@"notifications", nil);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,7 +80,7 @@
     
     if(![[UIApplication sharedApplication] isRegisteredForRemoteNotifications])
     {
-        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"no_push_configuration", nil) delegate:self cancelButtonTitle:@"Annuler" otherButtonTitles:@"Configurer", nil];
+        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"no_push_configuration", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"cancel",nil) otherButtonTitles:NSLocalizedString(@"configure",nil), nil];
         lUIAlertView.tag = 1;
         [lUIAlertView show];
     }

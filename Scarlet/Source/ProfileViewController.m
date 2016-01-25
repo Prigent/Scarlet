@@ -34,22 +34,7 @@
     self.mTableView.rowHeight = UITableViewAutomaticDimension;
     
 
-    if(self.mProfile == nil)
-    {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.mode = MBProgressHUDModeIndeterminate;
-        hud.labelText = @"Loading";
-        
-        isUser=true;
-        [[self navigationController] setNavigationBarHidden:true animated:false];
-        [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
-            
-            [hud hide:YES];
-            self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
-            [self updateView];
-        }];
-    }
-    else
+    if(self.mProfile != nil)
     {
         self.title = self.mProfile.firstName;
         [[WSManager sharedInstance] getMutualfriend:self.mProfile completion:^(NSError *error) {
@@ -70,6 +55,19 @@
 }
 
 
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    if(self.mProfile == nil || self.mProfile == (Profile*)[ShareAppContext sharedInstance].user)
+    {
+        isUser=true;
+        [[self navigationController] setNavigationBarHidden:true animated:false];
+            [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
+                self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
+                [self updateView];
+            }];
+    }
+}
 
 
 
@@ -280,8 +278,8 @@
         {
 
                 ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
-                cell.mTitleLabel.text = @"Parameters";
-                cell.mSubTitle.text = @"Notifications, account and others";
+            cell.mTitleLabel.text = NSLocalizedString(@"parameters",nil);//@"Parameters";
+            cell.mSubTitle.text = NSLocalizedString(@"parameters_detail",nil); //@"Notifications, account and others";
                 return cell;
         }
     }

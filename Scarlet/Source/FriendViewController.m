@@ -25,6 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     self.mCustomTitle =  NSLocalizedString(@"friends",nil);
+    
     if([ShareAppContext sharedInstance].firstStarted == true)
     {
         [self.navigationItem setHidesBackButton:YES];
@@ -40,11 +42,11 @@
             [backButton addTarget:self action:@selector(skip) forControlEvents:UIControlEventTouchUpInside];
             UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
             self.navigationItem.leftBarButtonItem = backButtonItem;
-            self.title = @"Add more friends";
+            self.mCustomTitle = NSLocalizedString(@"add_morefriends",nil);//  @"Add more friends";
         }
         else
         {
-            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"SKIP" style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
+            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"skip",nil) style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
             [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
             self.navigationItem.rightBarButtonItem = anotherButton;
         }
@@ -125,13 +127,13 @@
     
     if(self.type == 0)
     {
-        [_mTitleLabel setText:@"Welcome to scarlet"];
-        [_mSubTitleLabel setText:@"Few of your friends are already on Scarlet. Invite them now."];
+        [_mTitleLabel setText:NSLocalizedString(@"welcome_scarlet",nil)]; //@"Welcome to scarlet"
+        [_mSubTitleLabel setText:NSLocalizedString(@"welcome_scarlet2",nil)]; // @"Few of your friends are already on Scarlet. Invite them now."
     }
     else if(self.type == 1)
     {
-        [_mTitleLabel setText:@"More friends is more fun!"];
-        [_mSubTitleLabel setText:@"Add few friends to have the best scarlet's experience."];
+        [_mTitleLabel setText:NSLocalizedString(@"welcome_scarlet3",nil)];//@"More friends is more fun!"
+        [_mSubTitleLabel setText:NSLocalizedString(@"welcome_scarlet4",nil)];//@"Add few friends to have the best scarlet's experience."
     }
     else
     {
@@ -221,14 +223,14 @@
             
             
             
-            return @"Invitation";
+            return NSLocalizedString(@"invitation",nil);
         case 1:return nil;
         case 2:
             if([self.mSuggestData count] == 0)
             {
                 return nil;
             }
-            return @"Facebook friend already on Scarlet";
+            return NSLocalizedString(@"facebook_friend",nil);//@"Facebook friend already on Scarlet";
         default:return nil;
     }
 }
@@ -335,7 +337,7 @@
     {
         if(self.type == 0)
         {
-            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"NEXT" style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
+            UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"next",nil) style:UIBarButtonItemStylePlain target:self action:@selector(skip)];
             [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
             self.navigationItem.rightBarButtonItem = anotherButton;
         }
@@ -476,7 +478,7 @@
     }
     
     //NSArray *recipents = @[@"12345678", @"72345524"];
-    NSString *message = [NSString stringWithFormat:@"Hey, take a look to scarlet APP !"];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"mail_message",nil)]; //@"Hey, take a look to scarlet APP !"];
     
     MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
     messageController.messageComposeDelegate = self;

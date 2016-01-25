@@ -27,6 +27,7 @@
         <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="distanceCustom" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isMine" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mood" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mystatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="sort" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -70,6 +71,7 @@
     <entity name="Profile" representedClassName="Profile" syncable="YES">
         <attribute name="about" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="birthdate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="didUpdate" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="fbIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
@@ -101,13 +103,13 @@
         <element name="Address" positionX="-110" positionY="-234" width="128" height="103"/>
         <element name="Chat" positionX="-236" positionY="-37" width="128" height="118"/>
         <element name="Demand" positionX="70" positionY="-97" width="128" height="148"/>
-        <element name="Event" positionX="-20" positionY="126" width="128" height="240"/>
+        <element name="Event" positionX="-20" positionY="126" width="128" height="255"/>
         <element name="FacebookProfile" positionX="79" positionY="-441" width="128" height="103"/>
         <element name="FriendRequest" positionX="619" positionY="-394" width="128" height="135"/>
         <element name="Interest" positionX="612" positionY="-243" width="128" height="73"/>
         <element name="Message" positionX="-234" positionY="-441" width="128" height="133"/>
         <element name="Picture" positionX="612" positionY="-99" width="128" height="73"/>
-        <element name="Profile" positionX="306" positionY="-360" width="128" height="328"/>
+        <element name="Profile" positionX="306" positionY="-360" width="128" height="345"/>
         <element name="User" positionX="304" positionY="-558" width="128" height="150"/>
     </elements>
 </model>

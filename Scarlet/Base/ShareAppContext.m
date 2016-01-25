@@ -21,17 +21,19 @@
     if (self)
     {
         self.queue = [[NSOperationQueue alloc] init];
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        self.locationManager.distanceFilter = 100;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-        
-        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-            [self.locationManager requestWhenInUseAuthorization];
-        }
-        [self.locationManager startUpdatingLocation];
     }
     return self;
+}
+
+
+-(void) startLocation
+{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.distanceFilter = 100;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager startUpdatingLocation];
 }
 
 

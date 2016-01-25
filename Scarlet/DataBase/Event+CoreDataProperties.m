@@ -25,5 +25,6 @@
 @dynamic sort;
 @dynamic mystatus;
 @dynamic distance;
+@dynamic isMine;
 @dynamic distanceCustom;
 @end

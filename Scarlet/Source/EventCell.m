@@ -42,6 +42,7 @@
     
     
     NSMutableArray * listProfile = [NSMutableArray array];
+    if(event.leader != nil)
     [listProfile addObject:event.leader];
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     

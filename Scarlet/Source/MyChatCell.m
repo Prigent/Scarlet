@@ -14,8 +14,23 @@
 #import "Message.h"
 #import "UIImageView+AFNetworking.h"
 #import "Address.h"
-@implementation MyChatCell
+#import "NSData+Base64.h"
 
+
+@implementation MyChatCell
+-(BOOL)isBase64Data:(NSString *)input
+{
+    
+    input=[[input componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@""];
+    if ([input length] % 4 == 0) {
+        static NSCharacterSet *invertedBase64CharacterSet = nil;
+        if (invertedBase64CharacterSet == nil) {
+            invertedBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="]invertedSet];
+        }
+        return [input rangeOfCharacterFromSet:invertedBase64CharacterSet options:NSLiteralSearch].location == NSNotFound;
+    }
+    return NO;
+}
 -(void) configure:(Chat*) chat
 {
     NSDateFormatter *formatDate = [[NSDateFormatter alloc] init];
@@ -23,14 +38,28 @@
     if([chat.messages count]>0)
     {
         Message* lMessage = [chat.messages lastObject];
-        _mLastMessageText.text  = lMessage.text;
+        
+        if([self isBase64Data:lMessage.text])
+        {
+            NSData *data = [NSData dataFromBase64String:lMessage.text];
+            NSString *valueUnicode = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSData *dataa = [valueUnicode dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *valueEmoj = [[NSString alloc] initWithData:dataa encoding:NSNonLossyASCIIStringEncoding];
+            _mLastMessageText.text = valueEmoj;
+        }
+        else
+        {
+            _mLastMessageText.text = _mLastMessageText.text;
+        }
+
+        
         _mLastMessageOwner.text = lMessage.owner.firstName;
         Picture * picture = [lMessage.owner.pictures firstObject];
         self.mLastMessageImage.image = nil;
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         
         NSString* datePart = [NSDateFormatter localizedStringFromDate:lMessage.date dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
-        self.mDateMessage.text = [datePart uppercaseString];
+        self.mDateMessage.text = [lMessage getDateString];
 
         
         _mReadStatus.hidden = [lMessage.readStatus boolValue];

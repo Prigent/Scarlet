@@ -110,7 +110,6 @@
 		B27F78CC1BD9236F0038B4B0 /* Interest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78AC1BD9236F0038B4B0 /* Interest.m */; };
 		B27F78CD1BD9236F0038B4B0 /* Message+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78AE1BD9236F0038B4B0 /* Message+CoreDataProperties.m */; };
 		B27F78CE1BD9236F0038B4B0 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78B01BD9236F0038B4B0 /* Message.m */; };
-		B27F78D11BD9236F0038B4B0 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78B61BD9236F0038B4B0 /* User+CoreDataProperties.m */; };
 		B27F78D21BD9236F0038B4B0 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78B81BD9236F0038B4B0 /* User.m */; };
 		B27F78D31BD9236F0038B4B0 /* Address+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78BA1BD9236F0038B4B0 /* Address+CoreDataProperties.m */; };
 		B27F78D41BD9236F0038B4B0 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78BC1BD9236F0038B4B0 /* Address.m */; };
@@ -1177,7 +1176,7 @@
 		B2AA6EB81BCCF66500DCF1A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Prigent ROUDAUT";
 				TargetAttributes = {
 					B2AA6EBF1BCCF66500DCF1A4 = {
@@ -1362,7 +1361,6 @@
 				B2E4EB071BFD47C800D1CCA2 /* InterestListCell.m in Sources */,
 				B23FA52A1BD5011100868D12 /* BaseViewController.m in Sources */,
 				B27AF8ED1C05D39E0085BD95 /* LocationSearchViewController.m in Sources */,
-				B27F78D11BD9236F0038B4B0 /* User+CoreDataProperties.m in Sources */,
 				B27F78851BD922180038B4B0 /* SearchEventViewController.m in Sources */,
 				B244DA501BDE972B0088BB1D /* ProfileListCell.m in Sources */,
 				B2E4EADE1BFD2B0900D1CCA2 /* CALayer+UIColor.m in Sources */,
@@ -1529,7 +1527,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7f5c29c5-6b42-428a-a480-65aed8e5ee1f";
+				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1556,7 +1554,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7f5c29c5-6b42-428a-a480-65aed8e5ee1f";
+				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

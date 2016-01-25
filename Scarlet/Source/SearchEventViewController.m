@@ -32,9 +32,12 @@ const int kDefaultRadius = 7000;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+
     
+    self.mEvents = [WSParser getEventsNotOwn];
     [ShareAppContext sharedInstance].currentRadius = kDefaultRadius;
-    [ShareAppContext sharedInstance].currentMood = @"Whatever";
+    [ShareAppContext sharedInstance].currentMood = NSLocalizedString(@"whatever",nil);//@"Whatever";
     self.navigationController.navigationBarHidden =true;
     
     [self.mSearchField setBackgroundImage:[[UIImage alloc]init]];
@@ -56,11 +59,12 @@ const int kDefaultRadius = 7000;
     }
     
     [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
-        
-        if(error == nil)
-        {
-            [self updateData];
-        }
+        [[WSManager sharedInstance] getChatsCompletion:^(NSError *error) {
+            if(error == nil)
+            {
+                [self updateData];
+            }
+        }];
     }];
     
     
@@ -78,7 +82,7 @@ const int kDefaultRadius = 7000;
         [self.navigationController pushViewController:viewController animated:false];
     }
     
-    [self showList:nil];
+   // [self showList:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moodChanged:) name:@"moodFilterChanged" object:nil];
@@ -91,30 +95,49 @@ const int kDefaultRadius = 7000;
     self.mSearchField.delegate = _mLocationSearchDataSource;
     self.mTableViewLocation.dataSource = _mLocationSearchDataSource;
     self.mTableViewLocation.delegate = _mLocationSearchDataSource;
+    
+
+    [self updateFilter];
+    
+
+    
+    [self showMap:nil];
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.mUpdateFilter = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateFilter) userInfo:nil repeats:true];
+}
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.mUpdateFilter  invalidate];
+    self.mUpdateFilter = nil;
 }
 
+
 - (IBAction)showFilter:(id)sender {
+    
+    [self.mSearchField resignFirstResponder];
+    [self.mSearchField setShowsCancelButton:false animated:false];
     
     if(_mTopFilter.constant == 0)
     {
         _mTopFilter.constant = -210;
         if(self.mMapView.hidden == true)
-            [UIView animateWithDuration:.3 animations:^{  self.tableView.alpha = 1;[self.view layoutIfNeeded]; }];
+            [UIView animateWithDuration:.3 animations:^{  self.tableView.alpha = 1;[self.view layoutIfNeeded];self.mTableViewLocation.alpha = 0; }];
         else
-            [UIView animateWithDuration:.3 animations:^{  [self.view layoutIfNeeded]; }];
+            [UIView animateWithDuration:.3 animations:^{  [self.view layoutIfNeeded]; self.mTableViewLocation.alpha = 0;}];
     }
     else
     {
         _mTopFilter.constant = 0;
          if(self.mMapView.hidden == true)
-             [UIView animateWithDuration:.3 animations:^{  self.tableView.alpha = 0.2; [self.view layoutIfNeeded]; }];
+             [UIView animateWithDuration:.3 animations:^{  self.tableView.alpha = 0.2; [self.view layoutIfNeeded];self.mTableViewLocation.alpha = 0; }];
         else
-            [UIView animateWithDuration:.3 animations:^{  [self.view layoutIfNeeded]; }];
+            [UIView animateWithDuration:.3 animations:^{  [self.view layoutIfNeeded]; self.mTableViewLocation.alpha = 0;}];
     }
 }
 
@@ -125,8 +148,6 @@ const int kDefaultRadius = 7000;
     [ShareAppContext sharedInstance].currentMood = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
-    [self updateFilter];
-    
     [self showFilter:nil];
 }
 
@@ -134,19 +155,11 @@ const int kDefaultRadius = 7000;
 -(void) updateData
 {
     [self.uiRefreshControl beginRefreshing];
-    [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
-        if(error==nil)
-        {
-            [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
-                
-                if(error)
-                {
-                    NSLog(@"%@", error);
-                }
-                [self updateFilter];
-                [self.uiRefreshControl endRefreshing];
-            }];
-        }
+    
+    [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
+        
+        self.mEvents = [WSParser getEventsNotOwn];
+        [self.uiRefreshControl endRefreshing];
     }];
 }
 
@@ -159,9 +172,6 @@ const int kDefaultRadius = 7000;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventselected:) name:@"eventselected" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(locationChanged:) name:@"locationChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterLocation:) name:@"didEnterLocation" object:nil];
-    
-    
-    [self updateFilter];
 }
 
 -(void) locationChanged:(NSNotification*) notification
@@ -184,12 +194,10 @@ const int kDefaultRadius = 7000;
     }
     
     CLLocationCoordinate2D coordinate = self.mLocationSearch.location.coordinate;
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentRadius);
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4, [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4);
     MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
     [self.mMapView setRegion:adjustedRegion animated:YES];
-    
-    
-    [self updateFilter];
+
     
     [UIView animateWithDuration:.3 animations:^{ self.mTableViewLocation.alpha = 0; }];
 }
@@ -198,7 +206,6 @@ const int kDefaultRadius = 7000;
      [self.mSearchField setShowsCancelButton:true animated:true];
     [UIView animateWithDuration:.3 animations:^{ self.mTableViewLocation.alpha = 0.8; }];
 }
-
 
 
 
@@ -241,10 +248,12 @@ const int kDefaultRadius = 7000;
     if(scrollView == self.mMapList)
     {
        NSInteger indexcollect = scrollView.contentOffset.x / scrollView.frame.size.width;
-
-        Event * event = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexcollect];
-        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
-        [self.mMapView setCenterCoordinate:coordinate animated:YES];
+        if([[self.fetchedResultsController fetchedObjects] count]>indexcollect)
+        {
+            Event * event = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexcollect];
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
+            [self.mMapView setCenterCoordinate:coordinate animated:YES];
+        }
     }
        
 }
@@ -254,6 +263,7 @@ const int kDefaultRadius = 7000;
     self.mButtonList.selected = true;
     self.mButtonMap.selected = false;
     
+    self.emptyStateView2.alpha = 1;
 
     [self.mTableLayoutTop setConstant:0];
     [UIView animateWithDuration:0.4 animations:^{ [self.view layoutIfNeeded]; } completion:^(BOOL finished) {
@@ -275,67 +285,99 @@ const int kDefaultRadius = 7000;
     [self.navigationController pushViewController:viewController animated:NO];
 }
 
-
+-(void) updateRadiusPosition
+{
+    
+}
 -(void) updateFilter
 {
-    NSArray * lEvents = [WSParser getEvents];
-    CLPlacemark* lLocationSearch = self.mLocationSearch;
-    if(lLocationSearch == nil)
+    if( self.mLocationSearch == nil &&  [ShareAppContext sharedInstance].placemark !=nil)
     {
-        lLocationSearch = [ShareAppContext sharedInstance].placemark;
-        NSString *locatedAt = [[lLocationSearch.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+        self.mLocationSearch = [ShareAppContext sharedInstance].placemark;
+        NSString *locatedAt = [[self.mLocationSearch.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
         if(locatedAt != nil)
         {
             self.mSearchField.text = [[NSString alloc]initWithString:locatedAt];
         }
+        CLLocationCoordinate2D coordinate = self.mLocationSearch.location.coordinate;
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4, [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4);
+        MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
+        [self.mMapView setRegion:adjustedRegion animated:false];
     }
     
 
-    for(Event* lEvent in lEvents)
+    for(Event* lEvent in self.mEvents)
     {
-        if(lLocationSearch == nil)
+        if(self.mLocationSearch == nil)
         {
             lEvent.distanceCustom =  [NSNumber numberWithDouble:kMaxRadius+1];
         }
         else
         {
+            CLLocation * lCLLocationA = [[CLLocation alloc] initWithLatitude:self.mMapView.centerCoordinate.latitude longitude:self.mMapView.centerCoordinate.longitude];
             CLLocation * lCLLocationB = [[CLLocation alloc] initWithLatitude:[lEvent.address.lat doubleValue] longitude:[lEvent.address.longi doubleValue]];
-            CLLocationDistance distance = [lLocationSearch.location distanceFromLocation:lCLLocationB];
+            CLLocationDistance distance = [lCLLocationA distanceFromLocation:lCLLocationB];
             lEvent.distanceCustom =  [NSNumber numberWithDouble:distance];
         }
     }
     
  
     
-    NSString * predicateString = @"(!(leader.identifier == %@  OR ANY partners.identifier == %@ OR ANY demands.leader.identifier == %@ OR SUBQUERY(demands, $t, ANY $t.partners.identifier == %@).@count != 0))AND status == 1";
+    NSString * predicateString = @"(isMine == 0)AND status == 1";
     predicateString = [predicateString stringByAppendingString:@" AND distanceCustom < %f"];
     
     if([ShareAppContext sharedInstance].currentDate != nil)
     {
         predicateString = [predicateString stringByAppendingString:@" AND date <= %@"];
     }
-    if([ShareAppContext sharedInstance].currentMood != nil && ![[ShareAppContext sharedInstance].currentMood isEqualToString:@"Whatever"])
+    
+    
+    if([ShareAppContext sharedInstance].currentMood != nil && ![[ShareAppContext sharedInstance].currentMood isEqualToString:NSLocalizedString(@"whatever", nil)])
     {
         predicateString = [predicateString stringByAppendingString:[NSString stringWithFormat:@" AND mood == \"%@\"",[ShareAppContext sharedInstance].currentMood ]];
     }
     
-
-    NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:predicateString,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].userIdentifier,[ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentDate];
+    NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:predicateString,[ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentDate];
 
     [self updateWithPredicate:lNSPredicate];
-    [self performSelector:@selector(updateAnnotation) withObject:nil afterDelay:1];
+    [self updateAnnotation];
+    [_mMapList reloadData];
+    if([self.fetchedResultsController.fetchedObjects count] == 0)
+    {
+        _mMapList.hidden = true;
+    }
+    else
+    {
+         _mMapList.hidden = false;
+    }
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView beginUpdates];
     [_mMapList reloadData];
+    if([self.fetchedResultsController.fetchedObjects count] == 0)
+    {
+        _mMapList.hidden = true;
+    }
+    else
+    {
+        _mMapList.hidden = false;
+    }
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
-    [self updateAnnotation];
+    [_mMapList reloadData];
+    if([self.fetchedResultsController.fetchedObjects count] == 0)
+    {
+        _mMapList.hidden = true;
+    }
+    else
+    {
+        _mMapList.hidden = false;
+    }
 }
 
 - (IBAction)showMap:(id)sender {
@@ -350,22 +392,12 @@ const int kDefaultRadius = 7000;
     self.mButtonList.selected = false;
     self.mButtonMap.selected = true;
     self.mMapView.hidden = false;
-    
+    self.emptyStateView2.alpha = 0;
     self.mMapList.hidden = false;
     
     [self.mTableLayoutTop setConstant:self.view.frame.size.height-44];
     [UIView animateWithDuration:0.4 animations:^{ [self.view layoutIfNeeded]; }];
 
-    
-    CLPlacemark* lLocationSearch = self.mLocationSearch;
-    if(lLocationSearch == nil)
-    {
-        lLocationSearch = [ShareAppContext sharedInstance].placemark;
-    }
-    CLLocationCoordinate2D coordinate = lLocationSearch.location.coordinate;
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentRadius);
-    MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
-    [self.mMapView setRegion:adjustedRegion animated:YES];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:     (NSIndexPath *)indexPath
@@ -376,22 +408,47 @@ const int kDefaultRadius = 7000;
 
 -(void) updateAnnotation
 {
+    NSMutableArray * lAnnotationToAdd = [NSMutableArray array];
+    NSMutableArray * lAnnotationToNotRemove = [NSMutableArray array];
+    NSMutableArray * lAnnotationToRemove = [NSMutableArray array];
     
     
-    [self.mMapView removeAnnotations:self.mMapView.annotations];
+    
     for( Event * event in [self.fetchedResultsController fetchedObjects])
     {
-        EventPointAnnotation *annotation = [[EventPointAnnotation alloc] init];
-        annotation.mEvent = event;
-        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
-        [annotation setCoordinate: coordinate];
-        [annotation setTitle:[NSString stringWithFormat:@"%@ : %@",event.leader.firstName, [event getDateString] ]];
-        
-        [self.mMapView addAnnotation:annotation];
+        if(![self.mEventInMap containsObject:event])
+        {
+            EventPointAnnotation *annotation = [[EventPointAnnotation alloc] init];
+            annotation.mEvent = event;
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([event.address.lat doubleValue], [event.address.longi doubleValue]);
+            [annotation setCoordinate: coordinate];
+            [annotation setTitle:[NSString stringWithFormat:@"%@ : %@",event.leader.firstName, [event getDateString] ]];
+            [lAnnotationToAdd addObject:annotation];
+            [lAnnotationToNotRemove addObject:event];
+        }
+        else
+        {
+            [lAnnotationToNotRemove addObject:event];
+        }
     }
     
+
+    for(EventPointAnnotation * annotation in self.mMapView.annotations)
+    {
+        if([annotation isKindOfClass:[EventPointAnnotation class]])
+        {
+            if(![lAnnotationToNotRemove containsObject:annotation.mEvent])
+            {
+                [lAnnotationToRemove addObject:annotation];
+            }
+        }
+
+    }
     
-    [_mMapList reloadData];
+    self.mEventInMap = lAnnotationToNotRemove;
+    
+    [self.mMapView removeAnnotations:lAnnotationToRemove];
+    [self.mMapView addAnnotations:lAnnotationToAdd];
 }
 
 
@@ -461,10 +518,9 @@ const int kDefaultRadius = 7000;
 - (IBAction)changeRadius:(UISlider*)sender {
     [ShareAppContext sharedInstance].currentRadius = sender.value;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
-    [self updateFilter];
     
     CLLocationCoordinate2D coordinate = _mLocationSearch.location.coordinate;
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentRadius);
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4, [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4);
     MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
     [self.mMapView setRegion:adjustedRegion animated:YES];
 }
@@ -481,14 +537,12 @@ const int kDefaultRadius = 7000;
 {
     [ShareAppContext sharedInstance].currentMood = notification.object;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
-    [self updateFilter];
 }
 
 -(void) dateChanged:(NSNotification*) notification
 {
     [ShareAppContext sharedInstance].currentDate = notification.object;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
-    [self updateFilter];
 }
 
 

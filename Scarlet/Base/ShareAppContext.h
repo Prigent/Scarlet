@@ -29,6 +29,7 @@
 @property (nonatomic) double currentRadius;
 
 -(void) updatePlacemark:(void (^)(NSError* error)) onCompletion;
+-(void) startLocation;
 
 @property (strong, nonatomic) User* user;
 

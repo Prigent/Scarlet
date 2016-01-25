@@ -14,6 +14,7 @@
 #import "ShareAppContext.h"
 #import "Profile.h"
 #import "Event.h"
+#import "NSData+Base64.h"
 
 @interface ChatViewController ()
 
@@ -52,7 +53,7 @@
             customTitle = [NSString stringWithFormat:@"%@, %@",customTitle, lProfile.firstName ];
         }
     }
-    self.title = customTitle;
+    self.mCustomTitle = customTitle;
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -75,6 +76,8 @@
 {
     NSInteger currentCount = [self.mChat.messages count];
 
+
+    
     [self.uiRefreshControl beginRefreshing];
     [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
             if(error)
@@ -83,10 +86,17 @@
             }
             
             NSInteger newCount = [self.mChat.messages count];
-            if(currentCount != newCount)
+        
+            if(self.tableView.alpha == 0)
+            {
+                [self performSelector:@selector(initscroolToBottom) withObject:nil afterDelay:0.5];
+            }
+            else if(currentCount != newCount)
             {
                 [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
             }
+        
+        
 
             [self.uiRefreshControl endRefreshing];
 
@@ -104,19 +114,32 @@
     }];
 }
 
-
--(void) scroolToBottom
+-(void) initscroolToBottom
 {
-    self.tableView.alpha = 1;
-    
-    
     CGFloat yOffset = 0;
     
     if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
         yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
     }
+    [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:false];
+    self.tableView.alpha = 1;
     
+}
+-(void) scroolToBottom
+{
+    CGFloat yOffset = 0;
+    
+    if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
+        yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+    }
+    self.tableView.alpha = 1;
     [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+}
+
+
+-(void) showTable
+{
+
 }
 
 
@@ -125,8 +148,20 @@
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOffScreen:) name:UIKeyboardWillHideNotification object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardWillShowNotification object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOffScreen:) name:UIKeyboardWillHideNotification object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectProfile:) name:@"selectProfile" object:nil];
+}
+
+-(void) selectProfile:(NSNotification*) notification
+{
+    Message* lMessage = notification.object;
+    if(![lMessage.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+    {
+        BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        [lMain configure:lMessage.owner];
+        [self.navigationController pushViewController:lMain animated:true];
+    }
 }
 
 -(void)keyboardOnScreen:(NSNotification *)notification
@@ -169,12 +204,18 @@
 }
 
 - (IBAction)sendMessage:(id)sender {
-    [_mTextField resignFirstResponder];
-    
-    [[WSManager sharedInstance] addMessage:self.mChat message:self.mTextField.text completion:^(NSError *error) {
-        [self updateData];
-        [self.mTextField setText:nil];
-    }];
+    if([self.mTextField.text length]>0)
+    {
+        
+        NSLog(@"%@",self.mTextField.text );
+        
+        [_mTextField resignFirstResponder];
+        
+        [[WSManager sharedInstance] addMessage:self.mChat message:self.mTextField.text completion:^(NSError *error) {
+            [self updateData];
+            [self.mTextField setText:nil];
+        }];
+    }
 }
 /*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -237,6 +278,24 @@
     return cell;
 }
 
+
+-(BOOL)isBase64Data:(NSString *)input
+{
+    
+    input=[[input componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@""];
+    if ([input length] % 4 == 0) {
+        static NSCharacterSet *invertedBase64CharacterSet = nil;
+        if (invertedBase64CharacterSet == nil) {
+            invertedBase64CharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="]invertedSet];
+        }
+        return [input rangeOfCharacterFromSet:invertedBase64CharacterSet options:NSLiteralSearch].location == NSNotFound;
+    }
+    return NO;
+}
+
+
+
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Message* message = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -247,49 +306,48 @@
         date = message.date.timeIntervalSince1970 - messageBefore.date.timeIntervalSince1970;
     }
     
+    NSString* text =message.text;
+    if([self isBase64Data:message.text])
+    {
+        NSData *data = [NSData dataFromBase64String:message.text];
+        NSString *valueUnicode = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSData *dataa = [valueUnicode dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *valueEmoj = [[NSString alloc] initWithData:dataa encoding:NSNonLossyASCIIStringEncoding];
+        text = valueEmoj;
+    }
+
+    
     if([message.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
     {
         CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 28 ,1000);
-        CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize expectedLabelSize = [text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
         if(date >= (60*10))
         {
-            return 16+expectedLabelSize.height +40;
+            return 20+expectedLabelSize.height +40;
         }
         else
         {
-            return 16+expectedLabelSize.height;
+            return 20+expectedLabelSize.height;
         }
     }
     else
     {
         CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width  - 38-8-28 ,1000);
-        CGSize expectedLabelSize = [message.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize expectedLabelSize = [text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
         
         
         if(date >= (60*10))
         {
-            return 46+expectedLabelSize.height +40;
+            return 50+expectedLabelSize.height +40;
         }
         else
         {
-            return 46+expectedLabelSize.height;
+            return 50+expectedLabelSize.height;
         }
     }
 }
 
 
-
--(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
-{
-    Message* lMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
-    if(![lMessage.owner.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
-    {
-        BaseViewController* lMain =  [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
-        [lMain configure:lMessage.owner];
-        [self.navigationController pushViewController:lMain animated:true];
-    }
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

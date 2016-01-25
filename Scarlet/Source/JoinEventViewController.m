@@ -13,6 +13,7 @@
 #import "ProfileListCell.h"
 #import "ShareAppContext.h"
 #import "User.h"
+#import "Demand.h"
 
 @interface JoinEventViewController ()
 
@@ -79,7 +80,50 @@
     
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
     ProfileListCell* cellList = (ProfileListCell*)cell;
-    [cellList configure:[[ShareAppContext sharedInstance].user.friends allObjects] andSelectedList:self.listProfileId];
+    
+    
+    NSMutableArray* lList = [NSMutableArray arrayWithArray:[[ShareAppContext sharedInstance].user.friends allObjects] ];
+    NSMutableArray* lRemoveList = [NSMutableArray array];
+    for(Profile * lProfile in lList)
+    {
+        if([lProfile.identifier isEqualToString:self.mEvent.leader.identifier])
+        {
+            [lRemoveList addObject:lProfile];
+            break;
+        }
+        for(Profile * lPartner in self.mEvent.partners)
+        {
+            if([lProfile.identifier isEqualToString:lPartner.identifier])
+            {
+                [lRemoveList addObject:lProfile];
+                break;
+            }
+        }
+        for(Demand * lDemand in self.mEvent.demands)
+        {
+            if([lProfile.identifier isEqualToString:lDemand.leader.identifier])
+            {
+                [lRemoveList addObject:lProfile];
+                break;
+            }
+            else
+            {
+                for(Profile * lPartner in lDemand.partners)
+                {
+                    if([lProfile.identifier isEqualToString:lPartner.identifier])
+                    {
+                        [lRemoveList addObject:lProfile];
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    [lList removeObjectsInArray:lRemoveList];
+
+
+    [cellList configure:lList andSelectedList:self.listProfileId];
 
     return cell;
 }

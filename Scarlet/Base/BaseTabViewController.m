@@ -29,6 +29,20 @@
             [lNext performSelector:@selector(configure:) withObject:self.mObject];
         }
     }
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUnread:) name:@"updateUnread" object:nil];
+}
+
+-(void) updateUnread:(NSNotification*) notification
+{
+    NSNumber * count = [notification object];
+    if([count intValue] == 0)
+    {
+        [[self.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
+    }
+    else
+    {
+        [[self.viewControllers objectAtIndex:2] tabBarItem].badgeValue = count.description;
+    }
 
 }
 

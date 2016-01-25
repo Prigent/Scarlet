@@ -30,7 +30,7 @@
     [[UISearchBar appearance] setImage:[UIImage imageNamed:@"icnSearch"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
 
-    
+
     
     UIImage *barBackBtnImg = [[UIImage imageNamed:@"btnBack"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
 
@@ -42,8 +42,7 @@
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
     
 // [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-    
+
     
     NSLog(@"Token %@", [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]);
     
@@ -109,6 +108,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

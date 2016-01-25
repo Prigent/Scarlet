@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Select your mood";
+    self.title = NSLocalizedString(@"select_mood",nil);
     
     // Do any additional setup after loading the view.
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
@@ -33,10 +33,26 @@
     self.mData = [NSMutableArray arrayWithArray:[[NSArray alloc] initWithContentsOfFile:plistFile]];
     if(self.filter)
     {
-        [self.mData insertObject:@"Whatever" atIndex:0];
+        [self.mData insertObject:NSLocalizedString(@"whatever",nil) atIndex:0];
     }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save",nil) style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    
 
 }
+
+
+-(void) save {
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionReveal; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromBottom; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
 
 -(void) viewWillAppear:(BOOL)animated
 {
