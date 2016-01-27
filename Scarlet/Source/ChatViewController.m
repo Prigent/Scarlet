@@ -60,7 +60,7 @@
 {
     [super viewDidAppear:animated];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
-    [self performSelector:@selector(updateData) withObject:nil afterDelay:10];
+    [self performSelector:@selector(updateData) withObject:nil afterDelay:15];
 }
 
 -(void) viewDidDisappear:(BOOL)animated
@@ -69,6 +69,7 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_mTextField resignFirstResponder];
 }
 
 
@@ -77,69 +78,53 @@
     NSInteger currentCount = [self.mChat.messages count];
 
 
-    
-    [self.uiRefreshControl beginRefreshing];
+    if(self.tableView.alpha != 0)
+    {
+        [self.uiRefreshControl beginRefreshing];
+    }
     [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
-            if(error)
-            {
-                NSLog(@"%@", error);
-            }
-            
-            NSInteger newCount = [self.mChat.messages count];
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
         
-            if(self.tableView.alpha == 0)
-            {
-                [self performSelector:@selector(initscroolToBottom) withObject:nil afterDelay:0.5];
-            }
-            else if(currentCount != newCount)
-            {
-                [self performSelector:@selector(scroolToBottom) withObject:nil afterDelay:0.5];
-            }
-        
-        
-
+        if(self.tableView.alpha != 0)
+        {
             [self.uiRefreshControl endRefreshing];
-
-            for(Message* lMessage in self.mChat.messages)
-            {
-                lMessage.readStatus = [NSNumber numberWithBool:true];
-            }
-            [self.tableView reloadData];
+        }
+        
+        NSInteger newCount = [self.mChat.messages count];
+        if(self.tableView.alpha == 0 || currentCount != newCount)
+        {
+            [self performSelector:@selector(scrollToBottom) withObject:nil afterDelay:0.5];
+        }
         
         
         
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
-            [self performSelector:@selector(updateData) withObject:nil afterDelay:10];
-            
+        
+        for(Message* lMessage in self.mChat.messages)
+        {
+            lMessage.readStatus = [NSNumber numberWithBool:true];
+        }
+        [self.tableView reloadData];
+        
+        
+        
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
+        [self performSelector:@selector(updateData) withObject:nil afterDelay:15];
+        
     }];
 }
 
--(void) initscroolToBottom
+
+-(void) scrollToBottom
 {
-    CGFloat yOffset = 0;
-    
-    if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
-        yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
-    }
-    [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:false];
-    self.tableView.alpha = 1;
-    
-}
--(void) scroolToBottom
-{
-    CGFloat yOffset = 0;
-    
-    if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
-        yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+    if (self.tableView.contentSize.height > self.tableView.bounds.size.height)
+    {
+        CGFloat yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+        [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:(self.tableView.alpha == 1)];
     }
     self.tableView.alpha = 1;
-    [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:YES];
-}
-
-
--(void) showTable
-{
-
 }
 
 
@@ -182,7 +167,10 @@
                          [self.view layoutIfNeeded]; // Called on parent view
                      } completion:^(BOOL finished) {
                          CGPoint offset = CGPointMake(0, self.tableView.contentSize.height -     self.tableView.frame.size.height);
-                         [self.tableView setContentOffset:offset animated:YES];
+                         if(offset.y>0)
+                         {
+                             [self.tableView setContentOffset:offset animated:YES];
+                         }
                      }];
 }
 
@@ -209,7 +197,7 @@
         
         NSLog(@"%@",self.mTextField.text );
         
-        [_mTextField resignFirstResponder];
+        
         
         [[WSManager sharedInstance] addMessage:self.mChat message:self.mTextField.text completion:^(NSError *error) {
             [self updateData];

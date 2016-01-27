@@ -18,7 +18,7 @@
 #import "MapEventCollectionCell.h"
 #import "LocationSearchDataSource.h"
 #import "WSParser.h"
-
+#import "MKMapView+ZoomLevel.h"
 
 const int kMaxRadius = 50000;
 const int kDefaultRadius = 7000;
@@ -109,6 +109,11 @@ const int kDefaultRadius = 7000;
     [super viewDidAppear:animated];
     
     self.mUpdateFilter = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateFilter) userInfo:nil repeats:true];
+    
+    if(isInit == true)
+    {
+        [self updateData];
+    }
 }
 -(void) viewWillDisappear:(BOOL)animated
 {
@@ -158,6 +163,7 @@ const int kDefaultRadius = 7000;
     
     [[WSManager sharedInstance] getEventsCompletion:^(NSError *error) {
         
+        isInit = true;
         self.mEvents = [WSParser getEventsNotOwn];
         [self.uiRefreshControl endRefreshing];
     }];
@@ -194,9 +200,9 @@ const int kDefaultRadius = 7000;
     }
     
     CLLocationCoordinate2D coordinate = self.mLocationSearch.location.coordinate;
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4, [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4);
-    MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
-    [self.mMapView setRegion:adjustedRegion animated:YES];
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentRadius);
+    //MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
+    [self.mMapView setRegion:viewRegion animated:YES];
 
     
     [UIView animateWithDuration:.3 animations:^{ self.mTableViewLocation.alpha = 0; }];
@@ -206,6 +212,27 @@ const int kDefaultRadius = 7000;
      [self.mSearchField setShowsCancelButton:true animated:true];
     [UIView animateWithDuration:.3 animations:^{ self.mTableViewLocation.alpha = 0.8; }];
 }
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+  
+        
+        [ShareAppContext sharedInstance].currentRadius = self.mMapView.region.span.latitudeDelta*111000.0;
+        NSLog(@"val %f", self.mMapView.region.span.latitudeDelta*111000.0);
+        
+        if([ShareAppContext sharedInstance].currentRadius < 100)
+        {
+            [ShareAppContext sharedInstance].currentRadius = 100;
+        }
+        if([ShareAppContext sharedInstance].currentRadius > kMaxRadius)
+        {
+            [ShareAppContext sharedInstance].currentRadius = kMaxRadius;
+        }
+        
+ 
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
+}
+
 
 
 
@@ -285,10 +312,7 @@ const int kDefaultRadius = 7000;
     [self.navigationController pushViewController:viewController animated:NO];
 }
 
--(void) updateRadiusPosition
-{
-    
-}
+
 -(void) updateFilter
 {
     if( self.mLocationSearch == nil &&  [ShareAppContext sharedInstance].placemark !=nil)
@@ -300,9 +324,9 @@ const int kDefaultRadius = 7000;
             self.mSearchField.text = [[NSString alloc]initWithString:locatedAt];
         }
         CLLocationCoordinate2D coordinate = self.mLocationSearch.location.coordinate;
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4, [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4);
-        MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
-        [self.mMapView setRegion:adjustedRegion animated:false];
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius, [ShareAppContext sharedInstance].currentRadius);
+        //MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
+        [self.mMapView setRegion:viewRegion animated:false];
     }
     
 
@@ -520,9 +544,9 @@ const int kDefaultRadius = 7000;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
     
     CLLocationCoordinate2D coordinate = _mLocationSearch.location.coordinate;
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4, [ShareAppContext sharedInstance].currentRadius + [ShareAppContext sharedInstance].currentRadius*0.4);
-    MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
-    [self.mMapView setRegion:adjustedRegion animated:YES];
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius*0.7, [ShareAppContext sharedInstance].currentRadius*0.7);
+    //MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
+    [self.mMapView setRegion:viewRegion animated:false];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

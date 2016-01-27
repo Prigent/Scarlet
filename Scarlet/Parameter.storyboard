@@ -29,30 +29,14 @@
                                     <rect key="frame" x="0.0" y="72" width="375" height="177"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hy8-FT-RTW" customClass="LocalizedButton">
-                                            <rect key="frame" x="8" y="16" width="359" height="42"/>
-                                            <color key="backgroundColor" red="0.17254901960784313" green="0.25490196078431371" blue="0.5607843137254902" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="42" id="uTH-RH-qhg"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                            <state key="normal" title="sync_facebook">
-                                                <color key="titleColor" white="0.96816998109999997" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="4"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebL-hM-Znf" customClass="LocalizedButton">
-                                            <rect key="frame" x="8" y="66" width="359" height="42"/>
+                                            <rect key="frame" x="8" y="16" width="359" height="42"/>
                                             <color key="backgroundColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="42" id="zm1-xo-jwf"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                            <state key="normal" title="desactivate_account">
+                                            <state key="normal" title="contact_account">
                                                 <color key="titleColor" white="0.96816998109999997" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <userDefinedRuntimeAttributes>
@@ -60,9 +44,12 @@
                                                     <integer key="value" value="4"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="contact:" destination="PRU-yp-6z1" eventType="touchUpInside" id="xKl-jQ-27l"/>
+                                            </connections>
                                         </button>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXq-MS-ZPV" customClass="LocalizedButton">
-                                            <rect key="frame" x="8" y="118" width="359" height="42"/>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXq-MS-ZPV" customClass="LocalizedButton">
+                                            <rect key="frame" x="8" y="66" width="359" height="42"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="42" id="woB-pe-kmV"/>
                                             </constraints>
@@ -89,13 +76,10 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="ebL-hM-Znf" firstAttribute="leading" secondItem="sT2-Vx-pQt" secondAttribute="leading" constant="8" id="7op-Kd-ZW5"/>
-                                        <constraint firstItem="Hy8-FT-RTW" firstAttribute="top" secondItem="sT2-Vx-pQt" secondAttribute="top" constant="16" id="GyI-vr-Wtb"/>
-                                        <constraint firstItem="Hy8-FT-RTW" firstAttribute="leading" secondItem="sT2-Vx-pQt" secondAttribute="leading" constant="8" id="Ixp-kT-mjG"/>
+                                        <constraint firstItem="ebL-hM-Znf" firstAttribute="top" secondItem="sT2-Vx-pQt" secondAttribute="top" constant="16" id="FLW-F2-mGL"/>
                                         <constraint firstAttribute="trailing" secondItem="ebL-hM-Znf" secondAttribute="trailing" constant="8" id="JN7-MV-T9Y"/>
-                                        <constraint firstAttribute="trailing" secondItem="Hy8-FT-RTW" secondAttribute="trailing" constant="8" id="LQK-xc-SiJ"/>
                                         <constraint firstAttribute="trailing" secondItem="pXq-MS-ZPV" secondAttribute="trailing" constant="8" id="QJL-gX-UBh"/>
                                         <constraint firstItem="pXq-MS-ZPV" firstAttribute="top" secondItem="ebL-hM-Znf" secondAttribute="bottom" constant="8" id="aQU-CF-UJe"/>
-                                        <constraint firstItem="ebL-hM-Znf" firstAttribute="top" secondItem="Hy8-FT-RTW" secondAttribute="bottom" constant="8" id="kmt-IR-Dfm"/>
                                         <constraint firstItem="pXq-MS-ZPV" firstAttribute="leading" secondItem="sT2-Vx-pQt" secondAttribute="leading" constant="8" id="ohn-bh-3uE"/>
                                     </constraints>
                                 </view>

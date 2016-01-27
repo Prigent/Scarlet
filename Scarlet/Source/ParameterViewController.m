@@ -141,5 +141,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
 }
 
+- (IBAction)contact:(id)sender {
+    
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.scarlet.events/"]];
+    
+}
 
 @end

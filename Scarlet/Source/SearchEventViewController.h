@@ -14,6 +14,9 @@
 @class LocationSearchDataSource;
 
 @interface SearchEventViewController : AutoListViewController<MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+{
+    BOOL isInit;
+}
 @property (weak, nonatomic) IBOutlet MKMapView *mMapView;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonMap;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonList;

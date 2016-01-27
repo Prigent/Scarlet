@@ -34,7 +34,7 @@
 {
     MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];
     _mCurrentRadiusLabel.text = [lMKDistanceFormatter stringFromDistance:[ShareAppContext sharedInstance].currentRadius];
-    [_mCurrentRadiusSlider setValue:[ShareAppContext sharedInstance].currentRadius];
+    [_mCurrentRadiusSlider setValue:[ShareAppContext sharedInstance].currentRadius animated:true];
     
     if( [ShareAppContext sharedInstance].currentMood == nil)
     {

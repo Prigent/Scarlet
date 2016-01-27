@@ -124,6 +124,7 @@
 		B27F78E91BD93B260038B4B0 /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E31BD93B260038B4B0 /* Picture.m */; };
 		B27F78EA1BD93B260038B4B0 /* Profile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E51BD93B260038B4B0 /* Profile+CoreDataProperties.m */; };
 		B27F78EB1BD93B260038B4B0 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E71BD93B260038B4B0 /* Profile.m */; };
+		B28075EB1C58C12D008D5E67 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = B28075EA1C58C12D008D5E67 /* MKMapView+ZoomLevel.m */; };
 		B28302D01BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */; };
 		B290FBE41BE924EC00868F02 /* ProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE31BE924EC00868F02 /* ProfileCell.m */; };
 		B290FBE71BE927F200868F02 /* ProfileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE61BE927F200868F02 /* ProfileListViewController.m */; };
@@ -423,6 +424,8 @@
 		B27F78E51BD93B260038B4B0 /* Profile+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Profile+CoreDataProperties.m"; path = "DataBase/Profile+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B27F78E61BD93B260038B4B0 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = DataBase/Profile.h; sourceTree = "<group>"; };
 		B27F78E71BD93B260038B4B0 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = DataBase/Profile.m; sourceTree = "<group>"; };
+		B28075E91C58C12D008D5E67 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
+		B28075EA1C58C12D008D5E67 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
 		B28302CE1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+APParallaxHeader.h"; sourceTree = "<group>"; };
 		B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+APParallaxHeader.m"; sourceTree = "<group>"; };
 		B290FBE21BE924EC00868F02 /* ProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileCell.h; path = Source/ProfileCell.h; sourceTree = "<group>"; };
@@ -792,6 +795,8 @@
 				B2F972311BD945D300B8BF72 /* AllEvent.plist */,
 				B27F78831BD922180038B4B0 /* SearchEventViewController.h */,
 				B27F78841BD922180038B4B0 /* SearchEventViewController.m */,
+				B28075E91C58C12D008D5E67 /* MKMapView+ZoomLevel.h */,
+				B28075EA1C58C12D008D5E67 /* MKMapView+ZoomLevel.m */,
 				B27F78921BD9228D0038B4B0 /* EventViewController.h */,
 				B27F78931BD9228D0038B4B0 /* EventViewController.m */,
 				B2F972361BD946B800B8BF72 /* EventCell.h */,
@@ -1383,6 +1388,7 @@
 				B23FA5C61BD5011B00868D12 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				B23FA5281BD5011100868D12 /* BaseSplitViewController.m in Sources */,
 				B244DA531BDE9FEC0088BB1D /* JoinEventViewController.m in Sources */,
+				B28075EB1C58C12D008D5E67 /* MKMapView+ZoomLevel.m in Sources */,
 				B23FA5AC1BD5011B00868D12 /* AFHTTPRequestOperation.m in Sources */,
 				B23FA5BB1BD5011B00868D12 /* DelegateLabel.m in Sources */,
 				B2B375311C0778CA00B3E349 /* EventExpendCell.m in Sources */,

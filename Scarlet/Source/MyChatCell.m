@@ -35,6 +35,7 @@
 {
     NSDateFormatter *formatDate = [[NSDateFormatter alloc] init];
     [formatDate setDateFormat:@"dd/MM/yyyy"];
+    _mLastMessageText.text = @"";
     if([chat.messages count]>0)
     {
         Message* lMessage = [chat.messages lastObject];
