@@ -51,11 +51,13 @@
     if(self.mEvent)
     {
         [self editInit];
-        [self.mButton setTitle:NSLocalizedString(@"save_scarlet", nil) forState:UIControlStateNormal];
+        [self.mButton setTitle:NSLocalizedString2(@"save_scarlet", nil) forState:UIControlStateNormal];
+        self.screenName = @"edit_event";
     }
     else
     {
         [self createInit];
+        self.screenName = @"create_event";
     }
 }
 
@@ -75,7 +77,7 @@
     self.address = self.mEvent.address.street;
 
     self.coordinate =CLLocationCoordinate2DMake([self.mEvent.address.lat floatValue], [self.mEvent.address.longi floatValue]);
-    self.title = NSLocalizedString(@"edit_scarlet", nil);
+    self.title = NSLocalizedString2(@"edit_scarlet", nil);
 
 }
 
@@ -85,7 +87,8 @@
     self.listProfileId = [NSMutableArray array];
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Mood" ofType:@"plist"];
-    self.mood = [[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0];
+    NSString * lMood = [[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0];
+    self.mood = NSLocalizedString2(lMood,lMood);
     
     
     CLPlacemark* lCLPlacemark = [ShareAppContext sharedInstance].placemark;
@@ -97,11 +100,11 @@
     }
     else
     {
-        self.address = NSLocalizedString(@"no_address", nil);
+        self.address = NSLocalizedString2(@"no_address", nil);
     }
 
     
-    self.title = NSLocalizedString(@"new_scarlet", nil);
+    self.title = NSLocalizedString2(@"new_scarlet", nil);
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -156,7 +159,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText =  NSLocalizedString(@"loading", nil);
+    hud.labelText =  NSLocalizedString2(@"loading", nil);
     
 
     
@@ -177,6 +180,9 @@
     
     if(self.mEvent)
     {
+        NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"create_event"  label:nil value:nil] build];
+        [[[GAI sharedInstance] defaultTracker]  send:event];
+        
         [[WSManager sharedInstance] editEvent:lEventDic completion:^(NSError *error) {
             
             [hud hide:YES];
@@ -192,6 +198,9 @@
     }
     else
     {
+        NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"edit_event"  label:nil value:nil] build];
+        [[[GAI sharedInstance] defaultTracker]  send:event];
+        
         [[WSManager sharedInstance] createEvent:lEventDic completion:^(NSError *error) {
             
             [hud hide:YES];
@@ -382,7 +391,7 @@
     }
     else
     {
-        self.address =  NSLocalizedString(@"no_address", nil);
+        self.address =  NSLocalizedString2(@"no_address", nil);
     }
     self.coordinate = lLocation.location.coordinate;
     

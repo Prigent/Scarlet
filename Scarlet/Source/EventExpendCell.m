@@ -29,14 +29,14 @@
     NSInteger countMember = [event getCountMember];
     if(countMember >1 )
     {
-        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember], NSLocalizedString(@"people_are", nil)]; //peoples are in
+        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember], NSLocalizedString2(@"people_are", nil)]; //peoples are in
     }
     else
     {
-        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember],NSLocalizedString(@"people_is", nil)];
+        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember],NSLocalizedString2(@"people_is", nil)];
     }
 
-    _mMood.text =  [NSString stringWithFormat:@"%@ : %@",NSLocalizedString(@"mood", nil),event.mood];
+    _mMood.text =  [NSString stringWithFormat:@"%@ : %@",NSLocalizedString2(@"mood", nil),event.mood];
     
 
     MKDistanceFormatter * lMKDistanceFormatter = [[MKDistanceFormatter alloc]init];

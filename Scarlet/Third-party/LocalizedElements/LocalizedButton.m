@@ -13,7 +13,7 @@
     self = [super initWithCoder:aDecoder];
     if(self)
     {
-        [self setTitle:NSLocalizedString(self.titleLabel.text, @"") forState:UIControlStateNormal];
+        [self setTitle:NSLocalizedString2(self.titleLabel.text, @"") forState:UIControlStateNormal];
         
         //self.layer.cornerRadius = 5;
         //self.clipsToBounds = YES;

@@ -18,12 +18,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.mCustomTitle = NSLocalizedString(@"settings",nil);//@"Settings";
+    self.mCustomTitle = NSLocalizedString2(@"settings",nil);//@"Settings";
     // Do any additional setup after loading the view.
     
     [[WSManager sharedInstance] getNotificationConfiguration:^(NSError *error) {
         [self.mTableView reloadData];
     }];
+    
+    
+    self.screenName = @"parameter";
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -32,6 +35,7 @@
     {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
     }
+     [self.mTableView reloadData];
 }
 
 
@@ -42,7 +46,45 @@
 {
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSwitch:) name:@"onSwitch" object:nil];
 }
+
+
+-(void) onSwitch:(NSNotification*) notification
+{
+    NSArray* lData = notification.object;
+    
+    NSString * lKey = [lData objectAtIndex:0];
+    NSNumber * lValue =  [lData objectAtIndex:1];
+   
+    
+    
+    
+    
+    
+    lValue = [NSNumber numberWithBool:![lValue boolValue]];
+    
+    
+    if(![[UIApplication sharedApplication] isRegisteredForRemoteNotifications])
+    {
+        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString2(@"no_push_configuration", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"cancel",nil) otherButtonTitles:NSLocalizedString2(@"configure",nil), nil];
+        lUIAlertView.tag = 1;
+        [lUIAlertView show];
+    }
+    else
+    {
+        [[WSManager sharedInstance] setNotificationConfiguration:lKey andValue:lValue completion:^(NSError *error) {
+            [self.mTableView reloadData];
+        }];
+    }
+}
+
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter]  removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -65,33 +107,10 @@
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedString(@"notifications", nil);
+    return NSLocalizedString2(@"notifications", nil);
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
-    
-    NSString * lKey = [[[ShareAppContext sharedInstance].notificationDic allKeys] objectAtIndex:indexPath.row];
-    
-    NSNumber * lValue = [[[ShareAppContext sharedInstance].notificationDic allValues] objectAtIndex:indexPath.row];
-    lValue = [NSNumber numberWithBool:![lValue boolValue]];
 
-    
-    if(![[UIApplication sharedApplication] isRegisteredForRemoteNotifications])
-    {
-        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"no_push_configuration", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"cancel",nil) otherButtonTitles:NSLocalizedString(@"configure",nil), nil];
-        lUIAlertView.tag = 1;
-        [lUIAlertView show];
-    }
-    else
-    {
-        [[WSManager sharedInstance] setNotificationConfiguration:lKey andValue:lValue completion:^(NSError *error) {
-            [self.mTableView reloadData];
-        }];
-    }
-
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -137,6 +156,10 @@
 */
 
 - (IBAction)disconnect:(id)sender {
+    
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"disconnect"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
+    
     [[ShareAppContext sharedInstance] setAccessToken:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
 }

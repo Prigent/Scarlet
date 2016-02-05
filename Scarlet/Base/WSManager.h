@@ -35,6 +35,7 @@ typedef enum {
 - (void)getChatsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getNotificationConfiguration:(void (^)(NSError* error)) onCompletion;
+- (void)getTextCompletion:(void (^)(NSError* error)) onCompletion;
 
 - (void)setNotificationConfiguration:(NSString*) key andValue:(NSNumber*) value completion:(void (^)(NSError* error)) onCompletion;
 - (void)saveUserCompletion:(void (^)(NSError* error)) onCompletion;
@@ -54,7 +55,7 @@ typedef enum {
 - (void)hideEvent:(Event*) event status:(NSNumber*) status completion:(void (^)(NSError* error)) onCompletion;
 //add message
 //create event
-
+-(void) updateCountRead;
 
 
 @end

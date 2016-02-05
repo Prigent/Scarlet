@@ -12,7 +12,7 @@
 #import "ShareAppContext.h"
 #import "FriendRequest.h"
 #import "User.h"
-
+#import "MBProgressHUD.h"
 @interface ProfileListViewController ()
 
 @end
@@ -45,6 +45,8 @@
     [self.mSearchField setBackgroundImage:[[UIImage alloc]init]];
     self.mSearchField.layer.borderWidth = 1;
     self.mSearchField.layer.borderColor = [[UIColor whiteColor] CGColor];
+    
+    self.screenName = @"search_profile";
 }
 
 -(void) updateData
@@ -122,7 +124,20 @@
 
 -(void) addFriend:(Profile*) profile
 {
+
+    
+
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText =  NSLocalizedString2(@"loading", nil);
+
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"add_friend"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
+    
+    
     [[WSManager sharedInstance] addFriend:profile.identifier completion:^(NSError *error) {
+        [hud hide:YES];
         if(error == nil)
         {
             [self.tableView reloadData];
@@ -136,8 +151,16 @@
 
 -(void) removeFriendRequest:(FriendRequest*) friendRequest
 {
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText =  NSLocalizedString2(@"loading", nil);
+
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"remove_friend"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
+    
     [[WSManager sharedInstance] respondFriend:friendRequest.identifier status:[NSNumber numberWithInt:kreject] completion:^(NSError *error) {
-        
+         [hud hide:YES];
         if(error == nil)
         {
             [self.tableView reloadData];

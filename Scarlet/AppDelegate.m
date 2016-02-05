@@ -12,6 +12,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "ShareAppContext.h"
 #import "WSManager.h"
+#import "Toast+UIView.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +20,9 @@
 
 @implementation AppDelegate
 
-
+/******* Set your tracking ID here *******/
+static NSString *const kTrackingId = @"UA-72902414-1";
+static NSString *const kAllowTracking = @"allowTracking";
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -29,8 +32,13 @@
     
     [[UISearchBar appearance] setImage:[UIImage imageNamed:@"icnSearch"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
-
-
+    
+    NSDictionary *appDefaults = @{kAllowTracking: @(YES)};
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    [GAI sharedInstance].optOut = ![[NSUserDefaults standardUserDefaults] boolForKey:kAllowTracking];
+    [GAI sharedInstance].dispatchInterval = 20;
+    [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
     
     UIImage *barBackBtnImg = [[UIImage imageNamed:@"btnBack"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
 
@@ -76,7 +84,7 @@
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] == nil) {
         [[NSUserDefaults standardUserDefaults] setValue:tokenString forKey:@"DeviceToken"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        NSLog(@"%@",tokenString);
+        NSLog(@"tokenString SAved %@",tokenString);
         if([ShareAppContext sharedInstance].user != nil)
         {
             [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
@@ -85,6 +93,24 @@
         }
     }
 }
+
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+{
+    NSLog(@"parsePushData : %@", userInfo);
+    if([application applicationState] == UIApplicationStateInactive)
+    {
+        NSNumber * lNumber = [userInfo valueForKey:@"redirection"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"redirection" object:lNumber];
+    }
+    else
+    {
+        [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]];
+    }
+}
+
+
+
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {

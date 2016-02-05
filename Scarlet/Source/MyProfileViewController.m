@@ -56,10 +56,12 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
 
     
-    UIBarButtonItem *backButtonItemSave = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save",nil) style:UIBarButtonItemStyleDone target:self action:@selector(saveBack)];
+    UIBarButtonItem *backButtonItemSave = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString2(@"save",nil) style:UIBarButtonItemStyleDone target:self action:@selector(saveBack)];
     self.navigationItem.rightBarButtonItem = backButtonItemSave;
     
-    self.mCustomTitle = NSLocalizedString(@"edit_profile",nil);//@"Edit profile";
+    self.mCustomTitle = NSLocalizedString2(@"edit_profile",nil);//@"Edit profile";
+    
+    self.screenName = @"edit_profile";
 }
 
 
@@ -67,7 +69,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading",nil);
+    hud.labelText = NSLocalizedString2(@"loading",nil);
     
     [[ShareAppContext sharedInstance].user.managedObjectContext refreshObject:[ShareAppContext sharedInstance].user mergeChanges:NO];
      
@@ -89,7 +91,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading",nil);
+    hud.labelText = NSLocalizedString2(@"loading",nil);
     
     
     [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
@@ -307,7 +309,7 @@
 
 -(void) deletePicture
 {
-    [[WSManager sharedInstance] removePicture:[NSNumber numberWithInt:indexTemp] completion:^(NSError *error) {
+    [[WSManager sharedInstance] removePicture:[NSNumber numberWithInteger:indexTemp] completion:^(NSError *error) {
         [self setupPhotosArray];
         [self.tableview reloadData];
         [self.collectionView reloadData];
@@ -397,10 +399,10 @@
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:return NSLocalizedString(@"occupation",nil);//@"Occupation";
-        case 1:return NSLocalizedString(@"about_you",nil);//@"About you";
-        case 2:return NSLocalizedString(@"looking_for",nil);//@"Looking for";
-        case 3:return NSLocalizedString(@"aged_between",nil);//@"Aged between";
+        case 0:return NSLocalizedString2(@"occupation",nil);//@"Occupation";
+        case 1:return NSLocalizedString2(@"about_you",nil);//@"About you";
+        case 2:return NSLocalizedString2(@"looking_for",nil);//@"Looking for";
+        case 3:return NSLocalizedString2(@"aged_between",nil);//@"Aged between";
             
         default:return @"";
     }
@@ -560,7 +562,17 @@
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Loading";
     
-    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInt:indexTemp] completion:^(NSError *error) {
+    
+    NSInteger countPhoto = [[ShareAppContext sharedInstance].user.pictures count]+1;
+    if(indexTemp > countPhoto)
+    {
+        indexTemp = countPhoto;
+    }
+    
+    
+    NSLog(@"countPhoto %ld",countPhoto);
+    
+    [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInteger:indexTemp] completion:^(NSError *error) {
         [self setupPhotosArray];
         [self.tableview reloadData];
         [self.collectionView reloadData];

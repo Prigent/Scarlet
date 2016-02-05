@@ -33,6 +33,9 @@
     loginButton.delegate = self;
     [self.view addSubview:loginButton];*/
     
+    
+    self.screenName = @"login";
+    
 }
 - (IBAction)loginFacebook:(id)sender {
     
@@ -44,6 +47,9 @@
     }
     else
     {
+        NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"login_facebook"  label:nil value:nil] build];
+        [[[GAI sharedInstance] defaultTracker] send:event];
+        
         
         [self.mFBSDKLoginManager logInWithReadPermissions:@[@"user_birthday", @"user_hometown", @"user_location", @"user_work_history", @"user_photos", @"user_friends", @"user_about_me", @"email", @"public_profile", @"user_likes"]
                                   fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
@@ -92,7 +98,7 @@
         
         NSString * lKey = [NSString stringWithFormat:@"ecranOnboarding0%d",i+1];
         
-        lLabel.text = NSLocalizedString(lKey, nil);
+        lLabel.text = NSLocalizedString2(lKey, nil);
         [_mScrollView addSubview:lLabel];
         [_mScrollView addSubview:lUIImageView];
     }
@@ -165,7 +171,7 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading",nil);
+    hud.labelText = NSLocalizedString2(@"loading",nil);
     
 
     [[WSManager sharedInstance] authentification: [FBSDKAccessToken currentAccessToken].tokenString completion:^(NSError *error) {
@@ -174,13 +180,12 @@
             [hud hide:YES];
             [self performSegueWithIdentifier:@"showTabView" sender:self];
             [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-            
-            [[ShareAppContext sharedInstance] startLocation];
+
         }
         else
         {
             [hud hide:YES];
-            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"retry",nil), nil];
+            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"retry",nil), nil];
             [lUIAlertView show];
         }
     }];

@@ -24,11 +24,11 @@
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (strong, nonatomic) CLPlacemark *placemark;
 @property (strong, nonatomic) NSDictionary* notificationDic;
-@property (strong, nonatomic) NSString* currentMood;
 @property (strong, nonatomic) NSDate* currentDate;
+@property (nonatomic) BOOL errorLocation;
 @property (nonatomic) double currentRadius;
-
--(void) updatePlacemark:(void (^)(NSError* error)) onCompletion;
++ (NSString*)customLocalize:(NSString *) key;
+-(void) updatePlacemark;
 -(void) startLocation;
 
 @property (strong, nonatomic) User* user;

@@ -62,7 +62,11 @@
     
     
     NSMutableArray * listProfile = [NSMutableArray array];
-    [listProfile addObject:event.leader];
+    if(event.leader !=nil)
+    {
+           [listProfile addObject:event.leader]; 
+    }
+
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     self.mData = listProfile;
     [self.mCollectionView reloadData];
@@ -91,17 +95,17 @@
         case 3:
         case 4:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString(@"scarlet_accepted",nil);//@"Scarlet accepted !";
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_accepted",nil);//@"Scarlet accepted !";
             break;
         case 5:
         case 6:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString(@"scarlet_pending",nil);//@"Scarlet pending !";
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_pending",nil);//@"Scarlet pending !";
             break;
         case 7:
         case 8:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString(@"scarlet_rejected",nil);//@"Scarlet rejected !";
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_rejected",nil);//@"Scarlet rejected !";
             break;
         default:
             break;

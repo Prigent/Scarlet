@@ -12,4 +12,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;
 @property (weak, nonatomic) IBOutlet UISwitch *mSwitch;
 
+@property (strong, nonatomic)NSString* mKey;
+@property (strong, nonatomic)NSNumber* mEnabled;
+
+
 @end

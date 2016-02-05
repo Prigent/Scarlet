@@ -170,6 +170,8 @@
     
     UITableView *tableView = self.tableView;
     
+
+    
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
@@ -191,6 +193,8 @@
                                                arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+    
+
 }
 
 -(void) configure:(NSDictionary*) dic

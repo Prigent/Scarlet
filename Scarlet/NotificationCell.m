@@ -13,11 +13,15 @@
 
 -(void) configure:(NSArray*) data
 {
-    NSString* lKey = [data objectAtIndex:0];
-    NSNumber* lEnabled = [data objectAtIndex:1];
+    self.mKey = [data objectAtIndex:0];
+    self.mEnabled = [data objectAtIndex:1];
     
     
-    self.mTitle.text = NSLocalizedString(lKey,lKey);
-    [self.mSwitch setOn:[lEnabled boolValue] animated:true];
+    self.mTitle.text = NSLocalizedString2(self.mKey,self.mKey);
+    [self.mSwitch setOn:[self.mEnabled boolValue] animated:true];
+}
+- (IBAction)onSwitch:(id)sender {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"onSwitch" object:@[self.mKey,self.mEnabled ]];
 }
 @end

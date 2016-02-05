@@ -12,7 +12,7 @@
 	self = [super initWithCoder:aDecoder];
 	if(self)
 	{
-		self.text	= NSLocalizedString(self.text, @"");
+		self.text	= NSLocalizedString2(self.text, @"");
         
 	}
 	return self;

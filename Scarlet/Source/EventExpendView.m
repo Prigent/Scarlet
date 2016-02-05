@@ -32,14 +32,14 @@
     NSInteger countMember = [event getCountMember];
     if(countMember >1 )
     {
-        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember], NSLocalizedString(@"people_are", nil)]; //peoples are in
+        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember], NSLocalizedString2(@"people_are", nil)]; //peoples are in
     }
     else
     {
-        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember],NSLocalizedString(@"people_is", nil)];
+        _mCountPeople.text =  [NSString stringWithFormat:@"%ld %@",[event getCountMember],NSLocalizedString2(@"people_is", nil)];
     }
     
-    _mMood.text =  [NSString stringWithFormat:@"%@ : %@",NSLocalizedString(@"mood", nil),event.mood];
+    _mMood.text =  [NSString stringWithFormat:@"%@ : %@",NSLocalizedString2(@"mood", nil),event.mood];
     
     
     
@@ -97,7 +97,10 @@
     
     
     NSMutableArray * listProfile = [NSMutableArray array];
-    [listProfile addObject:event.leader];
+    if(event.leader != nil)
+    {
+        [listProfile addObject:event.leader];
+    }
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     
     self.mData = listProfile;
@@ -125,17 +128,17 @@
         case 3:
         case 4:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString(@"scarlet_accepted", nil);
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_accepted", nil);
             break;
         case 5:
         case 6:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString(@"scarlet_pending", nil);
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_pending", nil);
             break;
         case 7:
         case 8:
             _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text =NSLocalizedString(@"scarlet_rejected", nil);
+            _mStatusLabel.text =NSLocalizedString2(@"scarlet_rejected", nil);
             break;
         default:
             break;

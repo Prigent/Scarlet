@@ -166,7 +166,7 @@ static NSString *const kSupplementaryViewFooterReuseIdentifier = @"co.oceanlabs.
         return;
     }
     
-    NSString *format = (indexPaths.count > 1) ? NSLocalizedString(@"%ld Photos Selected", nil) : NSLocalizedString(@"%ld Photo Selected", nil);
+    NSString *format = (indexPaths.count > 1) ? NSLocalizedString2(@"%ld Photos Selected", nil) : NSLocalizedString2(@"%ld Photo Selected", nil);
     self.title = [NSString stringWithFormat:format, (unsigned long)indexPaths.count];
 }
 

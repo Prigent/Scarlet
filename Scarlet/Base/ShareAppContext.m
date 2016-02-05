@@ -39,6 +39,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+     self.errorLocation = false;
     //[manager stopUpdatingLocation];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
     [geocoder reverseGeocodeLocation:[locations objectAtIndex:0] completionHandler:^(NSArray *placemarks, NSError *error)
@@ -50,12 +51,15 @@
      }];
 }
 
-
-
-
--(void) updatePlacemark:(void (^)(NSError* error)) onCompletion
+- (void)locationManager:(CLLocationManager *)manager  didFailWithError:(NSError *)error
 {
-    if(_placemark==nil)
+    self.errorLocation = true;
+}
+
+
+-(void) updatePlacemark
+{
+    if(self.errorLocation==true && [ShareAppContext sharedInstance].user != nil)
     {
         CLLocationCoordinate2D location2D = CLLocationCoordinate2DMake([[ShareAppContext sharedInstance].user.lat doubleValue], [[ShareAppContext sharedInstance].user.longi doubleValue]);
         CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
@@ -68,12 +72,7 @@
                  CLPlacemark * lCLPlacemark = [placemarks objectAtIndex:0];
                  _placemark = lCLPlacemark;
              }
-             onCompletion(nil);
          }];
-    }
-    else
-    {
-        onCompletion(nil);
     }
 }
 
@@ -121,5 +120,19 @@
 - (BOOL)firstStarted {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"firstStarted"];
 }
+
+
++ (NSString*)customLocalize:(NSString *) key
+{
+    NSDictionary * lang = [[NSUserDefaults standardUserDefaults] valueForKey:@"lang"];
+    if(lang != nil)
+    {
+        return [lang valueForKey:key];
+    }
+    else
+    {
+        return  [[NSBundle mainBundle] localizedStringForKey:(key) value:@"" table:nil];
+    }
+};
 
 @end

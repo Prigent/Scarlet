@@ -296,6 +296,8 @@
     Profile* lLeader = [self getProfile:[self parseStringValue:[dicEvent valueForKey:@"leader_id"]]];
     event.leader = lLeader;
     
+    
+    
     event.chat = [self addChatObject:[self parseStringValue:[dicEvent valueForKey:@"chat_id"]]];
     event.mood = [dicEvent valueForKey:@"mood"];
     event.address = [self addAddress:dicEvent];
@@ -505,7 +507,7 @@
     NSDictionary* lLastMessage = [chatDic valueForKey:@"lastMessage"];
     if([lLastMessage isKindOfClass:[NSDictionary class]])
     {
-        [chat removeMessages:chat.messages];
+        //[chat removeMessages:chat.messages];
         [chat addMessagesObject:[WSParser addMessage:lLastMessage]];
     }
     chat.lastMessageDate = [chat.messages lastObject].date;
@@ -536,7 +538,14 @@
     NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
     return anArray;
 }
-
++(NSArray*) getChats
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Chat" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSArray * anArray = [[ShareAppContext sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    return anArray;
+}
 
 +(NSArray*) getEvents
 {

@@ -35,7 +35,7 @@
     {
         [lDic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"apple_push_token"];
     }
-    
+    NSLog(@"lDic USER %@",lDic);
 
     return lDic;
 }

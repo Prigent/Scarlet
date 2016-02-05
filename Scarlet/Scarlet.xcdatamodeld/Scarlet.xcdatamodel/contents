@@ -27,6 +27,7 @@
         <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="distanceCustom" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="isMine" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mood" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mystatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -103,9 +104,9 @@
         <element name="Address" positionX="-110" positionY="-234" width="128" height="103"/>
         <element name="Chat" positionX="-236" positionY="-37" width="128" height="118"/>
         <element name="Demand" positionX="70" positionY="-97" width="128" height="148"/>
-        <element name="Event" positionX="-20" positionY="126" width="128" height="255"/>
+        <element name="Event" positionX="-20" positionY="126" width="128" height="268"/>
         <element name="FacebookProfile" positionX="79" positionY="-441" width="128" height="103"/>
-        <element name="FriendRequest" positionX="619" positionY="-394" width="128" height="135"/>
+        <element name="FriendRequest" positionX="612" positionY="-459" width="128" height="135"/>
         <element name="Interest" positionX="612" positionY="-243" width="128" height="73"/>
         <element name="Message" positionX="-234" positionY="-441" width="128" height="133"/>
         <element name="Picture" positionX="612" positionY="-99" width="128" height="73"/>

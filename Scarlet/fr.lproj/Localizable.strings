@@ -116,5 +116,7 @@
 
 "no_scarlet_seach" = "No Scarlet available for your search";
 "save_scarlet" = "SAVE";
-
+"contact_account" = "Contact";
+"generic_error" = "Problème de connexion ou de chargement des datas";
+"location_search" = "Place";
 

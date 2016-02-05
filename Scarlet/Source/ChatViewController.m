@@ -43,10 +43,9 @@
     for(int i=0 ; i< [self.mChat.event.partners count] ; i++)
     {
         Profile* lProfile = [[self.mChat.event.partners allObjects]objectAtIndex:i];
-        i++;
-        if( i == [self.mChat.event.partners count])
+        if( i == [self.mChat.event.partners count]-1)
         {
-            customTitle = [NSString stringWithFormat:@"%@ %@ %@",customTitle , NSLocalizedString(@"and", @"and"), lProfile.firstName ];
+            customTitle = [NSString stringWithFormat:@"%@ %@ %@",customTitle , NSLocalizedString2(@"and", @"and"), lProfile.firstName ];
         }
         else
         {
@@ -54,13 +53,16 @@
         }
     }
     self.mCustomTitle = customTitle;
+    self.screenName = @"chat_detail";
 }
+
+
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
-    [self performSelector:@selector(updateData) withObject:nil afterDelay:15];
+    [self performSelector:@selector(updateData) withObject:nil afterDelay:5];
 }
 
 -(void) viewDidDisappear:(BOOL)animated
@@ -75,45 +77,57 @@
 
 -(void) updateData
 {
-    NSInteger currentCount = [self.mChat.messages count];
-
-
-    if(self.tableView.alpha != 0)
+    if(isUpdating == false)
     {
-        [self.uiRefreshControl beginRefreshing];
-    }
-    [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
         
+        isUpdating = true;
+        NSInteger currentCount = [self.mChat.messages count];
         if(self.tableView.alpha != 0)
         {
-            [self.uiRefreshControl endRefreshing];
+            [self.uiRefreshControl beginRefreshing];
         }
+        [[WSManager sharedInstance] getMessagesForChat:self.mChat completion:^(NSError *error) {
+            
+            isUpdating = false;
+            
+            if(error)
+            {
+                NSLog(@"%@", error);
+            }
+            
+            if(self.tableView.alpha != 0)
+            {
+                [self.uiRefreshControl endRefreshing];
+            }
+            
+            NSInteger newCount = [self.mChat.messages count];
+            if(self.tableView.alpha == 0 || currentCount != newCount)
+            {
+                [self performSelector:@selector(scrollToBottom) withObject:nil afterDelay:0.5];
+            }
+            
+            
+            
+            
+            for(Message* lMessage in self.mChat.messages)
+            {
+                lMessage.readStatus = [NSNumber numberWithBool:true];
+            }
+            [self.tableView reloadData];
+            
+            [[WSManager sharedInstance]updateCountRead];
+            
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
+            [self performSelector:@selector(updateData) withObject:nil afterDelay:5];
+        }];
         
-        NSInteger newCount = [self.mChat.messages count];
-        if(self.tableView.alpha == 0 || currentCount != newCount)
-        {
-            [self performSelector:@selector(scrollToBottom) withObject:nil afterDelay:0.5];
-        }
-        
-        
-        
-        
-        for(Message* lMessage in self.mChat.messages)
-        {
-            lMessage.readStatus = [NSNumber numberWithBool:true];
-        }
-        [self.tableView reloadData];
-        
-        
-        
+    }
+    else
+    {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateData) object:nil];
-        [self performSelector:@selector(updateData) withObject:nil afterDelay:15];
-        
-    }];
+        [self performSelector:@selector(updateData) withObject:nil afterDelay:5];
+    }
+    
 }
 
 
@@ -136,6 +150,8 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardWillShowNotification object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardOffScreen:) name:UIKeyboardWillHideNotification object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectProfile:) name:@"selectProfile" object:nil];
+    
+    [self.tableView reloadData];
 }
 
 -(void) selectProfile:(NSNotification*) notification
@@ -192,16 +208,18 @@
 }
 
 - (IBAction)sendMessage:(id)sender {
+
     if([self.mTextField.text length]>0)
     {
+        NSString * message = self.mTextField.text;
+        [self.mTextField setText:nil];
         
-        NSLog(@"%@",self.mTextField.text );
+        NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"send_message"  label:nil value:nil] build];
+        [[[GAI sharedInstance] defaultTracker] send:event];
         
         
-        
-        [[WSManager sharedInstance] addMessage:self.mChat message:self.mTextField.text completion:^(NSError *error) {
+        [[WSManager sharedInstance] addMessage:self.mChat message:message completion:^(NSError *error) {
             [self updateData];
-            [self.mTextField setText:nil];
         }];
     }
 }

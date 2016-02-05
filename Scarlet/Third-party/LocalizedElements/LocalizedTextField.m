@@ -11,7 +11,7 @@
 	self = [super initWithCoder:aDecoder];
 	if(self)
 	{
-		self.placeholder	= NSLocalizedString(self.placeholder, @"");
+		self.placeholder	= NSLocalizedString2(self.placeholder, @"");
         self.layer.cornerRadius = 2;
         self.clipsToBounds = YES;
 	}
@@ -27,7 +27,7 @@
 	self = [super initWithCoder:aDecoder];
 	if(self)
 	{
-		self.placeholder	= NSLocalizedString(self.placeholder, @"");
+		self.placeholder	= NSLocalizedString2(self.placeholder, @"");
         self.layer.cornerRadius = 1;
         self.clipsToBounds = YES;
 	}
@@ -56,7 +56,7 @@
 	self = [super initWithCoder:aDecoder];
 	if(self)
 	{
-		self.text	= NSLocalizedString(self.text, @"");
+		self.text	= NSLocalizedString2(self.text, @"");
 	}
 	return self;
 }

@@ -21,7 +21,7 @@
 +(FacebookProfile* ) addFacebookProfile:(NSDictionary*) dicFacebookProfile;
 +(Demand*) addDemand:(NSDictionary*) dicDemand;
 +(Chat*) addChat:(NSDictionary*) chatDic;
-
++(NSArray*) getChats;
 +(NSArray*) getEvents;
 +(NSArray*) getEventsNotOwn;
 +(void) removeEventNotOwn;

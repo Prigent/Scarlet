@@ -27,4 +27,5 @@
 @dynamic distance;
 @dynamic isMine;
 @dynamic distanceCustom;
+@dynamic index;
 @end

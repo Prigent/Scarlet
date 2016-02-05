@@ -30,6 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =false;
+    self.screenName = @"chats";
 }
 
 -(void)viewDidAppear:(BOOL)animated

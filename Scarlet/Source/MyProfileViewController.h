@@ -13,7 +13,7 @@
 @class User;
 @interface MyProfileViewController : BaseViewController<RACollectionViewDelegateReorderableTripletLayout, RACollectionViewReorderableTripletLayoutDataSource, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate>
 {
-    int indexTemp;
+    NSInteger indexTemp;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UILabel *count;

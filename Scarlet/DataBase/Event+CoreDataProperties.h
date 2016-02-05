@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *distance;
 @property (nullable, nonatomic, retain) NSNumber *distanceCustom;
 @property (nullable, nonatomic, retain) NSNumber *isMine;
+@property (nullable, nonatomic, retain) NSNumber *index;
 @end
 
 @interface Event (CoreDataGeneratedAccessors)

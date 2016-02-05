@@ -36,20 +36,11 @@
     _mCurrentRadiusLabel.text = [lMKDistanceFormatter stringFromDistance:[ShareAppContext sharedInstance].currentRadius];
     [_mCurrentRadiusSlider setValue:[ShareAppContext sharedInstance].currentRadius animated:true];
     
-    if( [ShareAppContext sharedInstance].currentMood == nil)
-    {
-        _mCurrentMoodLabel.text = NSLocalizedString(@"select_mood",nil); //@"Select your mood";
-        _mCurrentMoodLabel.alpha = 0.5;
-    }
-    else
-    {
-        _mCurrentMoodLabel.text = [ShareAppContext sharedInstance].currentMood;
-        _mCurrentMoodLabel.alpha = 1;
-    }
+
 
     if( [ShareAppContext sharedInstance].currentDate == nil)
     {
-        _mCurrentTimeLabel.text = NSLocalizedString(@"select_date",nil); //@"Select your date";
+        _mCurrentTimeLabel.text = NSLocalizedString2(@"select_date",nil); //@"Select your date";
         _mCurrentTimeLabel.alpha = 0.5;
     }
     else

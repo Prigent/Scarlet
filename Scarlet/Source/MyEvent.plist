@@ -8,13 +8,11 @@
 		<key>entityName</key>
 		<string>Event</string>
 		<key>sortProperty</key>
-		<string>mystatus&amp;identifier</string>
+		<string>index</string>
 		<key>cellIdentifier</key>
 		<string>MyEventCell</string>
 		<key>sortOrder</key>
 		<true/>
-		<key>sortOrder2</key>
-		<false/>
 		<key>showIdentifier</key>
 		<string>showMyEvent</string>
 	</dict>

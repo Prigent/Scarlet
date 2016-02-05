@@ -13,6 +13,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "Address.h"
 #import "ProfileViewController.h"
+#import "FriendViewController.h"
 
 @interface EventViewController ()
 
@@ -24,15 +25,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = NSLocalizedString(@"browse_scarlet",nil);
+    self.title = NSLocalizedString2(@"browse_scarlet",nil);
     [self updateView];
     self.mTableView.alpha = 0;
+    
+    self.screenName = @"event_detail";
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    [self updateView];
     
     if(init == false)
     {
@@ -45,9 +48,6 @@
         }];
         
     }
-    
-    
- 
 }
 
 
@@ -61,6 +61,27 @@
     
 }
 
+
+- (IBAction)addFriends:(id)sender
+{
+    FriendViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+    viewController.type = 2;
+    
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
+    
+    
+    [self.navigationController pushViewController:viewController animated:false];
+}
+
 -(void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -71,7 +92,13 @@
 -(void) joinScarlet:(NSNotification*) notification
 {
     [self.mBottomContainer setConstant:0];
-    [UIView animateWithDuration:.3 animations:^{  self.mTableView.alpha = 0.2; [self.view layoutIfNeeded]; }];
+    self.mTableView.alpha = 0.2;
+    
+    [UIView animateWithDuration:.3 animations:^
+    {
+        self.mTableView.alpha = 0.2;
+        [self.view layoutIfNeeded];
+    }];
 }
 
 
@@ -144,7 +171,7 @@
     if([self.mData.fetchedObjects count]> section)
     {
         Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:section inSection:0]];
-        return [NSString stringWithFormat: NSLocalizedString(@"own_scarlet",nil), lEvent.leader.firstName]; //'s Scarlet
+        return [NSString stringWithFormat: NSLocalizedString2(@"own_scarlet",nil), lEvent.leader.firstName]; //'s Scarlet
     }
     else
     {

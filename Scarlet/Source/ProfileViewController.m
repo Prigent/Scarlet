@@ -49,25 +49,20 @@
         [backButton addTarget:self action:@selector(popBack) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
         self.navigationItem.leftBarButtonItem = backButtonItem;
+        
+        self.screenName = @"other_profile";
+    }
+    else
+    {
+        isUser = true;
+        self.screenName = @"my_profile";
+        self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
+        [self updateView];
     }
 
     [self.mTableView addSubview:self.mImagePager];
 }
 
-
-
--(void) viewDidAppear:(BOOL)animated
-{
-    if(self.mProfile == nil || self.mProfile == (Profile*)[ShareAppContext sharedInstance].user)
-    {
-        isUser=true;
-        [[self navigationController] setNavigationBarHidden:true animated:false];
-            [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
-                self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
-                [self updateView];
-            }];
-    }
-}
 
 
 
@@ -145,12 +140,21 @@
     self.mProfile = profile;
 }
 
+
+
+
+
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     if(isUser)
     {
         [[self navigationController] setNavigationBarHidden:true animated:YES];
+        [[self navigationController] setNavigationBarHidden:true animated:false];
+        [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
+            self.mProfile = (Profile*)[ShareAppContext sharedInstance].user;
+            [self updateView];
+        }];
     }
     else
     {
@@ -278,8 +282,8 @@
         {
 
                 ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
-            cell.mTitleLabel.text = NSLocalizedString(@"parameters",nil);//@"Parameters";
-            cell.mSubTitle.text = NSLocalizedString(@"parameters_detail",nil); //@"Notifications, account and others";
+            cell.mTitleLabel.text = NSLocalizedString2(@"parameters",nil);//@"Parameters";
+            cell.mSubTitle.text = NSLocalizedString2(@"parameters_detail",nil); //@"Notifications, account and others";
                 return cell;
         }
     }

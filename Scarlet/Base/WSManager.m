@@ -18,7 +18,7 @@
 #import "User.h"
 #import "Event.h"
 #import "Message.h"
-
+#import "Toast+UIView.h"
 #import "NSData+Base64.h"
 
 #import <sys/utsname.h>
@@ -299,6 +299,7 @@
          {
              Demand * lDemand = [WSParser addDemand:[responseObject valueForKey:@"demand"]];
              [event addDemandsObject:lDemand];
+             event.isMine = [NSNumber numberWithBool:true];
              NSInteger mystatus = [event getMyStatus];
              event.mystatus = [NSNumber numberWithInteger:mystatus];
          }
@@ -331,10 +332,6 @@
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
-         if(error == nil)
-         {
-             NSLog(@"checkResponse %@",responseObject);
-         }
          [self manageError:error];
          onCompletion(error);
      }
@@ -516,9 +513,7 @@
             }
             
             [ShareAppContext sharedInstance].user = [WSParser addUser:[responseObject valueForKey:@"user"]];
-            [[ShareAppContext sharedInstance] updatePlacemark:^(NSError *error) {
-                    onCompletion(error);
-            }];
+            onCompletion(error);
         }
         else
         {
@@ -534,6 +529,65 @@
     }];
 }
 
+
+- (void)getTextCompletion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/text"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    
+    
+    
+    
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
+    NSString *languageCode = [currentLocale objectForKey:NSLocaleLanguageCode];
+
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    NSString * timestamp = @"0";
+    //NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+    
+    [param setObject:[languageCode uppercaseString] forKey:@"lang"];
+    [param setObject:timestamp forKey:@"date"];
+    
+    
+    [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             NSLog(@"%@",responseObject);
+
+             NSDictionary * lText = [responseObject valueForKey:@"text"];
+             if(lText != nil)
+             {
+                  [[NSUserDefaults standardUserDefaults] setValue:lText forKey:@"lang"];
+             }
+             
+             onCompletion(error);
+         }
+         else
+         {
+             onCompletion(error);
+         }
+         [self manageError:error];
+         
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
+
+
+
+
+
+
 - (void)getEventsCompletion:(void (^)(NSError* error)) onCompletion
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/event"];
@@ -546,7 +600,6 @@
         NSError * error  =  [self checkResponse:responseObject];
         if(error == nil)
         {
-            NSLog(@"%@", responseObject);
             
             NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
             for(NSDictionary * lDicProfile in lAllProfiles)
@@ -555,13 +608,14 @@
             }
             
             [WSParser removeEventNotOwn];
-            
+            NSInteger index = 0;
             NSArray* lAllEvents= [responseObject valueForKey:@"event"];
             for(NSDictionary * lDicEvent in lAllEvents)
             {
-                [WSParser addEvent:lDicEvent];
+                index++;
+                Event * lEvent = [WSParser addEvent:lDicEvent];
+                lEvent.index = [NSNumber numberWithInteger:index];
             }
-            NSLog(@"NB EVENT NOT OWN %ld", [lAllEvents count]);
         }
         [self manageError:error];
         onCompletion(error);
@@ -623,7 +677,7 @@
         if(error == nil)
         {
             NSArray* lAllMessage= [responseObject valueForKey:@"message"];
-            [chat removeMessages:chat.messages];
+            //[chat removeMessages:chat.messages];
             
             for(NSDictionary * lDicMessage in lAllMessage)
             {
@@ -666,10 +720,17 @@
             
             [WSParser removeEventOwn];
             NSArray* lAllEvents= [responseObject valueForKey:@"event"];
+            
+            
+            NSInteger index = 0;
+
+            
             for(NSDictionary * lDicEvent in lAllEvents)
             {
+                index++;
                 Event* lEvent = [WSParser addEvent:lDicEvent];
                 lEvent.isMine = [NSNumber numberWithBool:true];
+                lEvent.index = [NSNumber numberWithInteger:index];
             }
         }
         [self manageError:error];
@@ -697,6 +758,13 @@
          int countUnRead = 0;
          if(error == nil)
          {
+             NSArray * lLastChats = [WSParser getChats];
+             for(Chat* lChat in lLastChats)
+             {
+                 lChat.isMine = [NSNumber numberWithBool:false];
+             }
+             
+             
              NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
              for(NSDictionary * lDicProfile in lAllProfiles)
              {
@@ -727,6 +795,25 @@
          [self manageError:error];
          onCompletion(error);
      }];
+}
+
+
+-(void) updateCountRead
+{
+     int countUnRead = 0;
+    
+    
+    NSArray* lAllChats= [WSParser getChats];
+    for(Chat * lChat in lAllChats)
+    {
+        Message * lMessage = [lChat.messages lastObject];
+        if(lMessage !=nil && [lMessage.readStatus boolValue] == false)
+        {
+            countUnRead++;
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnread" object:[NSNumber numberWithInt:countUnRead]];
 }
 
 
@@ -827,6 +914,14 @@
     {
         [[ShareAppContext sharedInstance] setAccessToken:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+    }
+    else if( error != nil)
+    {
+
+        
+        NSLog(@"%@", error);
+        [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:NSLocalizedString2(@"generic_error", nil)];
+        
     }
 }
 

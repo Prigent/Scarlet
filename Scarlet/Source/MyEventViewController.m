@@ -39,6 +39,8 @@
         self.navigationItem.rightBarButtonItem = openChatButtonItem;
     }
     [self.uiRefreshControl removeFromSuperview];
+    
+    self.screenName = @"my_event_detail";
 }
 
 
@@ -66,9 +68,12 @@
 - (IBAction)switchHidden:(UISwitch*)sender {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading",nil);
+    hud.labelText = NSLocalizedString2(@"loading",nil);
     
 
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"hide_event"  label:nil value:[NSNumber numberWithBool:sender.on]] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
+    
     [[WSManager sharedInstance] hideEvent:self.mEvent status:[NSNumber numberWithBool:sender.on] completion:^(NSError *error) {
         [hud hide:YES];
     }];
@@ -105,7 +110,7 @@
         NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"event.identifier == %@",self.mEvent.identifier];
         [self updateWithPredicate:lNSPredicate];
         
-        self.title = NSLocalizedString(@"your_scarlet",nil);//@"Your Scarlet";
+        self.title = NSLocalizedString2(@"your_scarlet",nil);//@"Your Scarlet";
         self.cellIdentifier = @"DemandCell";
         
         if(status == 2)
@@ -164,7 +169,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 212;
+    return 220;
 }
 
 
@@ -178,7 +183,7 @@
 - (IBAction)cancelScarlet:(id)sender {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading",nil);
+    hud.labelText = NSLocalizedString2(@"loading",nil);
     
     Demand* lMyDemand = nil;
     
@@ -189,6 +194,9 @@
             lMyDemand = lDemand;
         }
     }
+    
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"cancel_demand"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
     
     [[WSManager sharedInstance] removeDemand:lMyDemand.identifier completion:^(NSError *error) {
         [hud hide:YES];

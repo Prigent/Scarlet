@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "Constants.h"
+#import "FriendViewController.h"
 
 @interface BaseViewController ()
 
@@ -24,6 +25,7 @@
     [self.navigationController.navigationBar
      setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:76/255. alpha:1]}];
 
+    
     
    // self.mLoadingViewGeneric = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil] objectAtIndex:0];
     CGRect frameLoading = self.view.frame;
@@ -76,14 +78,61 @@
     [super viewWillAppear:animated];
     if(self.customReturn && [self.navigationController.viewControllers count]>1)
     {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"close", nil) style:UIBarButtonItemStyleDone target:self action:@selector(close)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString2(@"close", nil) style:UIBarButtonItemStyleDone target:self action:@selector(close)];
     }
     
     if(self.mCustomTitle.length>0 )
     {
         [self setTitle:self.mCustomTitle];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(redirection:) name:@"redirection" object:nil];
+}
 
+
+-(void) redirection:(NSNotification*) notification
+{
+    NSNumber* number= [notification object];
+    if([number intValue] < 4)
+    {
+        [self.tabBarController setSelectedIndex:[number intValue]];
+        UINavigationController * lnav = (UINavigationController *)[self.tabBarController.viewControllers objectAtIndex:[number intValue]];
+        if( [lnav isKindOfClass:[UINavigationController class]])
+        {
+            [lnav popToRootViewControllerAnimated:false];
+        }
+    }
+    else if([number intValue] == 4)
+    {
+        FriendViewController *viewController = nil;
+        viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+        viewController.type = 2;
+        
+        
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+        
+        
+        
+        
+        [self.navigationController pushViewController:viewController animated:false];
+    }
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ([self observationInfo]) {
+        @try {
+             [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"redirection"];
+        }
+        @catch (NSException *exception) {}
+    }
+   
 }
 
 -(void) close
@@ -105,7 +154,7 @@
     self.mViewDictionnary = dic;
     if([dic isKindOfClass:[NSDictionary class]])
     {
-        self.mCustomTitle =  [NSLocalizedString([dic valueForKey:@"name"],[dic valueForKey:@"name"]) capitalizedString];;
+        self.mCustomTitle =  [NSLocalizedString2([dic valueForKey:@"name"],[dic valueForKey:@"name"]) capitalizedString];;
         self.title = self.mCustomTitle;
     }
 }

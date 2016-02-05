@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Place";
+    self.title = NSLocalizedString2(@"location_search", nil);
     
     
     // Do any additional setup after loading the view.
@@ -49,6 +49,7 @@
     self.mTableView.delegate = _mLocationSearchDataSource;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popBack) name:@"locationChanged" object:nil];
+    self.screenName = @"location_search";
 }
 
 - (void)didReceiveMemoryWarning {

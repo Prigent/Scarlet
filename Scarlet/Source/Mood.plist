@@ -2,9 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>mood 1</string>
-	<string>mood 2</string>
-	<string>mood 3</string>
-	<string>mood 4</string>
+	<string>mood_1</string>
+	<string>mood_2</string>
+	<string>mood_3</string>
+	<string>mood_4</string>
 </array>
 </plist>

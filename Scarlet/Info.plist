@@ -24,11 +24,12 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb409137945943011</string>
+				<string>fbauth2</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>65</string>
+	<string>72</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

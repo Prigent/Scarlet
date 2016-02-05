@@ -152,7 +152,11 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading", nil);
+    hud.labelText = NSLocalizedString2(@"loading", nil);
+    
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"accept_demand"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker] send:event];
+
     
     [[WSManager sharedInstance] respondDemand:self.mDemand.identifier status:[NSNumber numberWithInt:1] completion:^(NSError *error) {
         [hud hide:YES];
@@ -162,9 +166,12 @@
 
 - (IBAction)rejectDemand:(id)sender {
     
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"reject_demand"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"loading", nil);
+    hud.labelText = NSLocalizedString2(@"loading", nil);
     
     [[WSManager sharedInstance] respondDemand:self.mDemand.identifier status:[NSNumber numberWithInt:2] completion:^(NSError *error) {
         [hud hide:YES];

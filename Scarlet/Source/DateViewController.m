@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"time", nil);
+    self.title = NSLocalizedString2(@"time", nil);
     
     // Do any additional setup after loading the view.
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
@@ -44,9 +44,9 @@
     [self.mDatePicker setMinimumDate:[NSDate date]];
     
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString2(@"save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(save)];
 
-
+    self.screenName = @"select_date";
 }
 
 

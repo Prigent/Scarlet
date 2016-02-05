@@ -26,7 +26,7 @@
     self.navigationController.navigationBarHidden =true;
     
     
-    [self.mSegmentedControl setSectionTitles:@[NSLocalizedString(@"incomming",nil),NSLocalizedString(@"past",nil)] ];
+    [self.mSegmentedControl setSectionTitles:@[NSLocalizedString2(@"incomming",nil),NSLocalizedString2(@"past",nil)] ];
     self.mSegmentedControl.textColor = [UIColor lightGrayColor];
     self.mSegmentedControl.selectedTextColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
     self.mSegmentedControl.selectionIndicatorColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
@@ -41,16 +41,25 @@
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
 
     [self changeSegment:nil];
+    
+    
+    self.screenName = @"my_events";
 }
 
 -(void) updateData
 {
+    self.fetchedResultsController.delegate = nil;
     [self.uiRefreshControl beginRefreshing];
+    
     [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
         if(error)
         {
             NSLog(@"%@", error);
         }
+        
+        [self.fetchedResultsController performFetch:nil];
+        [self.tableView reloadData];
+        
         [self.uiRefreshControl endRefreshing];
     }];
 }

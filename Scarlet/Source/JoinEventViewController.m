@@ -14,7 +14,7 @@
 #import "ShareAppContext.h"
 #import "User.h"
 #import "Demand.h"
-
+#import "MBProgressHUD.h"
 @interface JoinEventViewController ()
 
 @end
@@ -129,7 +129,17 @@
 }
 - (IBAction)sendRequest:(id)sender {
     
+    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"join_event"  label:nil value:nil] build];
+    [[[GAI sharedInstance] defaultTracker]  send:event];
+    
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText =  NSLocalizedString2(@"loading", nil);
+
+    
     [[WSManager sharedInstance] addDemand:self.mEvent partner:self.listProfileId completion:^(NSError *error) {
+        [hud hide:YES];
         if(!error)
         {
            [[NSNotificationCenter defaultCenter] postNotificationName:@"eventJoined" object:nil];

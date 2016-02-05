@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"select_mood",nil);
+    self.title = NSLocalizedString2(@"select_mood",nil);
     
     // Do any additional setup after loading the view.
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
@@ -30,14 +30,23 @@
     
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Mood" ofType:@"plist"];
-    self.mData = [NSMutableArray arrayWithArray:[[NSArray alloc] initWithContentsOfFile:plistFile]];
+    self.mData = [NSMutableArray array];
+    NSArray * lData = [[NSArray alloc] initWithContentsOfFile:plistFile];
+    for(NSString * lMood in lData)
+    {
+        [self.mData addObject:NSLocalizedString2(lMood, lMood)];
+    }
+
+
+
+
     if(self.filter)
     {
-        [self.mData insertObject:NSLocalizedString(@"whatever",nil) atIndex:0];
+        [self.mData insertObject:NSLocalizedString2(@"whatever",nil) atIndex:0];
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save",nil) style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString2(@"save",nil) style:UIBarButtonItemStylePlain target:self action:@selector(save)];
     
-
+    self.screenName = @"select_mood";
 }
 
 

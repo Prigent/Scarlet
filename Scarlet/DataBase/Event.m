@@ -70,11 +70,11 @@
     NSString* dayPart = [format stringFromDate:self.date];
     if([self.date isToday])
     {
-        dayPart = NSLocalizedString(@"today", nil);
+        dayPart = NSLocalizedString2(@"today", nil);
     }
     else if([self.date isTomorrow])
     {
-        dayPart = NSLocalizedString(@"tomorrow", nil);
+        dayPart = NSLocalizedString2(@"tomorrow", nil);
     }
     
     NSString* datePart = [NSDateFormatter localizedStringFromDate: self.date
@@ -83,7 +83,7 @@
     NSString* timePart = [NSDateFormatter localizedStringFromDate: self.date
                                                         dateStyle: NSDateFormatterNoStyle
                                                         timeStyle: NSDateFormatterShortStyle];
-    return [NSString stringWithFormat:@"%@, %@ %@ %@",[dayPart capitalizedString],datePart, NSLocalizedString(@"at", nil),timePart];
+    return [NSString stringWithFormat:@"%@, %@ %@ %@",[dayPart capitalizedString],datePart, NSLocalizedString2(@"at", nil),timePart];
     
     
 }

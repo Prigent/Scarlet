@@ -5,7 +5,7 @@
 //
 
 #import <Availability.h>
-
+#import "ShareAppContext.h"
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
@@ -31,3 +31,13 @@
 
 #endif
 */
+
+/*
+#ifndef FOO_H
+#define FOO_H
+
+#endif*/
+#define NSLocalizedString2(key, comment)   [ShareAppContext customLocalize:key]
+
+
+
