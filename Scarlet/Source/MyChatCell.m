@@ -83,12 +83,10 @@
         if( i == [chat.event.partners count]-1)
         {
             self.mProfileListText.text = [NSString stringWithFormat:@"%@ %@ %@",self.mProfileListText.text , NSLocalizedString2(@"and", @"and"), lProfile.firstName ];
-            NSLog(@"%@", self.mProfileListText.text);
         }
         else
         {
             self.mProfileListText.text = [NSString stringWithFormat:@"%@, %@",self.mProfileListText.text, lProfile.firstName ];
-            NSLog(@"%@", self.mProfileListText.text);
         }
     }
     

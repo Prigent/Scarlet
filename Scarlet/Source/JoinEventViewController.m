@@ -146,7 +146,9 @@
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle:@"" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         }
         
     }];

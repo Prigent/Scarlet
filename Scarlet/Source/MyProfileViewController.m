@@ -62,6 +62,8 @@
     self.mCustomTitle = NSLocalizedString2(@"edit_profile",nil);//@"Edit profile";
     
     self.screenName = @"edit_profile";
+    
+
 }
 
 
@@ -560,7 +562,7 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading";
+    hud.labelText = NSLocalizedString2(@"loading", nil);
     
     
     NSInteger countPhoto = [[ShareAppContext sharedInstance].user.pictures count]+1;
@@ -569,8 +571,6 @@
         indexTemp = countPhoto;
     }
     
-    
-    NSLog(@"countPhoto %ld",countPhoto);
     
     [[WSManager sharedInstance] sendPicture:image position:[NSNumber numberWithInteger:indexTemp] completion:^(NSError *error) {
         [self setupPhotosArray];

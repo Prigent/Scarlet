@@ -36,8 +36,7 @@
     message.date = [NSDate dateWithTimeIntervalSince1970:[[dicMessage valueForKey:@"date"] integerValue]];
     message.identifier = [dicMessage valueForKey:@"identifier"];
     
-    
-    NSLog(@"%@ %@",dicMessage, [dicMessage valueForKey:@"message"]);
+
     message.text = [dicMessage valueForKey:@"message"];
     
     

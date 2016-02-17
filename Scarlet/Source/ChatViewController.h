@@ -10,7 +10,7 @@
 #import "AutoListViewController.h"
 
 @class Chat;
-@interface ChatViewController : AutoListViewController<UISearchBarDelegate>
+@interface ChatViewController : AutoListViewController<UISearchBarDelegate, UIActionSheetDelegate>
 {
     BOOL isUpdating;
 }

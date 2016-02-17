@@ -79,6 +79,63 @@
 }
 
 
+- (void)flagging:(NSString*) type identifier:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/flagging"];
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    [param setObject:type forKey:@"subject"];
+    [param setObject:identifier forKey:@"id"];
+    
+
+    
+    [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             Event * lEvent = [WSParser addEvent:[responseObject valueForKey:@"event"]];
+             lEvent.isMine = [NSNumber numberWithBool:true];
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
+
+- (void)chatOut:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/chatOut"];
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    [param setObject:identifier forKey:@"chat_identifier"];
+    
+    
+    [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             Event * lEvent = [WSParser addEvent:[responseObject valueForKey:@"event"]];
+             lEvent.isMine = [NSNumber numberWithBool:true];
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
 - (void)createEvent:(NSDictionary*) eventDic completion:(void (^)(NSError* error)) onCompletion
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/event"];
@@ -540,44 +597,44 @@
     
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
-    
+
     NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
     NSString *languageCode = [currentLocale objectForKey:NSLocaleLanguageCode];
-
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
-    NSString * timestamp = @"0";
-    //NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-    
     [param setObject:[languageCode uppercaseString] forKey:@"lang"];
-    [param setObject:timestamp forKey:@"date"];
     
+    
+    NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+    NSString * lTime = [[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%@_time",languageCode]];
+    if(lTime)
+    {
+        [param setObject:lTime forKey:@"date"];
+    }
+    else
+    {
+        [param setObject:@"0" forKey:@"date"];
+    }
+    
+
     
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
          if(error == nil)
          {
-             NSLog(@"%@",responseObject);
-
              NSDictionary * lText = [responseObject valueForKey:@"text"];
              if(lText != nil)
              {
-                  [[NSUserDefaults standardUserDefaults] setValue:lText forKey:@"lang"];
+                 NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
+                 NSString *languageCode = [currentLocale objectForKey:NSLocaleLanguageCode];
+                 [[NSUserDefaults standardUserDefaults] setValue:lText forKey:languageCode];
+                [[NSUserDefaults standardUserDefaults] setValue:timestamp forKey:[NSString stringWithFormat:@"%@_time",languageCode]];
+                 
              }
-             
-             onCompletion(error);
          }
-         else
-         {
-             onCompletion(error);
-         }
-         [self manageError:error];
-         
+         onCompletion(error);
      }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         [self manageError:error];
          onCompletion(error);
      }];
 }
@@ -917,11 +974,9 @@
     }
     else if( error != nil)
     {
-
-        
-        NSLog(@"%@", error);
-        [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:NSLocalizedString2(@"generic_error", nil)];
-        
+        NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+        NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+        [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:lErrorString];
     }
 }
 

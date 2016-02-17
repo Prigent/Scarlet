@@ -80,7 +80,7 @@
             NSInteger countWaiting = [event getWaitingDemand];
             if(countWaiting>0)
             {
-                _mStatusLabel.text = [NSString stringWithFormat:@"%ld new requests", countWaiting];
+                _mStatusLabel.text = [NSString stringWithFormat:@"%ld %@",countWaiting,NSLocalizedString2(@"new_requests", nil)];
                 _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
             }
             else

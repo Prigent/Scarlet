@@ -40,7 +40,7 @@
     CLPlacemark* aPlacemark = lItem.placemark;
     if(indexPath.row == 0)
     {
-        cell.textLabel.text =  @"Around me";
+        cell.textLabel.text =  NSLocalizedString2(@"around_me", nil);
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icoLocation"]];
         cell.accessoryView = imageView;
     }

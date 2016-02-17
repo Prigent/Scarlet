@@ -124,15 +124,28 @@
 
 + (NSString*)customLocalize:(NSString *) key
 {
-    NSDictionary * lang = [[NSUserDefaults standardUserDefaults] valueForKey:@"lang"];
+    NSString * returnValue = nil;
+    NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
+    NSString *languageCode = [currentLocale objectForKey:NSLocaleLanguageCode];
+    NSDictionary * lang = [[NSUserDefaults standardUserDefaults] valueForKey:languageCode];
     if(lang != nil)
     {
-        return [lang valueForKey:key];
+        returnValue = [lang valueForKey:key];
     }
     else
     {
-        return  [[NSBundle mainBundle] localizedStringForKey:(key) value:@"" table:nil];
+        returnValue = NSLocalizedString(key, nil);
     }
+    
+    if([returnValue length]>0)
+    {
+        return returnValue;
+    }
+    else
+    {
+        return key;
+    }
+    
 };
 
 @end

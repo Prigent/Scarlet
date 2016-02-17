@@ -157,6 +157,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acceptInvitation:) name:@"acceptInvitation" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(declineInvitation:) name:@"declineInvitation" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(yourFriend:) name:@"yourFriend" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectProfile:) name:@"didSelectProfile" object:nil];
+    
     
     [self updateData];
     
@@ -350,30 +352,38 @@
             [anotherButton setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
             self.navigationItem.rightBarButtonItem = anotherButton;
         }
-        
-        
-        Profile* lProfile =  [self.mSuggestData objectAtIndex:indexPath.row];
-        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
-        NSArray * friend = [[lProfile.friends allObjects] filteredArrayUsingPredicate:bPredicate];
-        FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
-        
-        if( [friend count]> 0)
-        {
-            //@"remove from friends"
-        }
-        else if (friendRequest)
-        {
-            if([friendRequest.type intValue] == 0)
-            {
-                [self removeFriendRequest:friendRequest];
-            }
-        }
-        else
-        {
-            [self addFriend:lProfile];
-        }
     }
 }
+
+
+-(void) didSelectProfile:(NSNotification* ) notification
+{
+    Profile* lProfile = notification.object;
+    
+    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
+    NSArray * friend = [[lProfile.friends allObjects] filteredArrayUsingPredicate:bPredicate];
+    FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
+    
+    if( [friend count]> 0)
+    {
+        //@"remove from friends"
+    }
+    else if (friendRequest)
+    {
+        if([friendRequest.type intValue] == 0)
+        {
+            [self removeFriendRequest:friendRequest];
+        }
+    }
+    else
+    {
+        [self addFriend:lProfile];
+    }
+}
+
+
+
+
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -403,7 +413,9 @@
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
         }
     }];
 }
@@ -447,7 +459,9 @@
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
         }
     }];
 }
@@ -467,7 +481,9 @@
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
         }
     }];
 }
@@ -495,6 +511,10 @@
 
 
 - (IBAction)sendSMS:(id)sender {
+    
+    NSString *message = NSLocalizedString2(@"mail_message",nil); //@"Hey, take a look to scarlet APP !"];
+
+    
     if(![MFMessageComposeViewController canSendText])
     {
         UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -503,8 +523,7 @@
     }
     
     //NSArray *recipents = @[@"12345678", @"72345524"];
-    NSString *message = [NSString stringWithFormat:NSLocalizedString2(@"mail_message",nil)]; //@"Hey, take a look to scarlet APP !"];
-    
+
     MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
     messageController.messageComposeDelegate = self;
     //[messageController setRecipients:recipents];

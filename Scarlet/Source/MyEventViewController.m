@@ -141,7 +141,7 @@
         
         
         self.mHeighEditButton.constant = 0;
-        self.title = [NSString stringWithFormat:@"%@'s Scarlet", self.mEvent.leader.firstName];
+        self.title = [NSString stringWithFormat: NSLocalizedString2(@"own_scarlet",nil), self.mEvent.leader.firstName];
         
         if(status == 3 || status == 5  || status == 7 )
         {

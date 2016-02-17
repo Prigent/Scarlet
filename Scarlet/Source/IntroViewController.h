@@ -15,4 +15,9 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *mScrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *mPageIndicateur;
 @property (strong, nonatomic) FBSDKLoginManager * mFBSDKLoginManager;
+
+@property (weak, nonatomic) IBOutlet UIButton *mFacebookButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *mFacebookDetail;
+
 @end

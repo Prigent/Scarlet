@@ -37,10 +37,7 @@
 {
     [super viewDidAppear:animated];
     [[WSManager sharedInstance] getChatsCompletion:^(NSError *error) {
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
+
         [self.tableView reloadData];
     }];
 }
@@ -49,10 +46,7 @@
 {
     [self.uiRefreshControl beginRefreshing];
     [[WSManager sharedInstance] getChatsCompletion:^(NSError *error) {
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
+
         [self.uiRefreshControl endRefreshing];
         
         [self.tableView reloadData];

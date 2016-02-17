@@ -12,6 +12,9 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    
+    [self.sexSegment setTitle:NSLocalizedString2(@"man", nil) forSegmentAtIndex:0];
+    [self.sexSegment setTitle:NSLocalizedString2(@"woman", nil) forSegmentAtIndex:1];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

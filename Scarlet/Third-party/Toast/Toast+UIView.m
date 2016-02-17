@@ -33,10 +33,10 @@ static const NSTimeInterval CSToastFadeDuration = 0.2;
 static const CGFloat CSToastShadowOpacity       = 0.8;
 static const CGFloat CSToastShadowRadius        = 6.0;
 static const CGSize  CSToastShadowOffset        = { 4.0, 4.0 };
-static const BOOL    CSToastDisplayShadow       = YES;
+static const BOOL    CSToastDisplayShadow       = NO;
 
 // display duration and position
-static const NSString * CSToastDefaultPosition  = @"bottom";
+static const NSString * CSToastDefaultPosition  = @"top";
 static const NSTimeInterval CSToastDefaultDuration  = 3.0;
 
 // image view size
@@ -171,12 +171,12 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
         
         activityView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
        // CSToastBlockOpacity
-        activityView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:CSToastBlockOpacity];
+        activityView.backgroundColor = [[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1] colorWithAlphaComponent:CSToastBlockOpacity];
     }
     else{
     
         activityView= [[UIView alloc] initWithFrame:CGRectMake(0, 0, CSToastActivityWidth, CSToastActivityHeight)];
-        activityView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:CSToastOpacity];
+        activityView.backgroundColor = [[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1] colorWithAlphaComponent:CSToastOpacity];
 
     }
     activityView.center = [self centerPointForPosition:position withToast:activityView];
@@ -185,7 +185,7 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     activityView.layer.cornerRadius = CSToastCornerRadius;
     
     if (CSToastDisplayShadow) {
-        activityView.layer.shadowColor = [UIColor blackColor].CGColor;
+        activityView.layer.shadowColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1].CGColor;
         activityView.layer.shadowOpacity = CSToastShadowOpacity;
         activityView.layer.shadowRadius = CSToastShadowRadius;
         activityView.layer.shadowOffset = CSToastShadowOffset;
@@ -230,7 +230,7 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     if([point isKindOfClass:[NSString class]]) {
         // convert string literals @"top", @"bottom", @"center", or any point wrapped in an NSValue object into a CGPoint
         if([point caseInsensitiveCompare:@"top"] == NSOrderedSame) {
-            return CGPointMake(self.bounds.size.width/2, (toast.frame.size.height / 2) + CSToastVerticalPadding);
+            return CGPointMake(self.bounds.size.width/2, (toast.frame.size.height / 2) + CSToastVerticalPadding +110);
         } else if([point caseInsensitiveCompare:@"bottom"] == NSOrderedSame) {
             return CGPointMake(self.bounds.size.width/2, (self.bounds.size.height - (toast.frame.size.height / 2)) - CSToastVerticalPadding);
         } else if([point caseInsensitiveCompare:@"center"] == NSOrderedSame) {
@@ -269,13 +269,13 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     wrapperView.layer.cornerRadius = CSToastCornerRadius;
     
     if (CSToastDisplayShadow) {
-        wrapperView.layer.shadowColor = [UIColor blackColor].CGColor;
+        wrapperView.layer.shadowColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1].CGColor;
         wrapperView.layer.shadowOpacity = CSToastShadowOpacity;
         wrapperView.layer.shadowRadius = CSToastShadowRadius;
         wrapperView.layer.shadowOffset = CSToastShadowOffset;
     }
 
-    wrapperView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:CSToastOpacity];
+    wrapperView.backgroundColor = [[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1] colorWithAlphaComponent:CSToastOpacity];
     
     if(image != nil) {
         imageView = [[UIImageView alloc] initWithImage:image];

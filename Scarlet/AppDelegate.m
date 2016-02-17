@@ -21,7 +21,7 @@
 @implementation AppDelegate
 
 /******* Set your tracking ID here *******/
-static NSString *const kTrackingId = @"UA-72902414-1";
+
 static NSString *const kAllowTracking = @"allowTracking";
 
 
@@ -37,7 +37,7 @@ static NSString *const kAllowTracking = @"allowTracking";
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
     [GAI sharedInstance].optOut = ![[NSUserDefaults standardUserDefaults] boolForKey:kAllowTracking];
     [GAI sharedInstance].dispatchInterval = 20;
-    [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+    [[GAI sharedInstance] trackerWithTrackingId:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"tracking"]];
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     
     UIImage *barBackBtnImg = [[UIImage imageNamed:@"btnBack"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
@@ -51,9 +51,7 @@ static NSString *const kAllowTracking = @"allowTracking";
     
 // [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 
-    
-    NSLog(@"Token %@", [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]);
-    
+
     return YES;
 }
 
@@ -78,13 +76,11 @@ static NSString *const kAllowTracking = @"allowTracking";
 {
     NSString *tokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    
-    NSLog(@"tokenString : %@", tokenString);
-    
+
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] == nil) {
         [[NSUserDefaults standardUserDefaults] setValue:tokenString forKey:@"DeviceToken"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        NSLog(@"tokenString SAved %@",tokenString);
+
         if([ShareAppContext sharedInstance].user != nil)
         {
             [[WSManager sharedInstance] saveUserCompletion:^(NSError *error) {
@@ -97,7 +93,7 @@ static NSString *const kAllowTracking = @"allowTracking";
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-    NSLog(@"parsePushData : %@", userInfo);
+
     if([application applicationState] == UIApplicationStateInactive)
     {
         NSNumber * lNumber = [userInfo valueForKey:@"redirection"];
@@ -135,6 +131,10 @@ static NSString *const kAllowTracking = @"allowTracking";
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+    [[WSManager sharedInstance] getTextCompletion:^(NSError *error) {
+        
+    }];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

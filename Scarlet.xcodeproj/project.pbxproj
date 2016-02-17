@@ -125,6 +125,169 @@
 		B27F78EA1BD93B260038B4B0 /* Profile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E51BD93B260038B4B0 /* Profile+CoreDataProperties.m */; };
 		B27F78EB1BD93B260038B4B0 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E71BD93B260038B4B0 /* Profile.m */; };
 		B28075EB1C58C12D008D5E67 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = B28075EA1C58C12D008D5E67 /* MKMapView+ZoomLevel.m */; };
+		B2823E1A1C6A289300BF8E0B /* RACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F911BDFDEED0037A8ED /* RACollectionViewCell.m */; };
+		B2823E1B1C6A289300BF8E0B /* ProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE31BE924EC00868F02 /* ProfileCell.m */; };
+		B2823E1C1C6A289300BF8E0B /* DetailProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B235857E1BDCEB9200568AB9 /* DetailProfileCell.m */; };
+		B2823E1D1C6A289300BF8E0B /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5A21BD5011B00868D12 /* UIProgressView+AFNetworking.m */; };
+		B2823E1E1C6A289300BF8E0B /* ReverseGeocoding.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5891BD5011B00868D12 /* ReverseGeocoding.m */; };
+		B2823E1F1C6A289300BF8E0B /* DemandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B235856A1BDA49E500568AB9 /* DemandCell.m */; };
+		B2823E201C6A289300BF8E0B /* UIScrollView+APParallaxHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */; };
+		B2823E211C6A289300BF8E0B /* Demand+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78C21BD9236F0038B4B0 /* Demand+CoreDataProperties.m */; };
+		B2823E221C6A289300BF8E0B /* FacebookProfile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B238385D1BFD0B4800E4A42D /* FacebookProfile+CoreDataProperties.m */; };
+		B2823E231C6A289300BF8E0B /* ProfileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE61BE927F200868F02 /* ProfileListViewController.m */; };
+		B2823E241C6A289300BF8E0B /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA53C1BD5011B00868D12 /* AFURLConnectionOperation.m */; };
+		B2823E251C6A289300BF8E0B /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA59D1BD5011B00868D12 /* UIButton+AFNetworking.m */; };
+		B2823E261C6A289300BF8E0B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6EC71BCCF66500DCF1A4 /* AppDelegate.m */; };
+		B2823E271C6A289300BF8E0B /* LocationSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C8C7951C3BFC6A005B656B /* LocationSearchDataSource.m */; };
+		B2823E281C6A289300BF8E0B /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5D81BD5037000868D12 /* IntroViewController.m */; };
+		B2823E291C6A289300BF8E0B /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78A01BD9236F0038B4B0 /* Event.m */; };
+		B2823E2A1C6A289300BF8E0B /* FacebookProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = B238385F1BFD0B4800E4A42D /* FacebookProfile.m */; };
+		B2823E2B1C6A289300BF8E0B /* OLFacebookAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389651BE65D4200AF1209 /* OLFacebookAlbum.m */; };
+		B2823E2C1C6A289300BF8E0B /* OLFacebookPhotosForAlbumRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389711BE65D4200AF1209 /* OLFacebookPhotosForAlbumRequest.m */; };
+		B2823E2D1C6A289300BF8E0B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78051BD914F60038B4B0 /* ProfileViewController.m */; };
+		B2823E2E1C6A289300BF8E0B /* CreateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D291BDE551A00C89731 /* CreateEventViewController.m */; };
+		B2823E2F1C6A289300BF8E0B /* MapEventCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B27828EE1C28709300A33D05 /* MapEventCollectionCell.m */; };
+		B2823E301C6A289300BF8E0B /* StretchedLocalizedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5831BD5011B00868D12 /* StretchedLocalizedButton.m */; };
+		B2823E311C6A289300BF8E0B /* Message+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78AE1BD9236F0038B4B0 /* Message+CoreDataProperties.m */; };
+		B2823E321C6A289300BF8E0B /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F7ED3C1C21EA7900070656 /* FilterViewController.m */; };
+		B2823E331C6A289300BF8E0B /* Demand.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78C41BD9236F0038B4B0 /* Demand.m */; };
+		B2823E341C6A289300BF8E0B /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B23585761BDCCEA000568AB9 /* MessageCell.m */; };
+		B2823E351C6A289300BF8E0B /* DateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8E91C05D38C0085BD95 /* DateViewController.m */; };
+		B2823E361C6A289300BF8E0B /* OLFacebookImagePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B273896B1BE65D4200AF1209 /* OLFacebookImagePickerCell.m */; };
+		B2823E371C6A289300BF8E0B /* DetailMyProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05FFF1BE101390037A8ED /* DetailMyProfileCell.m */; };
+		B2823E381C6A289300BF8E0B /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E31BD93B260038B4B0 /* Picture.m */; };
+		B2823E391C6A289300BF8E0B /* FriendRequest+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78A21BD9236F0038B4B0 /* FriendRequest+CoreDataProperties.m */; };
+		B2823E3A1C6A289300BF8E0B /* OLFacebookAlbumRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389671BE65D4200AF1209 /* OLFacebookAlbumRequest.m */; };
+		B2823E3B1C6A289300BF8E0B /* OLPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389731BE65D4200AF1209 /* OLPhotoViewController.m */; };
+		B2823E3C1C6A289300BF8E0B /* ParameterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F789A1BD922F30038B4B0 /* ParameterViewController.m */; };
+		B2823E3D1C6A289300BF8E0B /* Profile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E51BD93B260038B4B0 /* Profile+CoreDataProperties.m */; };
+		B2823E3E1C6A289300BF8E0B /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B238382D1BFBB78600E4A42D /* User+CoreDataProperties.m */; };
+		B2823E3F1C6A289300BF8E0B /* OLAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389621BE65D4200AF1209 /* OLAlbumViewController.m */; };
+		B2823E401C6A289300BF8E0B /* LocalizedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA57F1BD5011B00868D12 /* LocalizedLabel.m */; };
+		B2823E411C6A289300BF8E0B /* RACollectionViewReorderableTripletLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F8B1BDFDE450037A8ED /* RACollectionViewReorderableTripletLayout.m */; };
+		B2823E421C6A289300BF8E0B /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA53A1BD5011B00868D12 /* AFSecurityPolicy.m */; };
+		B2823E431C6A289300BF8E0B /* Scarlet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6ECF1BCCF66500DCF1A4 /* Scarlet.xcdatamodeld */; };
+		B2823E441C6A289300BF8E0B /* SexCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EE9C6B1BFF8435002BCD96 /* SexCell.m */; };
+		B2823E451C6A289300BF8E0B /* TTRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EE9C641BFF821D002BCD96 /* TTRangeSlider.m */; };
+		B2823E461C6A289300BF8E0B /* FriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78961BD922A80038B4B0 /* FriendViewController.m */; };
+		B2823E471C6A289300BF8E0B /* RACollectionViewTripletLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E05F8D1BDFDE450037A8ED /* RACollectionViewTripletLayout.m */; };
+		B2823E481C6A289300BF8E0B /* LocalizedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5811BD5011B00868D12 /* LocalizedTextField.m */; };
+		B2823E491C6A289300BF8E0B /* AutoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972341BD9468200B8BF72 /* AutoListViewController.m */; };
+		B2823E4A1C6A289300BF8E0B /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5331BD5011B00868D12 /* AFHTTPRequestOperationManager.m */; };
+		B2823E4B1C6A289300BF8E0B /* OLFacebookImagePickerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = B273896D1BE65D4200AF1209 /* OLFacebookImagePickerConstants.m */; };
+		B2823E4C1C6A289300BF8E0B /* Picture+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E11BD93B260038B4B0 /* Picture+CoreDataProperties.m */; };
+		B2823E4D1C6A289300BF8E0B /* NSDate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A44B921C16F22E0098D661 /* NSDate+Utilities.m */; };
+		B2823E4E1C6A289300BF8E0B /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA59B1BD5011B00868D12 /* UIAlertView+AFNetworking.m */; };
+		B2823E4F1C6A289300BF8E0B /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5A61BD5011B00868D12 /* UIWebView+AFNetworking.m */; };
+		B2823E501C6A289300BF8E0B /* NSString+XMLEntities.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5911BD5011B00868D12 /* NSString+XMLEntities.m */; };
+		B2823E511C6A289300BF8E0B /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BB3C111C15BDA600014E9D /* NSData+Base64.m */; };
+		B2823E521C6A289300BF8E0B /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78B01BD9236F0038B4B0 /* Message.m */; };
+		B2823E531C6A289300BF8E0B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F3A4021BEBD4EB006F76B1 /* MBProgressHUD.m */; };
+		B2823E541C6A289300BF8E0B /* OLFacebookImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B27389691BE65D4200AF1209 /* OLFacebookImage.m */; };
+		B2823E551C6A289300BF8E0B /* Address+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78BA1BD9236F0038B4B0 /* Address+CoreDataProperties.m */; };
+		B2823E561C6A289300BF8E0B /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972371BD946B800B8BF72 /* EventCell.m */; };
+		B2823E571C6A289300BF8E0B /* KIImagePager.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F77E91BD8013B0038B4B0 /* KIImagePager.m */; };
+		B2823E581C6A289300BF8E0B /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA59F1BD5011B00868D12 /* UIImageView+AFNetworking.m */; };
+		B2823E591C6A289300BF8E0B /* MyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78871BD922400038B4B0 /* MyEventsViewController.m */; };
+		B2823E5A1C6A289300BF8E0B /* LocalizedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA57D1BD5011B00868D12 /* LocalizedButton.m */; };
+		B2823E5B1C6A289300BF8E0B /* DemandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B235856D1BDA4A1700568AB9 /* DemandViewController.m */; };
+		B2823E5C1C6A289300BF8E0B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78B81BD9236F0038B4B0 /* User.m */; };
+		B2823E5D1C6A289300BF8E0B /* MoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8E61C05D37E0085BD95 /* MoodViewController.m */; };
+		B2823E5E1C6A289300BF8E0B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AA6EC41BCCF66500DCF1A4 /* main.m */; };
+		B2823E5F1C6A289300BF8E0B /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8F21C0605520085BD95 /* HMSegmentedControl.m */; };
+		B2823E601C6A289300BF8E0B /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5991BD5011B00868D12 /* UIActivityIndicatorView+AFNetworking.m */; };
+		B2823E611C6A289300BF8E0B /* BaseTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA51E1BD5011100868D12 /* BaseTabViewController.m */; };
+		B2823E621C6A289300BF8E0B /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78E71BD93B260038B4B0 /* Profile.m */; };
+		B2823E631C6A289300BF8E0B /* EventExpendView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DE4AC11C08B9CB00CF3AE1 /* EventExpendView.m */; };
+		B2823E641C6A289300BF8E0B /* BaseNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA51A1BD5011100868D12 /* BaseNavigationViewController.m */; };
+		B2823E651C6A289300BF8E0B /* MyEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F9723E1BD94E9A00B8BF72 /* MyEventCell.m */; };
+		B2823E661C6A289300BF8E0B /* FieldEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8E31C05C1860085BD95 /* FieldEventCell.m */; };
+		B2823E671C6A289300BF8E0B /* MyEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78901BD9227F0038B4B0 /* MyEventViewController.m */; };
+		B2823E681C6A289300BF8E0B /* WSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5241BD5011100868D12 /* WSManager.m */; };
+		B2823E691C6A289300BF8E0B /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5A41BD5011B00868D12 /* UIRefreshControl+AFNetworking.m */; };
+		B2823E6A1C6A289300BF8E0B /* ProfileMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D241BDE49BF00C89731 /* ProfileMenuCell.m */; };
+		B2823E6B1C6A289300BF8E0B /* EventPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B235857B1BDCDDC900568AB9 /* EventPointAnnotation.m */; };
+		B2823E6C1C6A289300BF8E0B /* Interest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78AC1BD9236F0038B4B0 /* Interest.m */; };
+		B2823E6D1C6A289300BF8E0B /* ProfileCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBEB1BE9345500868F02 /* ProfileCollectionCell.m */; };
+		B2823E6E1C6A289300BF8E0B /* ShareAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5221BD5011100868D12 /* ShareAppContext.m */; };
+		B2823E6F1C6A289300BF8E0B /* UIColor+PXExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5451BD5011B00868D12 /* UIColor+PXExtentions.m */; };
+		B2823E701C6A289300BF8E0B /* InterestCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E4EB091BFD47E100D1CCA2 /* InterestCollectionCell.m */; };
+		B2823E711C6A289300BF8E0B /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5421BD5011B00868D12 /* AFURLSessionManager.m */; };
+		B2823E721C6A289300BF8E0B /* MyChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F788A1BD9225A0038B4B0 /* MyChatsViewController.m */; };
+		B2823E731C6A289300BF8E0B /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5401BD5011B00868D12 /* AFURLResponseSerialization.m */; };
+		B2823E741C6A289300BF8E0B /* Event+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F789E1BD9236F0038B4B0 /* Event+CoreDataProperties.m */; };
+		B2823E751C6A289300BF8E0B /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AF44531C4568CA00B0F0F8 /* NotificationCell.m */; };
+		B2823E761C6A289300BF8E0B /* OLFacebookImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = B273896F1BE65D4200AF1209 /* OLFacebookImagePickerController.m */; };
+		B2823E771C6A289300BF8E0B /* InterestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E4EB061BFD47C800D1CCA2 /* InterestListCell.m */; };
+		B2823E781C6A289300BF8E0B /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5201BD5011100868D12 /* BaseViewController.m */; };
+		B2823E791C6A289300BF8E0B /* LocationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27AF8EC1C05D39E0085BD95 /* LocationSearchViewController.m */; };
+		B2823E7A1C6A289300BF8E0B /* SearchEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78841BD922180038B4B0 /* SearchEventViewController.m */; };
+		B2823E7B1C6A289300BF8E0B /* ProfileListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B244DA4F1BDE972B0088BB1D /* ProfileListCell.m */; };
+		B2823E7C1C6A289300BF8E0B /* CALayer+UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E4EADD1BFD2B0900D1CCA2 /* CALayer+UIColor.m */; };
+		B2823E7D1C6A289300BF8E0B /* WSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5261BD5011100868D12 /* WSParser.m */; };
+		B2823E7E1C6A289300BF8E0B /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78931BD9228D0038B4B0 /* EventViewController.m */; };
+		B2823E7F1C6A289300BF8E0B /* FriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78A41BD9236F0038B4B0 /* FriendRequest.m */; };
+		B2823E801C6A289300BF8E0B /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA53E1BD5011B00868D12 /* AFURLRequestSerialization.m */; };
+		B2823E811C6A289300BF8E0B /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78BC1BD9236F0038B4B0 /* Address.m */; };
+		B2823E821C6A289300BF8E0B /* Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78C01BD9236F0038B4B0 /* Chat.m */; };
+		B2823E831C6A289300BF8E0B /* MyChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F972411BD9566600B8BF72 /* MyChatCell.m */; };
+		B2823E841C6A289300BF8E0B /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA58D1BD5011B00868D12 /* GTMNSString+HTML.m */; };
+		B2823E851C6A289300BF8E0B /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F788D1BD922670038B4B0 /* ChatViewController.m */; };
+		B2823E861C6A289300BF8E0B /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA58F1BD5011B00868D12 /* NSString+HTML.m */; };
+		B2823E871C6A289300BF8E0B /* Chat+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78BE1BD9236F0038B4B0 /* Chat+CoreDataProperties.m */; };
+		B2823E881C6A289300BF8E0B /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5941BD5011B00868D12 /* Toast+UIView.m */; };
+		B2823E891C6A289300BF8E0B /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B70D2F1BDE55A100C89731 /* MyProfileViewController.m */; };
+		B2823E8A1C6A289300BF8E0B /* Interest+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F78AA1BD9236F0038B4B0 /* Interest+CoreDataProperties.m */; };
+		B2823E8B1C6A289300BF8E0B /* AgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EE9C681BFF8425002BCD96 /* AgeCell.m */; };
+		B2823E8C1C6A289300BF8E0B /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5381BD5011B00868D12 /* AFNetworkReachabilityManager.m */; };
+		B2823E8D1C6A289300BF8E0B /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5971BD5011B00868D12 /* AFNetworkActivityIndicatorManager.m */; };
+		B2823E8E1C6A289300BF8E0B /* BaseSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA51C1BD5011100868D12 /* BaseSplitViewController.m */; };
+		B2823E8F1C6A289300BF8E0B /* JoinEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B244DA521BDE9FEC0088BB1D /* JoinEventViewController.m */; };
+		B2823E901C6A289300BF8E0B /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = B28075EA1C58C12D008D5E67 /* MKMapView+ZoomLevel.m */; };
+		B2823E911C6A289300BF8E0B /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5311BD5011B00868D12 /* AFHTTPRequestOperation.m */; };
+		B2823E921C6A289300BF8E0B /* DelegateLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA57B1BD5011B00868D12 /* DelegateLabel.m */; };
+		B2823E931C6A289300BF8E0B /* EventExpendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B375301C0778CA00B3E349 /* EventExpendCell.m */; };
+		B2823E941C6A289300BF8E0B /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B23FA5351BD5011B00868D12 /* AFHTTPSessionManager.m */; };
+		B2823E961C6A289300BF8E0B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA6EDF1BCCF6DA00DCF1A4 /* Crashlytics.framework */; };
+		B2823E971C6A289300BF8E0B /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B23FA5721BD5011B00868D12 /* libGoogleAdMobAds.a */; };
+		B2823E981C6A289300BF8E0B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3A3FE1BEBC84F006F76B1 /* FBSDKShareKit.framework */; };
+		B2823E991C6A289300BF8E0B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27F77E41BD7FFEB0038B4B0 /* FBSDKLoginKit.framework */; };
+		B2823E9A1C6A289300BF8E0B /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA6EDE1BCCF6DA00DCF1A4 /* Fabric.framework */; };
+		B2823E9B1C6A289300BF8E0B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27F77E61BD800410038B4B0 /* FBSDKCoreKit.framework */; };
+		B2823E9C1C6A289300BF8E0B /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23FA5781BD5011B00868D12 /* HockeySDK.framework */; };
+		B2823E9D1C6A289300BF8E0B /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27F77F11BD8036F0038B4B0 /* FBAudienceNetwork.framework */; };
+		B2823E9E1C6A289300BF8E0B /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B23FA5511BD5011B00868D12 /* libGoogleAnalyticsServices.a */; };
+		B2823E9F1C6A289300BF8E0B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27F77EF1BD8036E0038B4B0 /* Bolts.framework */; };
+		B2823EA11C6A289300BF8E0B /* OLAlbumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B27389631BE65D4200AF1209 /* OLAlbumViewController.xib */; };
+		B2823EA21C6A289300BF8E0B /* letteringScarlet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838251BFBA6FE00E4A42D /* letteringScarlet@2x.png */; };
+		B2823EA31C6A289300BF8E0B /* user.json in Resources */ = {isa = PBXBuildFile; fileRef = B27F78DC1BD937690038B4B0 /* user.json */; };
+		B2823EA41C6A289300BF8E0B /* messages.json in Resources */ = {isa = PBXBuildFile; fileRef = B23585781BDCD18500568AB9 /* messages.json */; };
+		B2823EA51C6A289300BF8E0B /* Parameter.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27F77FB1BD911030038B4B0 /* Parameter.storyboard */; };
+		B2823EA61C6A289300BF8E0B /* Chat.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F9723B1BD94D0A00B8BF72 /* Chat.plist */; };
+		B2823EA71C6A289300BF8E0B /* OLPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B27389741BE65D4200AF1209 /* OLPhotoViewController.xib */; };
+		B2823EA81C6A289300BF8E0B /* AllProfile.plist in Resources */ = {isa = PBXBuildFile; fileRef = B290FBE81BE92B2200868F02 /* AllProfile.plist */; };
+		B2823EA91C6A289300BF8E0B /* MyEvent.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F972391BD94CFE00B8BF72 /* MyEvent.plist */; };
+		B2823EAA1C6A289300BF8E0B /* events.json in Resources */ = {isa = PBXBuildFile; fileRef = B27F78DA1BD937690038B4B0 /* events.json */; };
+		B2823EAB1C6A289300BF8E0B /* Message.plist in Resources */ = {isa = PBXBuildFile; fileRef = B23585731BDCCE7400568AB9 /* Message.plist */; };
+		B2823EAC1C6A289300BF8E0B /* iconScarlet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838221BFBA6FE00E4A42D /* iconScarlet@2x.png */; };
+		B2823EAD1C6A289300BF8E0B /* iconScarlet@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838231BFBA6FE00E4A42D /* iconScarlet@3x.png */; };
+		B2823EAE1C6A289300BF8E0B /* Friend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27F77F51BD910620038B4B0 /* Friend.storyboard */; };
+		B2823EAF1C6A289300BF8E0B /* Event.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B70D261BDE54D500C89731 /* Event.storyboard */; };
+		B2823EB01C6A289300BF8E0B /* Mood.plist in Resources */ = {isa = PBXBuildFile; fileRef = B27AF8EE1C05E85C0085BD95 /* Mood.plist */; };
+		B2823EB11C6A289300BF8E0B /* FacebookImagePicker.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B27389601BE65D4200AF1209 /* FacebookImagePicker.xcassets */; };
+		B2823EB21C6A289300BF8E0B /* chats.json in Resources */ = {isa = PBXBuildFile; fileRef = B23585711BDCC90E00568AB9 /* chats.json */; };
+		B2823EB31C6A289300BF8E0B /* letteringScarlet@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23838261BFBA6FE00E4A42D /* letteringScarlet@3x.png */; };
+		B2823EB41C6A289300BF8E0B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27F77FC1BD911030038B4B0 /* Profile.storyboard */; };
+		B2823EB51C6A289300BF8E0B /* profiles.json in Resources */ = {isa = PBXBuildFile; fileRef = B27F78DB1BD937690038B4B0 /* profiles.json */; };
+		B2823EB61C6A289300BF8E0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ED41BCCF66500DCF1A4 /* LaunchScreen.storyboard */; };
+		B2823EB71C6A289300BF8E0B /* AllEvent.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F972311BD945D300B8BF72 /* AllEvent.plist */; };
+		B2823EB81C6A289300BF8E0B /* myevents.json in Resources */ = {isa = PBXBuildFile; fileRef = B2E060011BE104D20037A8ED /* myevents.json */; };
+		B2823EB91C6A289300BF8E0B /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B27F77F01BD8036F0038B4B0 /* FacebookSDKStrings.bundle */; };
+		B2823EBA1C6A289300BF8E0B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2A44B981C188C440098D661 /* Localizable.strings */; };
+		B2823EBB1C6A289300BF8E0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ED21BCCF66500DCF1A4 /* Assets.xcassets */; };
+		B2823EBC1C6A289300BF8E0B /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = B23FA5731BD5011B00868D12 /* README.txt */; };
+		B2823EBD1C6A289300BF8E0B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2AA6ECC1BCCF66500DCF1A4 /* Main.storyboard */; };
+		B2823EBE1C6A289300BF8E0B /* Demand.plist in Resources */ = {isa = PBXBuildFile; fileRef = B235856F1BDA55C400568AB9 /* Demand.plist */; };
 		B28302D01BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */; };
 		B290FBE41BE924EC00868F02 /* ProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE31BE924EC00868F02 /* ProfileCell.m */; };
 		B290FBE71BE927F200868F02 /* ProfileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B290FBE61BE927F200868F02 /* ProfileListViewController.m */; };
@@ -426,6 +589,8 @@
 		B27F78E71BD93B260038B4B0 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = DataBase/Profile.m; sourceTree = "<group>"; };
 		B28075E91C58C12D008D5E67 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
 		B28075EA1C58C12D008D5E67 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
+		B2823EC31C6A289300BF8E0B /* Scarlet dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scarlet dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2823EC41C6A289300BF8E0B /* Scarlet copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Scarlet copy-Info.plist"; path = "/Users/proudaut/Dev/perso/Scarlet/Scarlet copy-Info.plist"; sourceTree = "<absolute>"; };
 		B28302CE1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+APParallaxHeader.h"; sourceTree = "<group>"; };
 		B28302CF1BDFAD0C006FC644 /* UIScrollView+APParallaxHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+APParallaxHeader.m"; sourceTree = "<group>"; };
 		B290FBE21BE924EC00868F02 /* ProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileCell.h; path = Source/ProfileCell.h; sourceTree = "<group>"; };
@@ -509,6 +674,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B2823E951C6A289300BF8E0B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2823E961C6A289300BF8E0B /* Crashlytics.framework in Frameworks */,
+				B2823E971C6A289300BF8E0B /* libGoogleAdMobAds.a in Frameworks */,
+				B2823E981C6A289300BF8E0B /* FBSDKShareKit.framework in Frameworks */,
+				B2823E991C6A289300BF8E0B /* FBSDKLoginKit.framework in Frameworks */,
+				B2823E9A1C6A289300BF8E0B /* Fabric.framework in Frameworks */,
+				B2823E9B1C6A289300BF8E0B /* FBSDKCoreKit.framework in Frameworks */,
+				B2823E9C1C6A289300BF8E0B /* HockeySDK.framework in Frameworks */,
+				B2823E9D1C6A289300BF8E0B /* FBAudienceNetwork.framework in Frameworks */,
+				B2823E9E1C6A289300BF8E0B /* libGoogleAnalyticsServices.a in Frameworks */,
+				B2823E9F1C6A289300BF8E0B /* Bolts.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2AA6EBD1BCCF66500DCF1A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1084,6 +1266,7 @@
 			isa = PBXGroup;
 			children = (
 				B2AA6EC01BCCF66500DCF1A4 /* Scarlet.app */,
+				B2823EC31C6A289300BF8E0B /* Scarlet dev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1105,6 +1288,7 @@
 				B27F78981BD922DA0038B4B0 /* Parameter */,
 				B2AA6ED21BCCF66500DCF1A4 /* Assets.xcassets */,
 				B2AA6ED71BCCF66500DCF1A4 /* Info.plist */,
+				B2823EC41C6A289300BF8E0B /* Scarlet copy-Info.plist */,
 				B2AA6EC61BCCF66500DCF1A4 /* AppDelegate.h */,
 				B2AA6EC71BCCF66500DCF1A4 /* AppDelegate.m */,
 				B2A44B981C188C440098D661 /* Localizable.strings */,
@@ -1157,6 +1341,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B2823E181C6A289300BF8E0B /* Scarlet dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2823EC01C6A289300BF8E0B /* Build configuration list for PBXNativeTarget "Scarlet dev" */;
+			buildPhases = (
+				B2823E191C6A289300BF8E0B /* Sources */,
+				B2823E951C6A289300BF8E0B /* Frameworks */,
+				B2823EA01C6A289300BF8E0B /* Resources */,
+				B2823EBF1C6A289300BF8E0B /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Scarlet dev";
+			productName = Scarlet;
+			productReference = B2823EC31C6A289300BF8E0B /* Scarlet dev.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B2AA6EBF1BCCF66500DCF1A4 /* Scarlet */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2AA6EDA1BCCF66500DCF1A4 /* Build configuration list for PBXNativeTarget "Scarlet" */;
@@ -1205,11 +1407,49 @@
 			projectRoot = "";
 			targets = (
 				B2AA6EBF1BCCF66500DCF1A4 /* Scarlet */,
+				B2823E181C6A289300BF8E0B /* Scarlet dev */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B2823EA01C6A289300BF8E0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2823EA11C6A289300BF8E0B /* OLAlbumViewController.xib in Resources */,
+				B2823EA21C6A289300BF8E0B /* letteringScarlet@2x.png in Resources */,
+				B2823EA31C6A289300BF8E0B /* user.json in Resources */,
+				B2823EA41C6A289300BF8E0B /* messages.json in Resources */,
+				B2823EA51C6A289300BF8E0B /* Parameter.storyboard in Resources */,
+				B2823EA61C6A289300BF8E0B /* Chat.plist in Resources */,
+				B2823EA71C6A289300BF8E0B /* OLPhotoViewController.xib in Resources */,
+				B2823EA81C6A289300BF8E0B /* AllProfile.plist in Resources */,
+				B2823EA91C6A289300BF8E0B /* MyEvent.plist in Resources */,
+				B2823EAA1C6A289300BF8E0B /* events.json in Resources */,
+				B2823EAB1C6A289300BF8E0B /* Message.plist in Resources */,
+				B2823EAC1C6A289300BF8E0B /* iconScarlet@2x.png in Resources */,
+				B2823EAD1C6A289300BF8E0B /* iconScarlet@3x.png in Resources */,
+				B2823EAE1C6A289300BF8E0B /* Friend.storyboard in Resources */,
+				B2823EAF1C6A289300BF8E0B /* Event.storyboard in Resources */,
+				B2823EB01C6A289300BF8E0B /* Mood.plist in Resources */,
+				B2823EB11C6A289300BF8E0B /* FacebookImagePicker.xcassets in Resources */,
+				B2823EB21C6A289300BF8E0B /* chats.json in Resources */,
+				B2823EB31C6A289300BF8E0B /* letteringScarlet@3x.png in Resources */,
+				B2823EB41C6A289300BF8E0B /* Profile.storyboard in Resources */,
+				B2823EB51C6A289300BF8E0B /* profiles.json in Resources */,
+				B2823EB61C6A289300BF8E0B /* LaunchScreen.storyboard in Resources */,
+				B2823EB71C6A289300BF8E0B /* AllEvent.plist in Resources */,
+				B2823EB81C6A289300BF8E0B /* myevents.json in Resources */,
+				B2823EB91C6A289300BF8E0B /* FacebookSDKStrings.bundle in Resources */,
+				B2823EBA1C6A289300BF8E0B /* Localizable.strings in Resources */,
+				B2823EBB1C6A289300BF8E0B /* Assets.xcassets in Resources */,
+				B2823EBC1C6A289300BF8E0B /* README.txt in Resources */,
+				B2823EBD1C6A289300BF8E0B /* Main.storyboard in Resources */,
+				B2823EBE1C6A289300BF8E0B /* Demand.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2AA6EBE1BCCF66500DCF1A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1250,6 +1490,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		B2823EBF1C6A289300BF8E0B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 1b6d694ad3249a5e9e64171fd6be9d217265e8f9 82b9903ac02493b94a2ed938b3b02794fb1adcebb13f714ac2fbee04f88b9c55";
+		};
 		B2AA6EDD1BCCF6C200DCF1A4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1266,6 +1519,136 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B2823E191C6A289300BF8E0B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2823E1A1C6A289300BF8E0B /* RACollectionViewCell.m in Sources */,
+				B2823E1B1C6A289300BF8E0B /* ProfileCell.m in Sources */,
+				B2823E1C1C6A289300BF8E0B /* DetailProfileCell.m in Sources */,
+				B2823E1D1C6A289300BF8E0B /* UIProgressView+AFNetworking.m in Sources */,
+				B2823E1E1C6A289300BF8E0B /* ReverseGeocoding.m in Sources */,
+				B2823E1F1C6A289300BF8E0B /* DemandCell.m in Sources */,
+				B2823E201C6A289300BF8E0B /* UIScrollView+APParallaxHeader.m in Sources */,
+				B2823E211C6A289300BF8E0B /* Demand+CoreDataProperties.m in Sources */,
+				B2823E221C6A289300BF8E0B /* FacebookProfile+CoreDataProperties.m in Sources */,
+				B2823E231C6A289300BF8E0B /* ProfileListViewController.m in Sources */,
+				B2823E241C6A289300BF8E0B /* AFURLConnectionOperation.m in Sources */,
+				B2823E251C6A289300BF8E0B /* UIButton+AFNetworking.m in Sources */,
+				B2823E261C6A289300BF8E0B /* AppDelegate.m in Sources */,
+				B2823E271C6A289300BF8E0B /* LocationSearchDataSource.m in Sources */,
+				B2823E281C6A289300BF8E0B /* IntroViewController.m in Sources */,
+				B2823E291C6A289300BF8E0B /* Event.m in Sources */,
+				B2823E2A1C6A289300BF8E0B /* FacebookProfile.m in Sources */,
+				B2823E2B1C6A289300BF8E0B /* OLFacebookAlbum.m in Sources */,
+				B2823E2C1C6A289300BF8E0B /* OLFacebookPhotosForAlbumRequest.m in Sources */,
+				B2823E2D1C6A289300BF8E0B /* ProfileViewController.m in Sources */,
+				B2823E2E1C6A289300BF8E0B /* CreateEventViewController.m in Sources */,
+				B2823E2F1C6A289300BF8E0B /* MapEventCollectionCell.m in Sources */,
+				B2823E301C6A289300BF8E0B /* StretchedLocalizedButton.m in Sources */,
+				B2823E311C6A289300BF8E0B /* Message+CoreDataProperties.m in Sources */,
+				B2823E321C6A289300BF8E0B /* FilterViewController.m in Sources */,
+				B2823E331C6A289300BF8E0B /* Demand.m in Sources */,
+				B2823E341C6A289300BF8E0B /* MessageCell.m in Sources */,
+				B2823E351C6A289300BF8E0B /* DateViewController.m in Sources */,
+				B2823E361C6A289300BF8E0B /* OLFacebookImagePickerCell.m in Sources */,
+				B2823E371C6A289300BF8E0B /* DetailMyProfileCell.m in Sources */,
+				B2823E381C6A289300BF8E0B /* Picture.m in Sources */,
+				B2823E391C6A289300BF8E0B /* FriendRequest+CoreDataProperties.m in Sources */,
+				B2823E3A1C6A289300BF8E0B /* OLFacebookAlbumRequest.m in Sources */,
+				B2823E3B1C6A289300BF8E0B /* OLPhotoViewController.m in Sources */,
+				B2823E3C1C6A289300BF8E0B /* ParameterViewController.m in Sources */,
+				B2823E3D1C6A289300BF8E0B /* Profile+CoreDataProperties.m in Sources */,
+				B2823E3E1C6A289300BF8E0B /* User+CoreDataProperties.m in Sources */,
+				B2823E3F1C6A289300BF8E0B /* OLAlbumViewController.m in Sources */,
+				B2823E401C6A289300BF8E0B /* LocalizedLabel.m in Sources */,
+				B2823E411C6A289300BF8E0B /* RACollectionViewReorderableTripletLayout.m in Sources */,
+				B2823E421C6A289300BF8E0B /* AFSecurityPolicy.m in Sources */,
+				B2823E431C6A289300BF8E0B /* Scarlet.xcdatamodeld in Sources */,
+				B2823E441C6A289300BF8E0B /* SexCell.m in Sources */,
+				B2823E451C6A289300BF8E0B /* TTRangeSlider.m in Sources */,
+				B2823E461C6A289300BF8E0B /* FriendViewController.m in Sources */,
+				B2823E471C6A289300BF8E0B /* RACollectionViewTripletLayout.m in Sources */,
+				B2823E481C6A289300BF8E0B /* LocalizedTextField.m in Sources */,
+				B2823E491C6A289300BF8E0B /* AutoListViewController.m in Sources */,
+				B2823E4A1C6A289300BF8E0B /* AFHTTPRequestOperationManager.m in Sources */,
+				B2823E4B1C6A289300BF8E0B /* OLFacebookImagePickerConstants.m in Sources */,
+				B2823E4C1C6A289300BF8E0B /* Picture+CoreDataProperties.m in Sources */,
+				B2823E4D1C6A289300BF8E0B /* NSDate+Utilities.m in Sources */,
+				B2823E4E1C6A289300BF8E0B /* UIAlertView+AFNetworking.m in Sources */,
+				B2823E4F1C6A289300BF8E0B /* UIWebView+AFNetworking.m in Sources */,
+				B2823E501C6A289300BF8E0B /* NSString+XMLEntities.m in Sources */,
+				B2823E511C6A289300BF8E0B /* NSData+Base64.m in Sources */,
+				B2823E521C6A289300BF8E0B /* Message.m in Sources */,
+				B2823E531C6A289300BF8E0B /* MBProgressHUD.m in Sources */,
+				B2823E541C6A289300BF8E0B /* OLFacebookImage.m in Sources */,
+				B2823E551C6A289300BF8E0B /* Address+CoreDataProperties.m in Sources */,
+				B2823E561C6A289300BF8E0B /* EventCell.m in Sources */,
+				B2823E571C6A289300BF8E0B /* KIImagePager.m in Sources */,
+				B2823E581C6A289300BF8E0B /* UIImageView+AFNetworking.m in Sources */,
+				B2823E591C6A289300BF8E0B /* MyEventsViewController.m in Sources */,
+				B2823E5A1C6A289300BF8E0B /* LocalizedButton.m in Sources */,
+				B2823E5B1C6A289300BF8E0B /* DemandViewController.m in Sources */,
+				B2823E5C1C6A289300BF8E0B /* User.m in Sources */,
+				B2823E5D1C6A289300BF8E0B /* MoodViewController.m in Sources */,
+				B2823E5E1C6A289300BF8E0B /* main.m in Sources */,
+				B2823E5F1C6A289300BF8E0B /* HMSegmentedControl.m in Sources */,
+				B2823E601C6A289300BF8E0B /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				B2823E611C6A289300BF8E0B /* BaseTabViewController.m in Sources */,
+				B2823E621C6A289300BF8E0B /* Profile.m in Sources */,
+				B2823E631C6A289300BF8E0B /* EventExpendView.m in Sources */,
+				B2823E641C6A289300BF8E0B /* BaseNavigationViewController.m in Sources */,
+				B2823E651C6A289300BF8E0B /* MyEventCell.m in Sources */,
+				B2823E661C6A289300BF8E0B /* FieldEventCell.m in Sources */,
+				B2823E671C6A289300BF8E0B /* MyEventViewController.m in Sources */,
+				B2823E681C6A289300BF8E0B /* WSManager.m in Sources */,
+				B2823E691C6A289300BF8E0B /* UIRefreshControl+AFNetworking.m in Sources */,
+				B2823E6A1C6A289300BF8E0B /* ProfileMenuCell.m in Sources */,
+				B2823E6B1C6A289300BF8E0B /* EventPointAnnotation.m in Sources */,
+				B2823E6C1C6A289300BF8E0B /* Interest.m in Sources */,
+				B2823E6D1C6A289300BF8E0B /* ProfileCollectionCell.m in Sources */,
+				B2823E6E1C6A289300BF8E0B /* ShareAppContext.m in Sources */,
+				B2823E6F1C6A289300BF8E0B /* UIColor+PXExtentions.m in Sources */,
+				B2823E701C6A289300BF8E0B /* InterestCollectionCell.m in Sources */,
+				B2823E711C6A289300BF8E0B /* AFURLSessionManager.m in Sources */,
+				B2823E721C6A289300BF8E0B /* MyChatsViewController.m in Sources */,
+				B2823E731C6A289300BF8E0B /* AFURLResponseSerialization.m in Sources */,
+				B2823E741C6A289300BF8E0B /* Event+CoreDataProperties.m in Sources */,
+				B2823E751C6A289300BF8E0B /* NotificationCell.m in Sources */,
+				B2823E761C6A289300BF8E0B /* OLFacebookImagePickerController.m in Sources */,
+				B2823E771C6A289300BF8E0B /* InterestListCell.m in Sources */,
+				B2823E781C6A289300BF8E0B /* BaseViewController.m in Sources */,
+				B2823E791C6A289300BF8E0B /* LocationSearchViewController.m in Sources */,
+				B2823E7A1C6A289300BF8E0B /* SearchEventViewController.m in Sources */,
+				B2823E7B1C6A289300BF8E0B /* ProfileListCell.m in Sources */,
+				B2823E7C1C6A289300BF8E0B /* CALayer+UIColor.m in Sources */,
+				B2823E7D1C6A289300BF8E0B /* WSParser.m in Sources */,
+				B2823E7E1C6A289300BF8E0B /* EventViewController.m in Sources */,
+				B2823E7F1C6A289300BF8E0B /* FriendRequest.m in Sources */,
+				B2823E801C6A289300BF8E0B /* AFURLRequestSerialization.m in Sources */,
+				B2823E811C6A289300BF8E0B /* Address.m in Sources */,
+				B2823E821C6A289300BF8E0B /* Chat.m in Sources */,
+				B2823E831C6A289300BF8E0B /* MyChatCell.m in Sources */,
+				B2823E841C6A289300BF8E0B /* GTMNSString+HTML.m in Sources */,
+				B2823E851C6A289300BF8E0B /* ChatViewController.m in Sources */,
+				B2823E861C6A289300BF8E0B /* NSString+HTML.m in Sources */,
+				B2823E871C6A289300BF8E0B /* Chat+CoreDataProperties.m in Sources */,
+				B2823E881C6A289300BF8E0B /* Toast+UIView.m in Sources */,
+				B2823E891C6A289300BF8E0B /* MyProfileViewController.m in Sources */,
+				B2823E8A1C6A289300BF8E0B /* Interest+CoreDataProperties.m in Sources */,
+				B2823E8B1C6A289300BF8E0B /* AgeCell.m in Sources */,
+				B2823E8C1C6A289300BF8E0B /* AFNetworkReachabilityManager.m in Sources */,
+				B2823E8D1C6A289300BF8E0B /* AFNetworkActivityIndicatorManager.m in Sources */,
+				B2823E8E1C6A289300BF8E0B /* BaseSplitViewController.m in Sources */,
+				B2823E8F1C6A289300BF8E0B /* JoinEventViewController.m in Sources */,
+				B2823E901C6A289300BF8E0B /* MKMapView+ZoomLevel.m in Sources */,
+				B2823E911C6A289300BF8E0B /* AFHTTPRequestOperation.m in Sources */,
+				B2823E921C6A289300BF8E0B /* DelegateLabel.m in Sources */,
+				B2823E931C6A289300BF8E0B /* EventExpendCell.m in Sources */,
+				B2823E941C6A289300BF8E0B /* AFHTTPSessionManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2AA6EBC1BCCF66500DCF1A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1428,6 +1811,61 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B2823EC11C6A289300BF8E0B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Scarlet",
+					"$(PROJECT_DIR)/Scarlet/Third-party",
+				);
+				GCC_PREFIX_HEADER = Scarlet/Prefix.pch;
+				INFOPLIST_FILE = "Scarlet copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Scarlet/Third-party/GA",
+					"$(PROJECT_DIR)/Scarlet/Third-party/GoogleMobileAdsSdkiOS-6.12.2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B2823EC21C6A289300BF8E0B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Scarlet",
+					"$(PROJECT_DIR)/Scarlet/Third-party",
+				);
+				GCC_PREFIX_HEADER = Scarlet/Prefix.pch;
+				INFOPLIST_FILE = "Scarlet copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Scarlet/Third-party/GA",
+					"$(PROJECT_DIR)/Scarlet/Third-party/GoogleMobileAdsSdkiOS-6.12.2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		B2AA6ED81BCCF66500DCF1A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1533,7 +1971,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
+				PROVISIONING_PROFILE = "8ff74ab0-e9fc-43ff-aa33-6afe02e6dcaa";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1560,7 +1998,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
+				PROVISIONING_PROFILE = "8ff74ab0-e9fc-43ff-aa33-6afe02e6dcaa";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -1568,6 +2006,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B2823EC01C6A289300BF8E0B /* Build configuration list for PBXNativeTarget "Scarlet dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2823EC11C6A289300BF8E0B /* Debug */,
+				B2823EC21C6A289300BF8E0B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B2AA6EBB1BCCF66500DCF1A4 /* Build configuration list for PBXProject "Scarlet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-@class FriendRequest;
+@class FriendRequest,Profile;
 @interface ProfileCell : UITableViewCell
 
 @property (retain, nonatomic) FriendRequest* mFriendRequest;
+@property (retain, nonatomic) Profile* mProfile;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *mImage;
 @property (weak, nonatomic) IBOutlet UILabel *mTitle;

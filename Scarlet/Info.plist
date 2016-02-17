@@ -29,7 +29,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>72</string>
+	<string>83</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -117,7 +117,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>tracking</key>
+	<string>UA-72902414-1</string>
 	<key>urlBase</key>
-	<string>https://apitest.scarlet.events</string>
+	<string>https://api.scarlet.events</string>
 </dict>
 </plist>

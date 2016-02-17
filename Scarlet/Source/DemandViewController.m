@@ -91,7 +91,7 @@
     NSInteger age = [ageComponents year];
     self.mLeaderName.text = [NSString stringWithFormat:@"%@, %ld", self.mDemand.leader.firstName,(long)age];
     
-    self.title = [NSString stringWithFormat:@"%@'s Team",self.mDemand.leader.firstName];
+    self.title =  [NSString stringWithFormat: NSLocalizedString2(@"team_scarlet",nil),self.mDemand.leader.firstName];  
 
     if([[ShareAppContext sharedInstance].userIdentifier isEqualToString:self.mDemand.event.leader.identifier] && [self.mDemand.status intValue] == kwaiting)
     {

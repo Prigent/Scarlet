@@ -49,6 +49,21 @@
     self.screenName = @"search_profile";
 }
 
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectProfile:) name:@"didSelectProfile" object:nil];
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+
 -(void) updateData
 {
     [self.uiRefreshControl beginRefreshing];
@@ -89,9 +104,9 @@
     [searchBar resignFirstResponder];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void) didSelectProfile:(NSNotification* ) notification
 {
-    Profile* lProfile =  [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    Profile* lProfile = notification.object;
     
     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
     
@@ -118,16 +133,11 @@
     {
         [self addFriend:lProfile];
     }
-    
 }
 
 
 -(void) addFriend:(Profile*) profile
 {
-
-    
-
-    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText =  NSLocalizedString2(@"loading", nil);
@@ -144,7 +154,9 @@
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
         }
     }];
 }
@@ -167,7 +179,9 @@
         }
         else
         {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
         }
     }];
 }

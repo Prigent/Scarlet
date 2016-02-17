@@ -7,10 +7,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Friends-->
+        <!--Friend View Controller-->
         <scene sceneID="J8d-Vq-k5u">
             <objects>
-                <viewController storyboardIdentifier="FriendViewController" title="Friends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ySu-CQ-qTi" customClass="FriendViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FriendViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ySu-CQ-qTi" customClass="FriendViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iwV-sU-0bx"/>
                         <viewControllerLayoutGuide type="bottom" id="DiM-t9-nqY"/>
@@ -126,11 +126,14 @@
                                                     <color key="textColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4y-GN-ZNf">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4y-GN-ZNf">
                                                     <rect key="frame" x="331" y="7" width="36" height="36"/>
                                                     <state key="normal" image="icnAddCopy">
                                                         <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="selectProfileButton:" destination="Xir-H3-M39" eventType="touchUpInside" id="cll-Lu-t7b"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -170,7 +173,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="menu.addfriend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="piM-w0-Ehx" customClass="LocalizedLabel">
                                                     <rect key="frame" x="81" y="17" width="129" height="22"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -302,7 +305,7 @@
                                                     <rect key="frame" x="174" y="48" width="90" height="29"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="80" id="s86-Xo-zJX"/>
+                                                        <constraint firstAttribute="width" constant="100" id="s86-Xo-zJX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                     <state key="normal" title="decline_invite">
@@ -321,7 +324,7 @@
                                                     <rect key="frame" x="87" y="48" width="88" height="29"/>
                                                     <color key="backgroundColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="80" id="LXi-x5-nFB"/>
+                                                        <constraint firstAttribute="width" constant="100" id="LXi-x5-nFB"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                     <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
@@ -422,7 +425,7 @@
                                     <constraint firstAttribute="height" constant="100" id="KIo-yJ-wsa"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="na5-Od-LUY">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="na5-Od-LUY">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sqG-x7-pGd">
@@ -462,11 +465,14 @@
                                                     <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RPu-ea-62E">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RPu-ea-62E">
                                                     <rect key="frame" x="323" y="7" width="36" height="36"/>
                                                     <state key="normal" image="icnAddCopy">
                                                         <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="selectProfileButton:" destination="cnz-ib-5Sk" eventType="touchUpInside" id="hoG-jG-JGi"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>

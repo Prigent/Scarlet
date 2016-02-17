@@ -18,7 +18,7 @@
 #import "FriendViewController.h"
 #import "User.h"
 #import "MBProgressHUD.h"
-
+#import "Toast+UIView.h"
 
 @interface ProfileViewController ()
 
@@ -50,6 +50,16 @@
         UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
         self.navigationItem.leftBarButtonItem = backButtonItem;
         
+        UIButton *settingButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 23.0f, 23.0f)];
+        UIImage *settingImage = [[UIImage imageNamed:@"btnSettings"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 23.0f, 0, 23.0f)];
+        [settingButton setBackgroundImage:settingImage  forState:UIControlStateNormal];
+        [settingButton setTitle:@"" forState:UIControlStateNormal];
+        [settingButton addTarget:self action:@selector(setting) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *settingButtonItem = [[UIBarButtonItem alloc] initWithCustomView:settingButton];
+        self.navigationItem.rightBarButtonItem = settingButtonItem;
+        
+        
+        
         self.screenName = @"other_profile";
     }
     else
@@ -63,7 +73,28 @@
     [self.mTableView addSubview:self.mImagePager];
 }
 
+-(void) setting {
+    [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_profile_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_profile_cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"setting_profile_flagging", nil), nil] showInView:self.view];
+}
 
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if( buttonIndex == 0)
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading", nil);
+
+        
+        [[WSManager sharedInstance] flagging:@"profile" identifier:self.mProfile.identifier completion:^(NSError *error) {
+            [hud hide:YES];
+            if(error == nil)
+            {
+                [self.view makeToast:NSLocalizedString2(@"profile_flagging_toast", nil)];
+            }
+        }];
+    }
+}
 
 
 -(void) popBack {

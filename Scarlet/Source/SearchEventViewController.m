@@ -43,10 +43,8 @@ const int kDefaultRadius = 7000;
             if(error == nil)
             {
                 [self updateData];
-                [hud hide:YES];
-                [[WSManager sharedInstance] getTextCompletion:^(NSError *error) {
-                }];
             }
+            [hud hide:YES];
         }];
     }];
     

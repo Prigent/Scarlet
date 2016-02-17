@@ -154,7 +154,7 @@
     self.mViewDictionnary = dic;
     if([dic isKindOfClass:[NSDictionary class]])
     {
-        self.mCustomTitle =  [NSLocalizedString2([dic valueForKey:@"name"],[dic valueForKey:@"name"]) capitalizedString];;
+        self.mCustomTitle =  NSLocalizedString2([dic valueForKey:@"name"],[dic valueForKey:@"name"]);
         self.title = self.mCustomTitle;
     }
 }

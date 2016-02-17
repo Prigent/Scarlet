@@ -15,6 +15,8 @@
 #import "Profile.h"
 #import "Event.h"
 #import "NSData+Base64.h"
+#import "MBProgressHUD.h"
+#import "Toast+UIView.h"
 
 @interface ChatViewController ()
 
@@ -52,11 +54,60 @@
             customTitle = [NSString stringWithFormat:@"%@, %@",customTitle, lProfile.firstName ];
         }
     }
+    
+    UIButton *settingButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 23.0f, 23.0f)];
+    UIImage *settingImage = [[UIImage imageNamed:@"btnSettings"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 23.0f, 0, 23.0f)];
+    [settingButton setBackgroundImage:settingImage  forState:UIControlStateNormal];
+    [settingButton setTitle:@"" forState:UIControlStateNormal];
+    [settingButton addTarget:self action:@selector(setting) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *settingButtonItem = [[UIBarButtonItem alloc] initWithCustomView:settingButton];
+    self.navigationItem.rightBarButtonItem = settingButtonItem;
+
+    
+    
     self.mCustomTitle = customTitle;
     self.screenName = @"chat_detail";
 }
 
 
+
+
+-(void) setting {
+    [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_chat_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_chat_cancel", nil) destructiveButtonTitle:NSLocalizedString2(@"setting_chat_exit", nil) otherButtonTitles:NSLocalizedString2(@"setting_chat_flagging", nil), nil] showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if( buttonIndex == 0)
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading", nil);
+        
+        [[WSManager sharedInstance] chatOut:self.mChat.identifier completion:^(NSError *error) {
+            [hud hide:YES];
+            if(error == nil)
+            {
+                [self.navigationController popViewControllerAnimated:true];
+            }
+        }];
+    }
+    if( buttonIndex == 1)
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading", nil);
+        
+        
+        [[WSManager sharedInstance] flagging:@"chat" identifier:self.mChat.identifier completion:^(NSError *error) {
+            [hud hide:YES];
+            if(error == nil)
+            {
+                [self.view makeToast:NSLocalizedString2(@"chat_flagging_toast", nil)];
+            }
+        }];
+    }
+}
 
 -(void) viewDidAppear:(BOOL)animated
 {
@@ -90,11 +141,7 @@
             
             isUpdating = false;
             
-            if(error)
-            {
-                NSLog(@"%@", error);
-            }
-            
+
             if(self.tableView.alpha != 0)
             {
                 [self.uiRefreshControl endRefreshing];

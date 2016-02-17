@@ -61,7 +61,7 @@
                                       }
                                       else
                                       {
-                                          [[[UIAlertView alloc] initWithTitle:@"Facebook error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+                                          [[[UIAlertView alloc] initWithTitle:NSLocalizedString2(@"facebook_error", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
                                       }
                                       
                                   }];
@@ -79,6 +79,11 @@
 
 -(void) initScrollView
 {
+    NSArray *viewsToRemove = [_mScrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        [v removeFromSuperview];
+    }
+    
     int countOfInfo = 3;
     for(int i=0; i < countOfInfo; i++)
     {
@@ -90,7 +95,7 @@
         
         
         
-        UILabel* lLabel =  [[UILabel alloc] initWithFrame:CGRectMake(_mScrollView.frame.size.width*i, 0,  _mScrollView.frame.size.width, 170)];
+        UILabel* lLabel =  [[UILabel alloc] initWithFrame:CGRectMake(_mScrollView.frame.size.width*i +16, 0,  _mScrollView.frame.size.width-32, 170)];
         lLabel.numberOfLines = 0;
         lLabel.textColor = [UIColor whiteColor];
         lLabel.font = [UIFont systemFontOfSize:25];
@@ -148,8 +153,18 @@
         [self performSegueWithIdentifier:@"showTabView" sender:self];
     }
     
-    [self initScrollView];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText =  NSLocalizedString2(@"loading", nil);
 
+    [[WSManager sharedInstance] getTextCompletion:^(NSError *error) {
+        [self initScrollView];
+            [hud hide:YES];
+        
+        [self.mFacebookButton setTitle:NSLocalizedString2(@"login_facebook", nil) forState:UIControlStateNormal];
+        self.mFacebookDetail.text = NSLocalizedString2(@"login_facebook_detail", nil);
+        
+    }];
 
 }
 
@@ -175,17 +190,17 @@
     
 
     [[WSManager sharedInstance] authentification: [FBSDKAccessToken currentAccessToken].tokenString completion:^(NSError *error) {
+        [hud hide:YES];
         if(error == nil)
         {
-            [hud hide:YES];
             [self performSegueWithIdentifier:@"showTabView" sender:self];
             [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-
         }
         else
         {
-            [hud hide:YES];
-            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"retry",nil), nil];
+            NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+            NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+            UIAlertView  * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"retry",nil), nil];
             [lUIAlertView show];
         }
     }];

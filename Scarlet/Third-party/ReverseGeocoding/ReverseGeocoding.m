@@ -59,7 +59,6 @@
 {    
     [mGeocoder geocodeAddressDictionary:_Dictionary completionHandler:^(NSArray* _Placemarks, NSError* _Error)
      {
-         NSLog(@"_Placemarks %@, _Error %@", _Placemarks, _Error);
          if (_Error)
          {
              [mDelegate fowardGeocoder:mGeocoder didFailWithError:_Error];

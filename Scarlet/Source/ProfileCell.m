@@ -19,6 +19,8 @@
 
 -(void) configure:(Profile*) profile
 {
+    self.mProfile = profile;
+    
     Picture* picture = [profile.pictures firstObject];
     self.mImage.image= nil;
     [self.mImage setImageWithURL:[NSURL URLWithString:picture.filename]];
@@ -77,6 +79,10 @@
         self.mStatusProfile.alpha = 1;
         self.mStatusProfile.tag = 1;
     }
+}
+- (IBAction)selectProfileButton:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSelectProfile" object:self.mProfile];
+    
 }
 
 

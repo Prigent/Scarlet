@@ -52,11 +52,7 @@
     [self.uiRefreshControl beginRefreshing];
     
     [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-        
+
         [self.fetchedResultsController performFetch:nil];
         [self.tableView reloadData];
         
@@ -124,7 +120,7 @@
     [super viewWillAppear:animated];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventselected:) name:@"eventselected" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateData) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventedit:) name:@"eventedit" object:nil];
     
     [self.tableView reloadData];

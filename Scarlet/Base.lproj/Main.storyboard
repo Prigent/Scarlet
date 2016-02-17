@@ -60,7 +60,6 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="cancelScarlet:" destination="nz9-jS-GkZ" eventType="touchUpInside" id="LqA-Og-NYa"/>
                                             <action selector="loginFacebook:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4sq-US-Exn"/>
                                         </connections>
                                     </button>
@@ -93,6 +92,8 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="mFacebookButton" destination="Nsb-Na-FjR" id="Cjz-3W-cGG"/>
+                        <outlet property="mFacebookDetail" destination="nUI-ld-8au" id="yUe-Tm-0lT"/>
                         <outlet property="mPageIndicateur" destination="ez2-92-QGZ" id="Q6M-ZX-7eZ"/>
                         <outlet property="mScrollView" destination="gEf-lP-aBc" id="hQC-zE-Rho"/>
                         <segue destination="rFc-5e-6nJ" kind="presentation" identifier="showTabView" id="9kf-0I-Kva"/>
@@ -678,20 +679,25 @@
                                     <outlet property="delegate" destination="38a-5s-AWM" id="RnW-y0-SM6"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yu5-EE-Iqu">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yu5-EE-Iqu" customClass="LocalizedButton">
                                 <rect key="frame" x="321" y="580" width="46" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="Ab0-nQ-yrZ"/>
                                     <constraint firstAttribute="height" constant="30" id="g3O-Z6-26b"/>
                                 </constraints>
-                                <state key="normal" title="Send">
+                                <state key="normal" title="send">
                                     <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Ab0-nQ-yrZ"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="sendMessage:" destination="38a-5s-AWM" eventType="touchUpInside" id="KcC-1x-KY6"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1gV-uZ-d0q">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1gV-uZ-d0q">
                                 <rect key="frame" x="8" y="580" width="305" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -2195,11 +2201,16 @@
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sfT-rL-Xqi" customClass="LocalizedButton">
                                         <rect key="frame" x="317" y="8" width="46" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="46" id="5zv-vl-R0F"/>
+                                            <constraint firstAttribute="width" constant="70" id="5zv-vl-R0F"/>
                                         </constraints>
                                         <state key="normal" title="create">
                                             <color key="titleColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="5zv-vl-R0F"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
                                             <action selector="createEvent:" destination="nuz-ot-2NN" eventType="touchUpInside" id="oU3-Ej-xuD"/>
                                         </connections>
@@ -2377,9 +2388,9 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pqI-TP-N13" customClass="LocalizedButton">
-                                                    <rect key="frame" x="313" y="8" width="46" height="24"/>
+                                                    <rect key="frame" x="294" y="8" width="65" height="24"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="46" id="8rT-ke-8Uz"/>
+                                                        <constraint firstAttribute="width" constant="65" id="8rT-ke-8Uz"/>
                                                         <constraint firstAttribute="height" constant="24" id="AfM-wm-xCh"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -3136,11 +3147,11 @@
                                                     <color key="textColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ia-28-hfc" customClass="LocalizedButton">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ia-28-hfc" customClass="LocalizedButton">
                                                     <rect key="frame" x="317" y="8" width="50" height="23"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="23" id="2px-pA-6hm"/>
-                                                        <constraint firstAttribute="width" constant="50" id="4Nx-O7-edJ"/>
+                                                        <constraint firstAttribute="width" constant="75" id="4Nx-O7-edJ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="edit">
