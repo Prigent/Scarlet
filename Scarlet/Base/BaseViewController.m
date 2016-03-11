@@ -53,11 +53,11 @@
   //  [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
  //   self.navigationController.navigationBar.topItem.title = @"";
 }
-
+/*
 -(BOOL)hidesBottomBarWhenPushed
 {
     return self.hideBottom;
-}
+}*/
 
 -(void) viewDidLayoutSubviews
 {
@@ -103,23 +103,32 @@
     }
     else if([number intValue] == 4)
     {
-        FriendViewController *viewController = nil;
-        viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
-        viewController.type = 2;
+        [self.navigationController popToRootViewControllerAnimated:false];
+        [self performSelector:@selector(showFriendController) withObject:nil afterDelay:1];
         
-        
-        CATransition* transition = [CATransition animation];
-        transition.duration = 0.5;
-        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
-        transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
-        [self.navigationController.view.layer addAnimation:transition forKey:nil];
-        
-        
-        
-        
-        [self.navigationController pushViewController:viewController animated:false];
+
     }
+}
+
+
+
+-(void) showFriendController
+{
+    FriendViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+    viewController.type = 2;
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
+    
+    
+    [self.navigationController pushViewController:viewController animated:false];
 }
 
 -(void) viewDidDisappear:(BOOL)animated

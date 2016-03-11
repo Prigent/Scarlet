@@ -1386,6 +1386,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Prigent ROUDAUT";
 				TargetAttributes = {
+					B2823E181C6A289300BF8E0B = {
+						DevelopmentTeam = QL69NZBXTY;
+					};
 					B2AA6EBF1BCCF66500DCF1A4 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = QL69NZBXTY;
@@ -1815,7 +1818,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
@@ -1834,7 +1837,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
+				PROVISIONING_PROFILE = "d64ae58c-10f8-4203-85ba-e30f463836e9";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1843,7 +1846,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1861,7 +1864,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
+				PROVISIONING_PROFILE = "d64ae58c-10f8-4203-85ba-e30f463836e9";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -1971,7 +1974,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ff74ab0-e9fc-43ff-aa33-6afe02e6dcaa";
+				PROVISIONING_PROFILE = "cd42b197-fb34-44a2-bce4-65027f96fd9f";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1998,7 +2001,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ff74ab0-e9fc-43ff-aa33-6afe02e6dcaa";
+				PROVISIONING_PROFILE = "cd42b197-fb34-44a2-bce4-65027f96fd9f";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

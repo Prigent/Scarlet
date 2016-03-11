@@ -61,13 +61,18 @@
     
 }
 
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = false;
+}
 
 - (IBAction)addFriends:(id)sender
 {
     FriendViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
     viewController.type = 2;
-    
+    viewController.hidesBottomBarWhenPushed = YES;
     
     CATransition* transition = [CATransition animation];
     transition.duration = 0.5;
@@ -91,7 +96,10 @@
 
 -(void) joinScarlet:(NSNotification*) notification
 {
-    [self.mBottomContainer setConstant:0];
+    self.tabBarController.view.backgroundColor = [UIColor whiteColor];
+    self.tabBarController.tabBar.hidden = true;
+    
+    [self.mBottomContainer setConstant:-50];
     self.mTableView.alpha = 0.2;
     
     [UIView animateWithDuration:.3 animations:^
@@ -110,6 +118,7 @@
 
 -(IBAction)closeDemand:(id)sender
 {
+    self.tabBarController.tabBar.hidden = false;
     [self.mBottomContainer setConstant:-308];
     [UIView animateWithDuration:.3 animations:^{  self.mTableView.alpha = 1; [self.view layoutIfNeeded]; }];
 }

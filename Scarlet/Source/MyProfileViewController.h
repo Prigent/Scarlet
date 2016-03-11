@@ -14,6 +14,7 @@
 @interface MyProfileViewController : BaseViewController<RACollectionViewDelegateReorderableTripletLayout, RACollectionViewReorderableTripletLayoutDataSource, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate>
 {
     NSInteger indexTemp;
+    BOOL dontEndEditing;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UILabel *count;

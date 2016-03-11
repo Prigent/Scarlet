@@ -59,7 +59,8 @@
         self.navigationItem.rightBarButtonItem = settingButtonItem;
         
         
-        
+        self.view.backgroundColor = [UIColor whiteColor];
+        self.mTableView.backgroundColor = [UIColor whiteColor];
         self.screenName = @"other_profile";
     }
     else
@@ -362,9 +363,9 @@
     {
         if(indexPath.section == 2)
         {
-        FriendViewController *viewController = nil;
+        UIViewController *viewController = nil;
         viewController = [[UIStoryboard storyboardWithName:@"Parameter" bundle:nil] instantiateInitialViewController];
-        
+        viewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:viewController animated:true];
         }
     }
@@ -414,22 +415,7 @@
             }
             if([self.mProfile.about length]> 0)
             {
-               
-                if(isUser)
-                {
-                    size += 20;
-                }
-                else
-                {
-                    CGSize constraint = CGSizeMake(tableView.frame.size.width - 16, 20000.0f);
-                    
-                    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-                    CGSize boundingBox = [self.mProfile.about boundingRectWithSize:constraint
-                                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}
-                                                                           context:context].size;
-                    size += ceil(boundingBox.height);
-                }
+                size += 20;
             }
             return size;
         }
@@ -460,7 +446,10 @@
             }
             if([self.mProfile.about length]> 0)
             {
-                size += 50;
+                CGSize constraint = CGSizeMake(tableView.frame.size.width - 16, 20000.0f);
+                NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+                CGSize boundingBox = [self.mProfile.about boundingRectWithSize:constraint  options:NSStringDrawingUsesLineFragmentOrigin  attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:context].size;
+                size += ceil(boundingBox.height);
             }
             return size;
         }
@@ -491,9 +480,9 @@
 }
 - (IBAction)editProfile:(id)sender {
 
-    FriendViewController *viewController = nil;
+    UIViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
+    viewController.hidesBottomBarWhenPushed = YES;
     CATransition* transition = [CATransition animation];
     transition.duration = 0.5;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -511,7 +500,7 @@
     FriendViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
     viewController.type = 2;
-    
+    viewController.hidesBottomBarWhenPushed = YES;
     
     CATransition* transition = [CATransition animation];
     transition.duration = 0.5;

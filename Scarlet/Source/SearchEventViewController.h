@@ -15,6 +15,7 @@
 
 @interface SearchEventViewController : AutoListViewController<MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
+    BOOL animatCell;
     BOOL isInit;
 }
 @property (weak, nonatomic) IBOutlet MKMapView *mMapView;
@@ -26,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *mMapList;
 @property (strong, nonatomic) CLPlacemark* mLocationSearch;
 @property (strong, nonatomic) NSTimer* mUpdateFilter;
+@property (strong, nonatomic) NSTimer* mUpdateSelection;
 @property (strong, nonatomic) NSMutableArray* mEventInMap;
 @property (strong, nonatomic) NSArray* mEvents;
 

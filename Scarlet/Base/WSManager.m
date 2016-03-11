@@ -472,6 +472,7 @@
     
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
+         NSLog(@"responseObject %@ %@ ", identifier, responseObject);
          NSError * error  =  [self checkResponse:responseObject];
          if(error == nil)
          {
@@ -493,6 +494,13 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if(identifier == nil)
+    {
+        NSLog(@"IDENTIFIER NIL");
+        onCompletion([NSError errorWithDomain:nil code:0 userInfo:nil] );
+        return;
+    }
+    
     [param setObject:identifier forKey:@"friend_request_identifier"];
     [param setObject:status forKey:@"status"];
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];

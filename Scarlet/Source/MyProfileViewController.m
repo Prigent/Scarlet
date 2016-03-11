@@ -267,7 +267,7 @@
     NSString* urlString =  _photosArray[indexPath.item];
     indexTemp = indexPath.row+1;
     
-    if(urlString.length==0)
+    if(urlString.length==0 || [[ShareAppContext sharedInstance].user.pictures count]<2)
     {
         UIActionSheet * lUIActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Library", @"Facebook", nil];
         lUIActionSheet.tag = 1;
@@ -460,6 +460,8 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    dontEndEditing = true;
+    [self performSelector:@selector(canEndEditing) withObject:nil afterDelay:1];
     if(textView.tag == 2)
     {
         [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
@@ -469,6 +471,12 @@
         [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:true];
     }
 }
+
+-(void)canEndEditing
+{
+    dontEndEditing = false;
+}
+
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     if(textView.tag == 1)
@@ -481,14 +489,22 @@
     }
 }
 
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(dontEndEditing == false)
+    {
+        [self.view endEditing:YES];
+    }
+}
+- (IBAction)tabTable:(id)sender {
+    [self.view endEditing:YES];
+}
+
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 
     textView.font = [UIFont systemFontOfSize:17];
-    if([text isEqualToString:@"\n"])
-    {
-        [textView resignFirstResponder];
-        return NO;
-    }
+
     
     if(text.length> 0)
     {
@@ -582,6 +598,7 @@
 }
 
 
+
 - (BOOL)facebookImagePicker:(OLFacebookImagePickerController *)imagePicker shouldSelectImage:(OLFacebookImage *)image
 {
     return true;
@@ -590,7 +607,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UILabel *myLabel = [[UILabel alloc] init];
-    myLabel.frame = CGRectMake(8, 10, tableView.frame.size.width-16, 34);
+    myLabel.frame = CGRectMake(8, 6, tableView.frame.size.width-16, 34);
     myLabel.font = [UIFont systemFontOfSize:15];
     myLabel.textColor = [UIColor colorWithWhite:68/255. alpha:1];
     myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -598,6 +615,17 @@
     UIView *headerView = [[UIView alloc] init];
     [headerView addSubview:myLabel];
     headerView.backgroundColor = [UIColor colorWithWhite:245/255. alpha:1];
+    
+    NSString* lTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if([lTitle length]>0)
+    {
+        CALayer *rightBorder = [CALayer layer];
+        rightBorder.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
+        rightBorder.borderWidth = 1;
+        rightBorder.frame = CGRectMake(-1, 0, CGRectGetWidth(tableView.frame)+2,44);
+        [headerView.layer addSublayer:rightBorder];
+    }
+    
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{

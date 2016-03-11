@@ -13,6 +13,7 @@
 #import "ShareAppContext.h"
 #import "WSManager.h"
 #import "Toast+UIView.h"
+#import "ChatViewController.h"
 
 @interface AppDelegate ()
 
@@ -78,6 +79,8 @@ static NSString *const kAllowTracking = @"allowTracking";
     
 
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] == nil) {
+        
+        NSLog(@"PUSH TOKEN : %@",tokenString);
         [[NSUserDefaults standardUserDefaults] setValue:tokenString forKey:@"DeviceToken"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -93,20 +96,50 @@ static NSString *const kAllowTracking = @"allowTracking";
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-
+    NSNumber * lNumber = [userInfo valueForKey:@"redirection"];
     if([application applicationState] == UIApplicationStateInactive)
     {
-        NSNumber * lNumber = [userInfo valueForKey:@"redirection"];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"redirection" object:lNumber];
     }
     else
     {
+        UIViewController *vc = [AppDelegate topMostController];
+        if([lNumber intValue] == 2 && [vc  isKindOfClass:[ChatViewController class]])
+        {
+            return;
+        }
         [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]];
     }
 }
 
 
-
++ (UIViewController*) topMostController
+{
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+    
+    if([topController isKindOfClass:[UINavigationController class]])
+    {
+        topController = ((UINavigationController*)topController).topViewController;
+    }
+    if([topController isKindOfClass:[UITabBarController class]])
+    {
+        topController = ((UITabBarController*)topController).selectedViewController;
+    }
+    if([topController isKindOfClass:[UINavigationController class]])
+    {
+        topController = ((UINavigationController*)topController).topViewController;
+    }
+    
+    
+    
+    
+    return topController;
+}
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {

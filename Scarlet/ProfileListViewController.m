@@ -34,7 +34,7 @@
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND ((ANY friendRequests.type == 0) OR friendRequests.@count == 0) AND NOT (identifier IN %@)", [ShareAppContext sharedInstance].userIdentifier,array];
     
-    
+    self.tableView.hidden = true;
     [self updateWithPredicate:predicate];
     [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
         if(error==nil)
@@ -82,13 +82,14 @@
 }
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    _mSearchFriendsLabel.hidden = true;
     if(searchText.length == 0)
     {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@", [ShareAppContext sharedInstance].userIdentifier];
-        [self updateWithPredicate:predicate];
+        self.tableView.hidden = true;
     }
     else
     {
+        self.tableView.hidden = false;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND (name BEGINSWITH[c] %@  OR firstName BEGINSWITH[c] %@)", [ShareAppContext sharedInstance].userIdentifier, searchText , searchText];
         [self updateWithPredicate:predicate];
     }
@@ -123,7 +124,7 @@
         if([friendRequest.type intValue] == 0)
         {
             //@"remove friend request for response"
-            [self removeFriendRequest:friendRequest];
+           // [self removeFriendRequest:friendRequest];
         }
         else
         {

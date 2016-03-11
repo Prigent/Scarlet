@@ -55,11 +55,40 @@
     else
     {
         [self.mTableView setTableHeaderView:nil];
+        
+        UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
+        UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
+        [backButton setBackgroundImage:backImage  forState:UIControlStateNormal];
+        [backButton setTitle:@"" forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(popBack) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = backButtonItem;
     }
     
     self.screenName = @"add_more_friends";
     
- //   [ShareAppContext sharedInstance].firstStarted = true; 
+
+}
+
+-(void) popBack {
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString2(@"loading",nil);
+    
+    [[ShareAppContext sharedInstance].user.managedObjectContext refreshObject:[ShareAppContext sharedInstance].user mergeChanges:NO];
+    
+    
+    [hud hide:YES];
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionReveal; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromBottom; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    [self.navigationController popViewControllerAnimated:NO];
+    
 }
 
 -(void)acceptInvitation:(NSNotification*) notification
@@ -320,6 +349,8 @@
     if(self.mTableView.tableHeaderView == nil)
     {
         BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+        
+        viewController.hidesBottomBarWhenPushed = true;
         [self.navigationController pushViewController:viewController animated:true];
     }
     else
@@ -398,14 +429,14 @@
     return true;
 }
 
--(void) respondFriendRequest:(FriendRequest*) friendRequest status:(StatusType) status
+-(void) respondFriendRequest:(NSString*) friendRequestIdentifier status:(StatusType) status
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText =  NSLocalizedString2(@"loading", nil);
 
     
-    [[WSManager sharedInstance] respondFriend:friendRequest.identifier status:[NSNumber numberWithInt:status] completion:^(NSError *error) {
+    [[WSManager sharedInstance] respondFriend:friendRequestIdentifier status:[NSNumber numberWithInt:status] completion:^(NSError *error) {
         [hud hide:YES];
         if(error == nil)
         {
@@ -490,10 +521,12 @@
 
 - (IBAction)sensFacebookInvitation:(id)sender {
     
+    
+    NSLog(@"facebook %@ %@", NSLocalizedString2(@"facebook_app_url", nil), NSLocalizedString2(@"facebook_image_url", nil));
     FBSDKAppInviteContent *content =[[FBSDKAppInviteContent alloc] init];
-    content.appLinkURL = [NSURL URLWithString:@"https://www.scarlet.com/scarlet"];
+    content.appLinkURL = [NSURL URLWithString:NSLocalizedString2(@"facebook_app_url", nil)];
     //optionally set previewImageURL
-    content.appInvitePreviewImageURL = [NSURL URLWithString:@"https://www.scarlet.com/scarlet.jpg"];
+    content.appInvitePreviewImageURL = [NSURL URLWithString:NSLocalizedString2(@"facebook_image_url", nil)];
     
     // present the dialog. Assumes self implements protocol `FBSDKAppInviteDialogDelegate`
     [FBSDKAppInviteDialog showFromViewController:self withContent:content delegate:self];

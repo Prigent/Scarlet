@@ -24,8 +24,7 @@
     [[WSManager sharedInstance] getNotificationConfiguration:^(NSError *error) {
         [self.mTableView reloadData];
     }];
-    
-    
+
     self.screenName = @"parameter";
 }
 

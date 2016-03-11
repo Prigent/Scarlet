@@ -95,7 +95,7 @@ const int kDefaultRadius = 7000;
     if([ShareAppContext sharedInstance].firstStarted == true)
     {
         BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
-        viewController.hideBottom = true;
+        viewController.hidesBottomBarWhenPushed = true;
         [self.navigationController pushViewController:viewController animated:false];
     }
     
@@ -129,6 +129,9 @@ const int kDefaultRadius = 7000;
     [super viewDidAppear:animated];
     self.mEvents = [WSParser getEventsNotOwn];
     self.mUpdateFilter = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateFilter) userInfo:nil repeats:true];
+    
+    self.mUpdateSelection = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(updateMapSelection) userInfo:nil repeats:true];
+    
     [self updateFilter];
     
     if(isInit == true)
@@ -142,6 +145,9 @@ const int kDefaultRadius = 7000;
     [super viewWillDisappear:animated];
     [self.mUpdateFilter  invalidate];
     self.mUpdateFilter = nil;
+    
+    [self.mUpdateSelection  invalidate];
+    self.mUpdateSelection = nil;
 }
 
 
@@ -318,6 +324,38 @@ const int kDefaultRadius = 7000;
     [_mSearchField resignFirstResponder];
 }
 
+
+-(void) updateMapSelection
+{
+    if(animatCell)
+    {
+        return;
+    }
+    
+    NSInteger indexcollect = self.mMapList.contentOffset.x / self.mMapList.frame.size.width;
+    if([[self.fetchedResultsController fetchedObjects] count]>indexcollect)
+    {
+        Event * event = [[self.fetchedResultsController fetchedObjects] objectAtIndex:indexcollect];
+        for(id <MKAnnotation>  lAnnotation in self.mMapView.annotations)
+        {
+            if([lAnnotation isKindOfClass:[EventPointAnnotation class]])
+            {
+                EventPointAnnotation * lEventAnnotation = (EventPointAnnotation*)lAnnotation;
+                if(event == lEventAnnotation.mEvent)
+                {
+                    [self.mMapView selectAnnotation:lEventAnnotation animated:false];
+                }
+                else
+                {
+                    [self.mMapView deselectAnnotation:lEventAnnotation animated:false];
+                }
+            }
+        }
+    }
+}
+
+
+
 - (IBAction)showList:(id)sender {
     
     self.mButtonList.selected = true;
@@ -339,6 +377,8 @@ const int kDefaultRadius = 7000;
 - (IBAction)createEvent:(id)sender {
     BaseViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+    
+    viewController.hidesBottomBarWhenPushed = true;
     CATransition* transition = [CATransition animation];
     transition.duration = 0.5;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -351,7 +391,6 @@ const int kDefaultRadius = 7000;
 
 -(void) updateFilter
 {
-    
     if( self.mLocationSearch == nil &&  [ShareAppContext sharedInstance].placemark !=nil)
     {
         self.mLocationSearch = [ShareAppContext sharedInstance].placemark;
@@ -405,11 +444,11 @@ const int kDefaultRadius = 7000;
     [_mMapList reloadData];
     if([self.fetchedResultsController.fetchedObjects count] == 0)
     {
-        _mMapList.hidden = true;
+        _mMapList.alpha = 0;
     }
     else
     {
-         _mMapList.hidden = false;
+         _mMapList.alpha = 1;
     }
 }
 
@@ -419,11 +458,11 @@ const int kDefaultRadius = 7000;
     [_mMapList reloadData];
     if([self.fetchedResultsController.fetchedObjects count] == 0)
     {
-        _mMapList.hidden = true;
+        _mMapList.alpha = 0;
     }
     else
     {
-        _mMapList.hidden = false;
+        _mMapList.alpha = 1;
     }
 }
 
@@ -433,11 +472,11 @@ const int kDefaultRadius = 7000;
     [_mMapList reloadData];
     if([self.fetchedResultsController.fetchedObjects count] == 0)
     {
-        _mMapList.hidden = true;
+        _mMapList.alpha = 0;
     }
     else
     {
-        _mMapList.hidden = false;
+        _mMapList.alpha = 1;
     }
 }
 
@@ -524,12 +563,23 @@ const int kDefaultRadius = 7000;
     
     
     MKAnnotationView *view = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
-    if(view) return view;
+    if(view)
+    {
+        if([mapView.selectedAnnotations containsObject:annotation])
+        {
+            view.alpha = 1;
+        }
+        else
+        {
+            view.alpha = 0.5;
+        }
+        return view;
+    }
     
     MKAnnotationView* pin = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier];
     pin.canShowCallout = false;
     pin.image = [UIImage imageNamed:@"icnPinMap"];
-    
+    pin.alpha = 0.5;
     
     //UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     //customPin.rightCalloutAccessoryView = rightButton;
@@ -626,15 +676,25 @@ const int kDefaultRadius = 7000;
         {
             [_mMapList reloadData];
             [_mMapList selectItemAtIndexPath:index animated:true scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
+            animatCell = true;
+            view.alpha = 1;
+            [self performSelector:@selector(resetAnimateCellStatus) withObject:nil afterDelay:1];
         }
     }
 }
 
+-(void) resetAnimateCellStatus
+{
+    animatCell = false;
+}
+
+
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
 {
-    [self.mTableLayoutTop setConstant:self.view.frame.size.height-44];
-    [UIView animateWithDuration:0.2 animations:^{ [self.view layoutIfNeeded]; }];
+    view.alpha = 0.5;
 }
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

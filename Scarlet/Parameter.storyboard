@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PRU-yp-6z1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PRU-yp-6z1">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
         <!--Parameter View Controller-->
         <scene sceneID="ZJK-C4-iUm">
             <objects>
-                <viewController storyboardIdentifier="ParameterViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PRU-yp-6z1" customClass="ParameterViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ParameterViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PRU-yp-6z1" customClass="ParameterViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cyH-u7-2Ji"/>
                         <viewControllerLayoutGuide type="bottom" id="57v-oK-dbB"/>
@@ -19,7 +19,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NBn-Z9-Qki">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="Dyf-CB-jmL">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -125,11 +125,21 @@
                                     <outlet property="delegate" destination="PRU-yp-6z1" id="fT3-1u-1i5"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E6u-aS-8L6">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                <color key="backgroundColor" white="0.93231145516717329" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="i2f-4u-n1s"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="E6u-aS-8L6" firstAttribute="leading" secondItem="gyn-rf-ndM" secondAttribute="leading" id="94e-Uu-CJc"/>
                             <constraint firstAttribute="trailing" secondItem="NBn-Z9-Qki" secondAttribute="trailing" id="B7j-Zx-Npg"/>
+                            <constraint firstAttribute="trailing" secondItem="E6u-aS-8L6" secondAttribute="trailing" id="BDg-Qd-E3G"/>
                             <constraint firstItem="NBn-Z9-Qki" firstAttribute="leading" secondItem="gyn-rf-ndM" secondAttribute="leading" id="Mz7-yZ-ei8"/>
+                            <constraint firstItem="E6u-aS-8L6" firstAttribute="top" secondItem="gyn-rf-ndM" secondAttribute="top" id="Mzr-OY-1Zf"/>
                             <constraint firstItem="NBn-Z9-Qki" firstAttribute="top" secondItem="cyH-u7-2Ji" secondAttribute="bottom" id="Z6g-96-LQr"/>
                             <constraint firstItem="57v-oK-dbB" firstAttribute="top" secondItem="NBn-Z9-Qki" secondAttribute="bottom" id="pph-Ud-WL3"/>
                         </constraints>

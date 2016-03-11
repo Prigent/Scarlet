@@ -86,14 +86,15 @@
     
     _mMapImageView.image = nil;
     
-    NSString* url = [NSString stringWithFormat:@"https://api.scarlet.events/prod/file/scarlet/event/map/%@.png",event.identifier];
+
     
+    NSString* urlImageBase = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"urlBaseImage"];
     
+    NSString* url = [NSString stringWithFormat:@"%@/%@.png",urlImageBase,event.identifier];
     [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
 
     
-    
-    
+
     
     
     NSMutableArray * listProfile = [NSMutableArray array];
@@ -106,6 +107,9 @@
     self.mData = listProfile;
     [self.mCollectionView reloadData];
     
+    _mBackgroundLabel.hidden = false;
+    _mIconLabel.hidden = false;
+    _mStatusLabel.hidden = false;
     switch (statusEvent)
     {
         case 1:
@@ -114,31 +118,51 @@
             if(countWaiting>0)
             {
                 _mStatusLabel.text = [NSString stringWithFormat:@"%ld %@",countWaiting,NSLocalizedString2(@"new_requests", nil)];
-                _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+                _mBackgroundLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+                [_mIconLabel setImage:[UIImage imageNamed:@"icnFriendrequestsScarlet"]];
             }
             else
             {
+                _mBackgroundLabel.hidden = true;
+                _mIconLabel.hidden = true;
                 _mStatusLabel.hidden = true;
             }
             break;
         }
         case 2:
-            _mStatusLabel.hidden = true;
+        {
+            NSInteger countWaiting = [event getWaitingDemand];
+            if(countWaiting>0)
+            {
+                _mStatusLabel.text = [NSString stringWithFormat:@"%ld %@",countWaiting,NSLocalizedString2(@"new_requests", nil)];
+                _mBackgroundLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+                [_mIconLabel setImage:[UIImage imageNamed:@"icnFriendrequestsScarlet"]];
+            }
+            else
+            {
+                _mBackgroundLabel.hidden = true;
+                _mIconLabel.hidden = true;
+                _mStatusLabel.hidden = true;
+            }
             break;
+        }
         case 3:
         case 4:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString2(@"scarlet_accepted", nil);
+            _mBackgroundLabel.backgroundColor = [UIColor colorWithRed:116/255. green:196/255. blue:29/255. alpha:1];
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_accepted",nil);//@"Scarlet accepted !";
+            [_mIconLabel setImage:[UIImage imageNamed:@"icnScarletStatut"]];
             break;
         case 5:
         case 6:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
-            _mStatusLabel.text = NSLocalizedString2(@"scarlet_pending", nil);
+            _mBackgroundLabel.backgroundColor = [UIColor colorWithRed:245/255. green:166/255. blue:35/255. alpha:1];
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_pending",nil);//@"Scarlet pending !";
+            [_mIconLabel setImage:[UIImage imageNamed:@"icnScarletStatut"]];
             break;
         case 7:
         case 8:
-            _mStatusLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
-            _mStatusLabel.text =NSLocalizedString2(@"scarlet_rejected", nil);
+            _mBackgroundLabel.backgroundColor = [UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1];
+            _mStatusLabel.text = NSLocalizedString2(@"scarlet_rejected",nil);//@"Scarlet rejected !";
+            [_mIconLabel setImage:[UIImage imageNamed:@"icnScarletStatut"]];
             break;
         default:
             break;

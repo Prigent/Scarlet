@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -29,7 +29,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>83</string>
+	<string>88</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -121,5 +121,7 @@
 	<string>UA-72902414-1</string>
 	<key>urlBase</key>
 	<string>https://api.scarlet.events</string>
+	<key>urlBaseImage</key>
+	<string>https://api.scarlet.events/prod/file/scarlet/event/map </string>
 </dict>
 </plist>

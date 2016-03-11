@@ -99,11 +99,8 @@
 {
     Event * lEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSInteger status = [lEvent.mystatus integerValue];
-    if(status == 2)
-    {
-        return 177;
-    }
-    if(status == 1)
+
+    if(status == 1 || status == 2)
     {
         NSInteger countDemand = [lEvent getWaitingDemand];
         if(countDemand == 0)
@@ -111,6 +108,7 @@
             return 177;
         }
     }
+    
     return 212;
 }
 
@@ -147,12 +145,15 @@
     BaseViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
     
+    viewController.hidesBottomBarWhenPushed = true;
     CATransition* transition = [CATransition animation];
     transition.duration = 0.5;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
     transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
     [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
     [self.navigationController pushViewController:viewController animated:NO];
 }
 
@@ -161,8 +162,16 @@
 {
     BaseViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+    viewController.hidesBottomBarWhenPushed = true;
     [viewController configure:[notification object]];
-    [self.navigationController pushViewController:viewController animated:true];
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    [self.navigationController pushViewController:viewController animated:NO];
+
 }
 
 

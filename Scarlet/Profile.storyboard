@@ -50,7 +50,7 @@
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
-                                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="btnAddPicture" translatesAutoresizingMaskIntoConstraints="NO" id="sF8-Bt-DLM">
+                                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="btnAddPicture" translatesAutoresizingMaskIntoConstraints="NO" id="sF8-Bt-DLM">
                                                                 <rect key="frame" x="132" y="136" width="16" height="16"/>
                                                             </imageView>
                                                         </subviews>
@@ -179,6 +179,9 @@
                                                     <rect key="frame" x="8" y="2" width="584" height="65"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="65" id="gPK-6T-Iai"/>
+                                                    </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="minValue">
                                                             <real key="value" value="19"/>
@@ -255,14 +258,28 @@
                                     <outlet property="delegate" destination="MXH-Oh-Poi" id="2HU-Tn-0FC"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hsG-6Z-oZu">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                <color key="backgroundColor" white="0.93142097260000001" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="iHm-YI-mA8"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="hsG-6Z-oZu" firstAttribute="top" secondItem="oCA-9O-VGe" secondAttribute="top" id="Nbj-FR-xAc"/>
                             <constraint firstItem="mP0-N7-L6Q" firstAttribute="top" secondItem="oCA-9O-VGe" secondAttribute="top" id="OGh-nD-nC9"/>
                             <constraint firstAttribute="trailing" secondItem="mP0-N7-L6Q" secondAttribute="trailing" id="WoK-aU-fq8"/>
                             <constraint firstItem="mP0-N7-L6Q" firstAttribute="leading" secondItem="oCA-9O-VGe" secondAttribute="leading" id="gJd-yw-xzp"/>
+                            <constraint firstAttribute="trailing" secondItem="hsG-6Z-oZu" secondAttribute="trailing" id="qfO-je-Jun"/>
                             <constraint firstItem="IBR-KX-N6g" firstAttribute="top" secondItem="mP0-N7-L6Q" secondAttribute="bottom" id="rhM-Vg-6tY"/>
+                            <constraint firstItem="hsG-6Z-oZu" firstAttribute="leading" secondItem="oCA-9O-VGe" secondAttribute="leading" id="tXK-5F-7qg"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="kEZ-pv-HYJ" appends="YES" id="JmZ-vi-E6F"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="WQO-oQ-XdO" id="h8w-Nl-XZ9"/>
@@ -270,6 +287,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EoO-2a-GBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="kEZ-pv-HYJ">
+                    <connections>
+                        <action selector="tabTable:" destination="MXH-Oh-Poi" id="DSh-Mc-jfl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1248" y="257"/>
         </scene>

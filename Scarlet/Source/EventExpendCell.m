@@ -55,8 +55,14 @@
     
     _mMapImageView.image = nil;
     
-    NSString* url = [NSString stringWithFormat:@"%@/homolo/file/scarlet/event/map/%@.png",[WSManager sharedInstance].mBaseURL,event.identifier];
+
+    NSString* urlImageBase = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"urlBaseImage"];
+    
+    NSString* url = [NSString stringWithFormat:@"%@/%@.png",urlImageBase,event.identifier];
+    
     [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
+    
+    
 
 }
 

@@ -24,6 +24,10 @@
 
 @implementation ChatViewController
 
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -73,6 +77,8 @@
 
 
 -(void) setting {
+    
+    [_mTextField resignFirstResponder];
     [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_chat_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_chat_cancel", nil) destructiveButtonTitle:NSLocalizedString2(@"setting_chat_exit", nil) otherButtonTitles:NSLocalizedString2(@"setting_chat_flagging", nil), nil] showInView:self.view];
 }
 
@@ -224,7 +230,7 @@
     
 
     
-    [_mBottomLayout setConstant:(8+keyboardFrame.size.height-50)];
+    [_mBottomLayout setConstant:(8+keyboardFrame.size.height)];
     [UIView animateWithDuration:0.5
                      animations:^{
                          [self.view layoutIfNeeded]; // Called on parent view

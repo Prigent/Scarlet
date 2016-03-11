@@ -30,9 +30,12 @@
         _mCountFriendLabel.hidden = true;
         _mEdit.hidden =false;
         _mIconMutual.hidden = true;
+        _mLeftAbout.constant = 8;
     }
     else
     {
+        _mLeftAbout.active = false;
+        
         _mCountFriendLabel.hidden = [profile.mutualFriends count]==0;
         _mEdit.hidden =true;
          _mIconMutual.hidden = [profile.mutualFriends count]==0;

@@ -42,12 +42,11 @@
     for(int i=0 ; i< [self.mData count] ; i++)
     {
         Profile* lProfile = [self.mData objectAtIndex:i];
-        i++;
-        if( i == 1)
+        if( i == 0)
         {
             self.mTitleLabel.text = lProfile.firstName;
         }
-        else if( i == [self.mData count])
+        else if( i == [self.mData count]-1)
         {
           self.mTitleLabel.text = [NSString stringWithFormat:@"%@ %@ %@",self.mTitleLabel.text ,  NSLocalizedString2(@"and", @"and"), lProfile.firstName ];
         }

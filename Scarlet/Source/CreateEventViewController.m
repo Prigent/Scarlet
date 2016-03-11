@@ -359,7 +359,7 @@
     FriendViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
     viewController.type = 2;
-    
+    viewController.hidesBottomBarWhenPushed = YES;
     
     CATransition* transition = [CATransition animation];
     transition.duration = 0.5;

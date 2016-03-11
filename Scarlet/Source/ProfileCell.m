@@ -87,11 +87,11 @@
 
 
 - (IBAction)acceptInvitation:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"acceptInvitation" object:self.mFriendRequest];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"acceptInvitation" object:self.mFriendRequest.identifier];
 }
 
 - (IBAction)declineInvitation:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"declineInvitation" object:self.mFriendRequest];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"declineInvitation" object:self.mFriendRequest.identifier];
 }
 
 
