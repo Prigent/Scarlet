@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *mDate;
 @property (weak, nonatomic) IBOutlet UITextView *mMessageView;
 @property (weak, nonatomic) IBOutlet UIImageView *mUserImage;
+@property (weak, nonatomic) IBOutlet UIView *mMessageContainer;
 
 @property (strong, nonatomic) Message * mMessageObject;
 

@@ -21,7 +21,7 @@
     [super viewWillAppear:animated];
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Chat" ofType:@"plist"];
-    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
     [[self navigationController] setNavigationBarHidden:false animated:YES];
 }
 
@@ -41,6 +41,25 @@
         [self.tableView reloadData];
     }];
 }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
+    NSObject* obj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if([cell respondsToSelector:@selector(configure:)])
+    {
+        [cell performSelector:@selector(configure:) withObject:obj];
+    }
+    if(indexPath.row == [self.fetchedResultsController.fetchedObjects count]-1)
+    {
+        if([cell respondsToSelector:@selector(hideBackground)])
+        {
+            [cell performSelector:@selector(hideBackground) withObject:nil];
+        }
+    }
+    return cell;
+}
+
+
 
 -(void) updateData
 {

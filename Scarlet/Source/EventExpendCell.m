@@ -59,7 +59,7 @@
     NSString* urlImageBase = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"urlBaseImage"];
     
     NSString* url = [NSString stringWithFormat:@"%@/%@.png",urlImageBase,event.identifier];
-    
+    NSLog(@"urlBaseImage %@", url);
     [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
     
     

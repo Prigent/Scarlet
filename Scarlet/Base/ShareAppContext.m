@@ -30,9 +30,10 @@
 {
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    self.locationManager.distanceFilter = 100;
+    //self.locationManager.distanceFilter = 100;
+    self.locationManager.allowsBackgroundLocationUpdates = YES;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager requestAlwaysAuthorization];
     [self.locationManager startUpdatingLocation];
 }
 
@@ -42,18 +43,34 @@
      self.errorLocation = false;
     //[manager stopUpdatingLocation];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
-    [geocoder reverseGeocodeLocation:[locations objectAtIndex:0] completionHandler:^(NSArray *placemarks, NSError *error)
-     {
-         if (!(error))
+    CLLocation * location = [locations firstObject];
+    
+    NSLog(@"localisation %f %f",location.coordinate.latitude, location.coordinate.longitude);
+    
+    if(location)
+    {
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
          {
-             self.placemark = [placemarks objectAtIndex:0];
-         }
-     }];
+             if (!(error))
+             {
+                 self.errorLocation = false;
+                 self.placemark = [placemarks firstObject];
+             }
+         }];
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager  didFailWithError:(NSError *)error
 {
+    if(self.errorLocation == false)
+    {
+        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString2(@"localisation_error_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"localisation_error_cancel", nil) otherButtonTitles:NSLocalizedString2(@"localisation_error_ok", nil), nil];
+        [lUIAlertView show];
+    }
     self.errorLocation = true;
+    
+    
+    NSLog(@"%@ %ld", error.localizedDescription, error.code);
 }
 
 
@@ -69,14 +86,20 @@
          {
              if (!error)
              {
-                 CLPlacemark * lCLPlacemark = [placemarks objectAtIndex:0];
+                 CLPlacemark * lCLPlacemark = [placemarks firstObject];
                  _placemark = lCLPlacemark;
              }
          }];
     }
 }
 
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }
+}
 
 + (ShareAppContext *)sharedInstance
 {

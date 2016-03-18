@@ -14,6 +14,7 @@
 {
     BOOL isUpdating;
 }
+@property (weak, nonatomic) IBOutlet UIView *mBottomView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mBottomLayout;
 @property (nonatomic, retain) Chat* mChat;
 @property (weak, nonatomic) IBOutlet UITextField *mTextField;

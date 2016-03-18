@@ -38,7 +38,7 @@
     
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"MyEvent" ofType:@"plist"];
-    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
 
     [self changeSegment:nil];
     

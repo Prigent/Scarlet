@@ -15,6 +15,7 @@
 {
     NSInteger indexTemp;
     BOOL dontEndEditing;
+    BOOL didBegin;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UILabel *count;

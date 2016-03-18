@@ -10,6 +10,7 @@
 @class User,Profile,Event, Message, FacebookProfile,Demand,Chat;
 @interface WSParser : NSObject
 
++(Message*) addMyMessageTmp:(NSString*) messagetxt;
 +(User*) getUser:(NSString*) idUser;
 +(User*) addUser:(NSDictionary*) dicUser;
 +(Profile*) addProfile:(NSDictionary*) dicProfile;

@@ -23,7 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"AllProfile" ofType:@"plist"];
-    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
     
     
     NSMutableArray* array = [NSMutableArray array];

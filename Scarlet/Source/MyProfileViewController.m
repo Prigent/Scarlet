@@ -381,7 +381,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -403,8 +403,9 @@
     switch (section) {
         case 0:return NSLocalizedString2(@"occupation",nil);//@"Occupation";
         case 1:return NSLocalizedString2(@"about_you",nil);//@"About you";
-        case 2:return NSLocalizedString2(@"looking_for",nil);//@"Looking for";
-        case 3:return NSLocalizedString2(@"aged_between",nil);//@"Aged between";
+        case 2:return NSLocalizedString2(@"your_sex",nil);//@"your sex";
+        case 3:return NSLocalizedString2(@"looking_for",nil);//@"Looking for";
+        case 4:return NSLocalizedString2(@"aged_between",nil);//@"Aged between";
             
         default:return @"";
     }
@@ -434,12 +435,20 @@
         case 2:
         {
             SexCell * cellSex = [tableView dequeueReusableCellWithIdentifier:@"SexCell"];
-            int index = ![[ShareAppContext sharedInstance].user.lookingFor boolValue];
+            int index = ![[ShareAppContext sharedInstance].user.sex  boolValue];
             [cellSex.sexSegment setSelectedSegmentIndex:index];
              return cellSex;
             break;
         }
         case 3:
+        {
+            SexCell * cellSex = [tableView dequeueReusableCellWithIdentifier:@"SexCell2"];
+            int index = ![[ShareAppContext sharedInstance].user.lookingFor boolValue];
+            [cellSex.sexSegment setSelectedSegmentIndex:index];
+            return cellSex;
+            break;
+        }
+        case 4:
         {
             AgeCell * cellAge = [tableView dequeueReusableCellWithIdentifier:@"AgeCell"];
             cellAge.ageSlider.selectedMinimum = [[ShareAppContext sharedInstance].user.ageMin intValue];
@@ -460,6 +469,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    didBegin = true;
     dontEndEditing = true;
     [self performSelector:@selector(canEndEditing) withObject:nil afterDelay:1];
     if(textView.tag == 2)
@@ -479,6 +489,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    didBegin =false;
     if(textView.tag == 1)
     {
         [ShareAppContext sharedInstance].user.about = textView.text;
@@ -491,7 +502,7 @@
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if(dontEndEditing == false)
+    if(dontEndEditing == false && scrollView == self.tableview)
     {
         [self.view endEditing:YES];
     }
@@ -500,6 +511,10 @@
     [self.view endEditing:YES];
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return didBegin;
+}
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 
@@ -607,7 +622,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UILabel *myLabel = [[UILabel alloc] init];
-    myLabel.frame = CGRectMake(8, 6, tableView.frame.size.width-16, 34);
+    myLabel.frame = CGRectMake(8, 16, tableView.frame.size.width-16, 34);
     myLabel.font = [UIFont systemFontOfSize:15];
     myLabel.textColor = [UIColor colorWithWhite:68/255. alpha:1];
     myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -622,7 +637,7 @@
         CALayer *rightBorder = [CALayer layer];
         rightBorder.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
         rightBorder.borderWidth = 1;
-        rightBorder.frame = CGRectMake(-1, 0, CGRectGetWidth(tableView.frame)+2,44);
+        rightBorder.frame = CGRectMake(-1, 0, CGRectGetWidth(tableView.frame)+2,54);
         [headerView.layer addSublayer:rightBorder];
     }
     
@@ -633,7 +648,7 @@
     NSString* lTitle = [self tableView:tableView titleForHeaderInSection:section];
     if([lTitle length]>0)
     {
-        return 44;
+        return 54;
     }
     
     return 8;
@@ -647,8 +662,15 @@
 - (IBAction)sexChanged:(UISegmentedControl*)sender {
     
     int index = !sender.selectedSegmentIndex;
-    
-    [ShareAppContext sharedInstance].user.lookingFor = [NSNumber numberWithInt:index];
+    if(sender.tag == 0)
+    {
+        [ShareAppContext sharedInstance].user.sex = [NSNumber numberWithInt:index];
+    }
+    else
+    {
+        [ShareAppContext sharedInstance].user.lookingFor = [NSNumber numberWithInt:index];
+    }
+
 }
 
 

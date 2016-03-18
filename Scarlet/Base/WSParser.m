@@ -21,9 +21,29 @@
 #import "FacebookProfile.h"
 #import "Interest.h"
 
+#import "NSData+Base64.h"
 @implementation WSParser
 
 #pragma mark - Items
+
++(Message*) addMyMessageTmp:(NSString*) messagetxt
+{
+    Message* message =  nil;
+    if(message == nil)
+    {
+        message  = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
+    }
+    message.date = [NSDate date];
+    message.identifier = @"-1";
+    
+    NSData *msgData = [messagetxt dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+    
+    message.text = [msgData base64EncodedString];
+    message.owner = [ShareAppContext sharedInstance].user;
+    return message;
+}
+
+
 
 +(Message*) addMessage:(NSDictionary*) dicMessage
 {
@@ -92,8 +112,12 @@
     {
         user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];
     }
+    
+    NSLog(@"%@",dicUser);
+    
     [self parseProfile:dicUser profile:user];
     user.lookingFor = [dicUser valueForKey:@"lookingfor"];
+    user.sex =[dicUser valueForKey:@"sex"];
     user.ageMax = [dicUser valueForKey:@"age_max"];
     user.ageMin = [dicUser valueForKey:@"age_min"];
     
@@ -138,6 +162,12 @@
         }
     }
 
+    
+    
+     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
+     NSArray* lFriendRequestArray = [[user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
+     NSInteger countWaiting = [lFriendRequestArray count];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateWaitingFriend" object:[NSNumber numberWithInteger:countWaiting]];
     
     return user;
 }

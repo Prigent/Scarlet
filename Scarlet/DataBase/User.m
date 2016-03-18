@@ -30,7 +30,16 @@
     [lDic setObject:self.ageMax forKey:@"age_max"];
     [lDic setObject:self.ageMin forKey:@"age_min"];
     [lDic setObject:self.lookingFor forKey:@"lookingfor"];
+    
+    if(self.sex != nil)
+    {
+           [lDic setObject:self.sex forKey:@"sex"];
+    }
 
+
+    
+    
+    
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] != nil)
     {
         [lDic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"apple_push_token"];

@@ -429,19 +429,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZgQ-XL-Ntv">
-                                <rect key="frame" x="0.0" y="-30" width="375" height="100"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                                <color key="backgroundColor" red="0.91784374999999996" green="0.91784374999999996" blue="0.91784374999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="KIo-yJ-wsa"/>
+                                    <constraint firstAttribute="height" constant="45" id="KIo-yJ-wsa"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="na5-Od-LUY">
-                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <rect key="frame" x="0.0" y="45" width="375" height="622"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sqG-x7-pGd">
-                                    <rect key="frame" x="0.0" y="78" width="375" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="78" width="375" height="1"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileCell" rowHeight="50" id="cnz-ib-5Sk" customClass="ProfileCell">
@@ -529,16 +529,16 @@
                                     <outlet property="delegate" destination="OAE-Y2-cWu" id="CvI-UV-pmM"/>
                                 </connections>
                             </searchBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="no_result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyo-SO-Xfy" customClass="LocalizedLabel">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="no_result" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyo-SO-Xfy" customClass="LocalizedLabel">
                                 <rect key="frame" x="152" y="243" width="70" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="search_friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycM-az-W7O" customClass="LocalizedLabel">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="search_friends" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycM-az-W7O" customClass="LocalizedLabel">
                                 <rect key="frame" x="16" y="243" width="343" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KgE-ZF-X1q">
@@ -554,7 +554,7 @@
                             <constraint firstItem="KgE-ZF-X1q" firstAttribute="leading" secondItem="rve-nL-XbV" secondAttribute="leading" id="2ui-yL-ZUE"/>
                             <constraint firstItem="946-6i-EOe" firstAttribute="top" secondItem="na5-Od-LUY" secondAttribute="bottom" id="BIb-hR-dKz"/>
                             <constraint firstAttribute="trailing" secondItem="ZgQ-XL-Ntv" secondAttribute="trailing" id="Eu6-7P-qDh"/>
-                            <constraint firstItem="na5-Od-LUY" firstAttribute="top" secondItem="FuV-MW-hJ4" secondAttribute="bottom" id="K0d-XZ-d2J"/>
+                            <constraint firstItem="na5-Od-LUY" firstAttribute="top" secondItem="FuV-MW-hJ4" secondAttribute="bottom" constant="1" id="K0d-XZ-d2J"/>
                             <constraint firstAttribute="trailing" secondItem="na5-Od-LUY" secondAttribute="trailing" id="Pyg-ed-wj7"/>
                             <constraint firstAttribute="trailing" secondItem="FuV-MW-hJ4" secondAttribute="trailing" id="QhJ-cg-uzW"/>
                             <constraint firstAttribute="trailing" secondItem="KgE-ZF-X1q" secondAttribute="trailing" id="RwR-h2-nkC"/>
@@ -568,7 +568,7 @@
                             <constraint firstItem="ycM-az-W7O" firstAttribute="leading" secondItem="rve-nL-XbV" secondAttribute="leading" constant="16" id="otk-K9-WAk"/>
                             <constraint firstItem="Hyo-SO-Xfy" firstAttribute="centerY" secondItem="rve-nL-XbV" secondAttribute="centerY" constant="-80" id="tnS-wX-w0p"/>
                             <constraint firstItem="ZgQ-XL-Ntv" firstAttribute="leading" secondItem="rve-nL-XbV" secondAttribute="leading" id="vhI-IF-khc"/>
-                            <constraint firstItem="ZgQ-XL-Ntv" firstAttribute="top" secondItem="rve-nL-XbV" secondAttribute="top" constant="-30" id="vrw-XQ-2Ns"/>
+                            <constraint firstItem="ZgQ-XL-Ntv" firstAttribute="top" secondItem="rve-nL-XbV" secondAttribute="top" id="vrw-XQ-2Ns"/>
                             <constraint firstItem="ycM-az-W7O" firstAttribute="centerY" secondItem="rve-nL-XbV" secondAttribute="centerY" constant="-80" id="z1W-e5-FyE"/>
                         </constraints>
                         <variation key="default">

@@ -26,10 +26,17 @@
     {
         [tempSet removeObject:obj];
     }
-    
-    
+    self.messages = tempSet;
+}
+
+- (void)removeMessagesObject:(Message *)value
+{
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.messages];
+    [tempSet removeObject:value];
     
     self.messages = tempSet;
 }
+
+
 
 @end

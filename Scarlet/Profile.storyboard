@@ -50,7 +50,7 @@
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
-                                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="btnAddPicture" translatesAutoresizingMaskIntoConstraints="NO" id="sF8-Bt-DLM">
+                                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="btnAddPicture" translatesAutoresizingMaskIntoConstraints="NO" id="sF8-Bt-DLM">
                                                                 <rect key="frame" x="132" y="136" width="16" height="16"/>
                                                             </imageView>
                                                         </subviews>
@@ -99,7 +99,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJW-xr-MAD">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" misplaced="YES" bounces="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJW-xr-MAD">
                                                     <rect key="frame" x="15" y="3" width="547" height="69"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
@@ -117,9 +117,9 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="lJW-xr-MAD" secondAttribute="trailing" constant="4" id="1j3-ti-8Co"/>
+                                                <constraint firstAttribute="trailing" secondItem="lJW-xr-MAD" secondAttribute="trailing" constant="8" id="1j3-ti-8Co"/>
                                                 <constraint firstAttribute="bottom" secondItem="ep4-52-iQ2" secondAttribute="bottom" constant="8" id="Agq-r8-zLW"/>
-                                                <constraint firstItem="lJW-xr-MAD" firstAttribute="leading" secondItem="nVy-sf-6di" secondAttribute="leading" constant="4" id="ZYA-ib-3FU"/>
+                                                <constraint firstItem="lJW-xr-MAD" firstAttribute="leading" secondItem="nVy-sf-6di" secondAttribute="leading" constant="8" id="ZYA-ib-3FU"/>
                                                 <constraint firstAttribute="bottom" secondItem="lJW-xr-MAD" secondAttribute="bottom" constant="4" id="hcy-rZ-e0r"/>
                                                 <constraint firstItem="lJW-xr-MAD" firstAttribute="top" secondItem="nVy-sf-6di" secondAttribute="top" constant="4" id="pUg-vm-voX"/>
                                                 <constraint firstAttribute="trailing" secondItem="ep4-52-iQ2" secondAttribute="trailing" constant="8" id="rbR-ML-Cgw"/>
@@ -137,7 +137,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kNH-Cz-ELE">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" misplaced="YES" bounces="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kNH-Cz-ELE">
                                                     <rect key="frame" x="15" y="3" width="547" height="69"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
@@ -155,9 +155,9 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="kNH-Cz-ELE" firstAttribute="leading" secondItem="4SC-uL-Ije" secondAttribute="leading" constant="4" id="0pg-Do-Xki"/>
+                                                <constraint firstItem="kNH-Cz-ELE" firstAttribute="leading" secondItem="4SC-uL-Ije" secondAttribute="leading" constant="8" id="0pg-Do-Xki"/>
                                                 <constraint firstAttribute="trailing" secondItem="xta-3a-tCU" secondAttribute="trailing" constant="8" id="1SE-ak-npb"/>
-                                                <constraint firstAttribute="trailing" secondItem="kNH-Cz-ELE" secondAttribute="trailing" constant="4" id="KLq-B3-W4c"/>
+                                                <constraint firstAttribute="trailing" secondItem="kNH-Cz-ELE" secondAttribute="trailing" constant="8" id="KLq-B3-W4c"/>
                                                 <constraint firstAttribute="bottom" secondItem="kNH-Cz-ELE" secondAttribute="bottom" constant="4" id="M4u-5N-WRX"/>
                                                 <constraint firstAttribute="bottom" secondItem="xta-3a-tCU" secondAttribute="bottom" constant="8" id="gXC-Cz-2pA"/>
                                                 <constraint firstItem="kNH-Cz-ELE" firstAttribute="top" secondItem="4SC-uL-Ije" secondAttribute="top" constant="4" id="pJ9-f5-Hsk"/>
@@ -220,14 +220,14 @@
                                             <outlet property="ageSlider" destination="Kmr-c1-4u1" id="AxW-Iv-TBn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SexCell" rowHeight="70" id="KHK-cL-eHh" customClass="SexCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SexCell2" rowHeight="70" id="KHK-cL-eHh" customClass="SexCell">
                                         <rect key="frame" x="0.0" y="471" width="600" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KHK-cL-eHh" id="Wmv-mW-Lxz">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uHM-bf-x39">
+                                                <segmentedControl opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uHM-bf-x39">
                                                     <rect key="frame" x="8" y="20" width="584" height="43"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="42" id="ZGi-uu-dlr"/>
@@ -250,6 +250,38 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="sexSegment" destination="uHM-bf-x39" id="3bu-yX-DWj"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SexCell" rowHeight="70" id="LJD-8G-cbL" customClass="SexCell">
+                                        <rect key="frame" x="0.0" y="541" width="600" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LJD-8G-cbL" id="qIo-we-LTB">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="69"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XCP-9V-aLj">
+                                                    <rect key="frame" x="8" y="20" width="584" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="42" id="9CQ-QC-yJC"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="MAN"/>
+                                                        <segment title="WOMAN"/>
+                                                    </segments>
+                                                    <color key="tintColor" red="1" green="0.1137254902" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="sexChanged:" destination="MXH-Oh-Poi" eventType="valueChanged" id="uqK-Jp-fN8"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="XCP-9V-aLj" firstAttribute="centerY" secondItem="qIo-we-LTB" secondAttribute="centerY" id="AQ4-Th-vIn"/>
+                                                <constraint firstItem="XCP-9V-aLj" firstAttribute="leading" secondItem="qIo-we-LTB" secondAttribute="leading" constant="8" id="a5A-Qv-JKN"/>
+                                                <constraint firstAttribute="trailing" secondItem="XCP-9V-aLj" secondAttribute="trailing" constant="8" id="lq9-Af-yVu"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="sexSegment" destination="XCP-9V-aLj" id="44A-Ev-Pl1"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -290,6 +322,7 @@
                 <tapGestureRecognizer id="kEZ-pv-HYJ">
                     <connections>
                         <action selector="tabTable:" destination="MXH-Oh-Poi" id="DSh-Mc-jfl"/>
+                        <outlet property="delegate" destination="MXH-Oh-Poi" id="fpp-3w-ddP"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

@@ -38,8 +38,8 @@
     _mLastMessageText.text = @"";
     if([chat.messages count]>0)
     {
-        Message* lMessage = [chat.messages lastObject];
-        
+        Message* lMessage = [[chat.messages sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:true]]]lastObject];
+
         if([self isBase64Data:lMessage.text])
         {
             NSData *data = [NSData dataFromBase64String:lMessage.text];
@@ -59,7 +59,6 @@
         self.mLastMessageImage.image = nil;
         [self.mLastMessageImage setImageWithURL:[NSURL URLWithString:picture.filename]];
         
-        NSString* datePart = [NSDateFormatter localizedStringFromDate:lMessage.date dateStyle: kCFDateFormatterMediumStyle timeStyle: NSDateFormatterShortStyle];
         self.mDateMessage.text = [lMessage getDateString];
 
         
@@ -91,11 +90,15 @@
     }
     
     
-    
+    _mSeparator.hidden = false;
     _mAdressLabel.text  = [NSString stringWithFormat:@"%@",chat.event.address.street];
     _mSheduleLabel.text = [chat.event getDateString];
-    
-    
+}
+
+
+-(void) hideBackground
+{
+    _mSeparator.hidden = true;
 }
 
 - (void)awakeFromNib {

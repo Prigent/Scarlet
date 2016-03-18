@@ -35,6 +35,15 @@
 {
     self.mMessageObject =  message;
     
+    if([self.mMessageObject.identifier intValue] == -1)
+    {
+        _mMessageContainer.alpha = 0.5;
+    }
+    else
+    {
+        _mMessageContainer.alpha = 1;
+    }
+    
     _mTitle.text = [NSString stringWithFormat:@"%@", message.owner.firstName];
     _mMessage.text = message.text;
     

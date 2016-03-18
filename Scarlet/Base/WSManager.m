@@ -659,6 +659,16 @@
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
+    
+    
+    if([ShareAppContext sharedInstance].placemark != nil)
+    {
+        [param setObject:[NSNumber numberWithDouble:[ShareAppContext sharedInstance].placemark.location.coordinate.longitude] forKey:@"long"];
+        [param setObject:[NSNumber numberWithDouble:[ShareAppContext sharedInstance].placemark.location.coordinate.latitude] forKey:@"lat"];
+    }
+
+    
+    
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
@@ -743,6 +753,15 @@
         {
             NSArray* lAllMessage= [responseObject valueForKey:@"message"];
             //[chat removeMessages:chat.messages];
+            
+            for(Message * lMessage in chat.messages)
+            {
+                if( [lMessage.identifier intValue] == -1)
+                {
+                    [chat removeMessagesObject:lMessage];
+                }
+            }
+            
             
             for(NSDictionary * lDicMessage in lAllMessage)
             {

@@ -87,7 +87,7 @@
     self.listProfileId = [NSMutableArray array];
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Mood" ofType:@"plist"];
-    NSString * lMood = [[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0];
+    NSString * lMood = [[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject];
     self.mood = NSLocalizedString2(lMood,lMood);
     
     

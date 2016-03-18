@@ -17,6 +17,7 @@
 #import "NSData+Base64.h"
 #import "MBProgressHUD.h"
 #import "Toast+UIView.h"
+#import "WSParser.h"
 
 @interface ChatViewController ()
 
@@ -34,10 +35,10 @@
     
     
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Message" ofType:@"plist"];
-    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
     
     self.tableView.alpha = 0;
-    
+    self.mBottomView.alpha = 0;
     
     NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"chat.identifier == %@", self.mChat.identifier];
     [self updateWithPredicate:lNSPredicate];
@@ -192,6 +193,7 @@
         [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:(self.tableView.alpha == 1)];
     }
     self.tableView.alpha = 1;
+    self.mBottomView.alpha = 1;
 }
 
 
@@ -268,11 +270,17 @@
         [self.mTextField setText:nil];
         
         NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"send_message"  label:nil value:nil] build];
+        
+        [self.mChat addMessagesObject:[WSParser addMyMessageTmp:message]];
+        
+        [self.tableView reloadData];
+        [self performSelector:@selector(scrollToBottom) withObject:nil afterDelay:0.3];
+        
+        
         [[[GAI sharedInstance] defaultTracker] send:event];
         
         
         [[WSManager sharedInstance] addMessage:self.mChat message:message completion:^(NSError *error) {
-            [self updateData];
         }];
     }
 }

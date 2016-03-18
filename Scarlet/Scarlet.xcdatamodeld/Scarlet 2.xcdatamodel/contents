@@ -97,6 +97,7 @@
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
         <attribute name="longi" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lookingFor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="friendRequest" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FriendRequest" inverseName="user" inverseEntity="FriendRequest" syncable="YES"/>
         <relationship name="suggestProfile" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Profile" inverseName="suggest" inverseEntity="Profile" syncable="YES"/>
     </entity>
@@ -111,6 +112,6 @@
         <element name="Message" positionX="-234" positionY="-441" width="128" height="133"/>
         <element name="Picture" positionX="612" positionY="-99" width="128" height="73"/>
         <element name="Profile" positionX="306" positionY="-360" width="128" height="345"/>
-        <element name="User" positionX="304" positionY="-558" width="128" height="150"/>
+        <element name="User" positionX="304" positionY="-558" width="128" height="165"/>
     </elements>
 </model>

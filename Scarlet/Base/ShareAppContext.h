@@ -11,7 +11,7 @@
 #import <MapKit/MapKit.h>
 
 @class User;
-@interface ShareAppContext : NSObject<CLLocationManagerDelegate>
+@interface ShareAppContext : NSObject<CLLocationManagerDelegate, UIAlertViewDelegate>
 
 + (ShareAppContext *)sharedInstance;
 

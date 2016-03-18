@@ -39,7 +39,7 @@
         self.navigationItem.rightBarButtonItem = openChatButtonItem;
     }
     [self.uiRefreshControl removeFromSuperview];
-    
+    [self updateView];
     self.screenName = @"my_event_detail";
 }
 
@@ -59,7 +59,7 @@
     [super viewWillAppear:animated];
     
     [[self navigationController] setNavigationBarHidden:false animated:YES];
-    [self updateView];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(demandSelected:) name:@"demandSelected" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profilelistselected:) name:@"profilelistselected" object:nil];
     
@@ -100,7 +100,7 @@
 {
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Demand" ofType:@"plist"];
-    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
     
     _mButtonCancel.hidden = true;
     NSInteger status = [self.mEvent.mystatus integerValue];
@@ -124,7 +124,7 @@
         else
         {
             CGRect frame = self.tableView.tableHeaderView.frame;
-            frame.size.height = 652;
+            frame.size.height = 648;
             [self.tableView.tableHeaderView setFrame:frame];
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         }
@@ -135,7 +135,7 @@
         [self updateWithPredicate:lNSPredicate];
         
         CGRect frame = self.tableView.tableHeaderView.frame;
-        frame.size.height = 580;
+        frame.size.height = 564;
         [self.tableView.tableHeaderView setFrame:frame];
         [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         

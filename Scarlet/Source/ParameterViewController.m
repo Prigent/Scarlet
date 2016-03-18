@@ -26,6 +26,13 @@
     }];
 
     self.screenName = @"parameter";
+    
+    if(![[UIApplication sharedApplication] isRegisteredForRemoteNotifications])
+    {
+        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString2(@"no_push_configuration", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"cancel",nil) otherButtonTitles:NSLocalizedString2(@"configure",nil), nil];
+        lUIAlertView.tag = 1;
+        [lUIAlertView show];
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

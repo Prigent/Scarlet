@@ -18,5 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIView *mReadStatus;
 @property (weak, nonatomic) IBOutlet UILabel *mSheduleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mAdressLabel;
+@property (weak, nonatomic) IBOutlet UIView *mSeparator;
 
 @end

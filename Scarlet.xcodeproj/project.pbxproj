@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B233AF381C932B790093A807 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B233AF371C932B790093A807 /* AddFriendCell.m */; };
+		B233AF391C9330340093A807 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B233AF371C932B790093A807 /* AddFriendCell.m */; };
 		B235856B1BDA49E500568AB9 /* DemandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B235856A1BDA49E500568AB9 /* DemandCell.m */; };
 		B235856E1BDA4A1700568AB9 /* DemandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B235856D1BDA4A1700568AB9 /* DemandViewController.m */; };
 		B23585701BDA55C400568AB9 /* Demand.plist in Resources */ = {isa = PBXBuildFile; fileRef = B235856F1BDA55C400568AB9 /* Demand.plist */; };
@@ -336,6 +338,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B233AF0A1C9315A00093A807 /* Scarlet 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scarlet 2.xcdatamodel"; sourceTree = "<group>"; };
+		B233AF361C932B790093A807 /* AddFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendCell.h; sourceTree = "<group>"; };
+		B233AF371C932B790093A807 /* AddFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendCell.m; sourceTree = "<group>"; };
 		B23585691BDA49E500568AB9 /* DemandCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemandCell.h; path = Source/DemandCell.h; sourceTree = "<group>"; };
 		B235856A1BDA49E500568AB9 /* DemandCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemandCell.m; path = Source/DemandCell.m; sourceTree = "<group>"; };
 		B235856C1BDA4A1700568AB9 /* DemandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemandViewController.h; path = Source/DemandViewController.h; sourceTree = "<group>"; };
@@ -1020,6 +1025,8 @@
 				B2EE9C681BFF8425002BCD96 /* AgeCell.m */,
 				B2EE9C6A1BFF8435002BCD96 /* SexCell.h */,
 				B2EE9C6B1BFF8435002BCD96 /* SexCell.m */,
+				B233AF361C932B790093A807 /* AddFriendCell.h */,
+				B233AF371C932B790093A807 /* AddFriendCell.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -1392,6 +1399,11 @@
 					B2AA6EBF1BCCF66500DCF1A4 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = QL69NZBXTY;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1601,6 +1613,7 @@
 				B2823E621C6A289300BF8E0B /* Profile.m in Sources */,
 				B2823E631C6A289300BF8E0B /* EventExpendView.m in Sources */,
 				B2823E641C6A289300BF8E0B /* BaseNavigationViewController.m in Sources */,
+				B233AF391C9330340093A807 /* AddFriendCell.m in Sources */,
 				B2823E651C6A289300BF8E0B /* MyEventCell.m in Sources */,
 				B2823E661C6A289300BF8E0B /* FieldEventCell.m in Sources */,
 				B2823E671C6A289300BF8E0B /* MyEventViewController.m in Sources */,
@@ -1731,6 +1744,7 @@
 				B27F78EB1BD93B260038B4B0 /* Profile.m in Sources */,
 				B2DE4AC21C08B9CB00CF3AE1 /* EventExpendView.m in Sources */,
 				B23FA5271BD5011100868D12 /* BaseNavigationViewController.m in Sources */,
+				B233AF381C932B790093A807 /* AddFriendCell.m in Sources */,
 				B2F9723F1BD94E9A00B8BF72 /* MyEventCell.m in Sources */,
 				B27AF8E41C05C1860085BD95 /* FieldEventCell.m in Sources */,
 				B27F78911BD9227F0038B4B0 /* MyEventViewController.m in Sources */,
@@ -1974,7 +1988,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cd42b197-fb34-44a2-bce4-65027f96fd9f";
+				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2001,7 +2015,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scarlet.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cd42b197-fb34-44a2-bce4-65027f96fd9f";
+				PROVISIONING_PROFILE = "53fa449c-d734-4c15-8078-13902334e85c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -2042,9 +2056,10 @@
 		B2AA6ECF1BCCF66500DCF1A4 /* Scarlet.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B233AF0A1C9315A00093A807 /* Scarlet 2.xcdatamodel */,
 				B2AA6ED01BCCF66500DCF1A4 /* Scarlet.xcdatamodel */,
 			);
-			currentVersion = B2AA6ED01BCCF66500DCF1A4 /* Scarlet.xcdatamodel */;
+			currentVersion = B233AF0A1C9315A00093A807 /* Scarlet 2.xcdatamodel */;
 			path = Scarlet.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

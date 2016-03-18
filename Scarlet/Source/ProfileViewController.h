@@ -11,7 +11,7 @@
 #import "KIImagePager.h"
 
 @class Profile;
-@interface ProfileViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
+@interface ProfileViewController : BaseViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
 {
     BOOL isUser;
 }

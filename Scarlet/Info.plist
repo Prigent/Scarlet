@@ -29,7 +29,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>88</string>
+	<string>97</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -96,8 +96,10 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string></string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -122,6 +124,6 @@
 	<key>urlBase</key>
 	<string>https://api.scarlet.events</string>
 	<key>urlBaseImage</key>
-	<string>https://api.scarlet.events/prod/file/scarlet/event/map </string>
+	<string>https://api.scarlet.events/prod/file/scarlet/event/map</string>
 </dict>
 </plist>

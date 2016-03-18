@@ -20,4 +20,5 @@
 @dynamic suggestProfile;
 @dynamic longi;
 @dynamic lat;
+@dynamic sex;
 @end

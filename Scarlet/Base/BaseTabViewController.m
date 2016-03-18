@@ -30,6 +30,7 @@
         }
     }
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUnread:) name:@"updateUnread" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateWaitingFriend:) name:@"updateWaitingFriend" object:nil];
 }
 
 -(void) updateUnread:(NSNotification*) notification
@@ -45,6 +46,24 @@
     }
 
 }
+
+-(void) updateWaitingFriend:(NSNotification*) notification
+{
+    NSNumber * count = [notification object];
+    if([count intValue] == 0)
+    {
+        [[self.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    }
+    else
+    {
+        [[self.viewControllers objectAtIndex:3] tabBarItem].badgeValue = count.description;
+    }
+}
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

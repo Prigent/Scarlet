@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *ageMax;
 @property (nullable, nonatomic, retain) NSNumber *ageMin;
 @property (nullable, nonatomic, retain) NSNumber *lookingFor;
+@property (nullable, nonatomic, retain) NSNumber *sex;
+
 @property (nullable, nonatomic, retain) NSSet<FriendRequest *> *friendRequest;
 @property (nullable, nonatomic, retain) NSSet<Profile *> *suggestProfile;
 

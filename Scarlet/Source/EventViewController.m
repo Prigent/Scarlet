@@ -124,7 +124,7 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if(self.mBottomContainer.constant == 0)
+    if(self.mBottomContainer.constant <= 0)
     {
         [self closeDemand:nil];
     }
@@ -133,7 +133,7 @@
 
 -(void) profilelistselected:(NSNotification*) notification
 {
-    if(self.mBottomContainer.constant == 0)
+    if(self.mBottomContainer.constant <= 0)
     {
         [self closeDemand:nil];
         return;

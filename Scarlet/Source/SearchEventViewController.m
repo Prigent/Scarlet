@@ -67,7 +67,7 @@ const int kDefaultRadius = 7000;
     self.mSearchField.layer.borderWidth = 1;
     self.mSearchField.layer.borderColor = [[UIColor whiteColor] CGColor];
     
-    for (id object in [[[self.mSearchField subviews] objectAtIndex:0] subviews])
+    for (id object in [[[self.mSearchField subviews] firstObject] subviews])
     {
         if ([object isKindOfClass:[UITextField class]])
         {
@@ -88,7 +88,7 @@ const int kDefaultRadius = 7000;
     
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"AllEvent" ofType:@"plist"];
-    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] objectAtIndex:0]];
+    [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
 
 
     [self.mMapView setShowsUserLocation:true];

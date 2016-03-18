@@ -19,6 +19,7 @@
 #import "User.h"
 #import "MBProgressHUD.h"
 #import "Toast+UIView.h"
+#import "AddFriendCell.h"
 
 @interface ProfileViewController ()
 
@@ -75,17 +76,45 @@
 }
 
 -(void) setting {
-    [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_profile_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_profile_cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"setting_profile_flagging", nil), nil] showInView:self.view];
+    
+    if([self.mProfile.friendsOf count]>0)
+    {
+        [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_profile_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_profile_cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"setting_profile_flagging", nil),NSLocalizedString2(@"setting_friend_delete", nil), nil] showInView:self.view];
+    }
+    else
+    {
+        [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_profile_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_profile_cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString2(@"setting_profile_flagging", nil), nil] showInView:self.view];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if(actionSheet.cancelButtonIndex == buttonIndex)
+    {
+        return;
+    }
+    
     if( buttonIndex == 0)
     {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.mode = MBProgressHUDModeIndeterminate;
         hud.labelText = NSLocalizedString2(@"loading", nil);
 
+        
+        [[WSManager sharedInstance] flagging:@"profile" identifier:self.mProfile.identifier completion:^(NSError *error) {
+            [hud hide:YES];
+            if(error == nil)
+            {
+                [self.view makeToast:NSLocalizedString2(@"profile_flagging_toast", nil)];
+            }
+        }];
+    }
+    if( buttonIndex == 1)
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading", nil);
+        
         
         [[WSManager sharedInstance] flagging:@"profile" identifier:self.mProfile.identifier completion:^(NSError *error) {
             [hud hide:YES];
@@ -305,8 +334,11 @@
             }
        if(indexPath.row == 1)
             {
-                UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AddMoreFriend"];
-                
+                AddFriendCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AddMoreFriend"];
+                NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
+                NSArray* lFriendRequestArray = [[[ShareAppContext sharedInstance].user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
+                NSInteger countWaiting = [lFriendRequestArray count];
+                cell.mFriendRequest.text = [NSString stringWithFormat:@"%ld %@",(long)countWaiting,NSLocalizedString2(@"profile_friends_requests", nil)];
                 return cell;
             }
         }
@@ -427,7 +459,19 @@
             }
             else
             {
-                return 58;
+                NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
+                NSArray* lFriendRequestArray = [[[ShareAppContext sharedInstance].user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
+                NSInteger countWaiting = [lFriendRequestArray count];
+
+                if(countWaiting>0)
+                {
+                    return 95;
+                }
+                else
+                {
+                    return 58;
+                }
+                
             }
         }
         else

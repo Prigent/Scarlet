@@ -12,9 +12,16 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    
-    [self.sexSegment setTitle:NSLocalizedString2(@"man", nil) forSegmentAtIndex:0];
-    [self.sexSegment setTitle:NSLocalizedString2(@"woman", nil) forSegmentAtIndex:1];
+    if(self.sexSegment.tag == 0)
+    {
+        [self.sexSegment setTitle:NSLocalizedString2(@"male", nil) forSegmentAtIndex:0];
+        [self.sexSegment setTitle:NSLocalizedString2(@"female", nil) forSegmentAtIndex:1];
+    }
+    else
+    {
+        [self.sexSegment setTitle:NSLocalizedString2(@"man", nil) forSegmentAtIndex:0];
+        [self.sexSegment setTitle:NSLocalizedString2(@"woman", nil) forSegmentAtIndex:1];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
