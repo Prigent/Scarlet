@@ -25,6 +25,7 @@
     
     self.mFBSDKLoginManager = [[FBSDKLoginManager alloc] init];
     
+    self.mFBSDKLoginManager.loginBehavior = FBSDKLoginBehaviorNative;
     
     /*
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
@@ -144,10 +145,27 @@
 }
 
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if(willShowTab == true)
+    {
+        [self showTab];
+        didShowTab = true;
+    }
+
+}
+
+
+
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-   
+    if(didShowTab == true)
+    {
+        didShowTab = false;
+        return;
+    }
     if([[[ShareAppContext sharedInstance] accessToken] length]>0)
     {
         [self performSegueWithIdentifier:@"showTabView" sender:self];
@@ -193,8 +211,11 @@
         [hud hide:YES];
         if(error == nil)
         {
-            [self performSegueWithIdentifier:@"showTabView" sender:self];
-            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+            willShowTab = true;
+            BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Tutorial" bundle:nil] instantiateInitialViewController];
+            [self presentViewController:viewController animated:true completion:^{
+                
+            }];
         }
         else
         {
@@ -205,6 +226,17 @@
         }
     }];
 }
+
+
+-(void) showTab
+{
+    willShowTab = false;
+    [self performSegueWithIdentifier:@"showTabView" sender:self];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+}
+
+
+
 
 
 /*

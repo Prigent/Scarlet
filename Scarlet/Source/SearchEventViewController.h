@@ -13,10 +13,12 @@
 
 @class LocationSearchDataSource;
 
-@interface SearchEventViewController : AutoListViewController<MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SearchEventViewController : AutoListViewController<MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate >
 {
     BOOL animatCell;
     BOOL isInit;
+    CLLocationCoordinate2D coordinateChangeRadius;
+    BOOL isInitChangeRadius;
 }
 @property (weak, nonatomic) IBOutlet MKMapView *mMapView;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonMap;

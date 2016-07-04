@@ -17,6 +17,7 @@
 #import "User.h"
 #import <MapKit/MapKit.h>
 #import "ShareAppContext.h"
+#import "Demand.h"
 
 
 @implementation EventExpendView
@@ -64,7 +65,7 @@
     }
     
     
-    if(statusEvent > 2)
+    if(statusEvent > 1)
     {
         self.mHideSwitch.hidden = true;
         self.mHideLabel.text = @"";
@@ -91,7 +92,20 @@
     NSString* urlImageBase = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"urlBaseImage"];
     
     NSString* url = [NSString stringWithFormat:@"%@/%@.png",urlImageBase,event.identifier];
-    [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]
+                                                  cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                              timeoutInterval:20];
+    
+    
+    [_mMapImageView clearImageCacheForURL:[NSURL URLWithString:url]];
+
+    [_mMapImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         _mMapImageView.image = image;
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
 
     
 
@@ -103,6 +117,17 @@
         [listProfile addObject:event.leader];
     }
     [listProfile addObjectsFromArray:[event.partners allObjects]];
+    for(Demand * lDemand in event.demands)
+    {
+        if([lDemand.status integerValue] == 1)
+        {
+            [listProfile addObject:lDemand.leader];
+            [listProfile addObjectsFromArray:[lDemand.partners allObjects]];
+        }
+    }
+    
+    
+    
     
     self.mData = listProfile;
     [self.mCollectionView reloadData];

@@ -33,6 +33,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @interface UIView (Toast)
 
 // each makeToast method creates a view and displays it as toast
+- (void)makeButtonToast:(NSString *)message;
+
+
 - (void)makeToast:(NSString *)message;
 - (void)makeToast:(NSString *)message duration:(NSTimeInterval)interval position:(id)position;
 - (void)makeToast:(NSString *)message duration:(NSTimeInterval)interval position:(id)position image:(UIImage *)image;

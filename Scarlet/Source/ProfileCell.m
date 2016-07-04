@@ -44,7 +44,7 @@
     
     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",profile.identifier];
 
-    NSArray * friend = [[[ShareAppContext sharedInstance].user.friends allObjects] filteredArrayUsingPredicate:bPredicate];
+    NSArray * friend = [[[ShareAppContext sharedInstance].user.friends array] filteredArrayUsingPredicate:bPredicate];
     
 
     FriendRequest* friendRequest = [profile.friendRequests anyObject];

@@ -14,6 +14,11 @@
 #import "Address.h"
 #import "ProfileViewController.h"
 #import "FriendViewController.h"
+#import "WSManager.h"
+#import "WSParser.h"
+#import "MBProgressHUD.h"
+#import "Toast+UIView.h"
+
 
 @interface EventViewController ()
 
@@ -30,6 +35,31 @@
     self.mTableView.alpha = 0;
     
     self.screenName = @"event_detail";
+    
+    
+    
+    if(self.mEventId != nil)
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading",nil);
+        [[WSManager sharedInstance] getEventsCompletion:^(NSError *error)
+        {
+            [hud hide:YES];
+            self.mEvent = [WSParser getEvent:self.mEventId ];
+            if(self.mEvent)
+            {
+                [UIView animateWithDuration:.3 animations:^{  self.mTableView.alpha = 1; } completion:^(BOOL finished) {
+                    self.mWhiteView.hidden = true;
+                }];
+                [self.mTableView reloadData];
+            }
+            else
+            {
+                [self.navigationController popViewControllerAnimated:true];
+            }
+        }];
+    }
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -37,17 +67,19 @@
     [super viewDidAppear:animated];
     [self updateView];
     
-    if(init == false)
+    if(init == false && self.mEventId == nil)
     {
-        init = true;
-        [self.mTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.mIndex.row] atScrollPosition:UITableViewScrollPositionTop animated:false];
-        
-        
-        [UIView animateWithDuration:.3 animations:^{  self.mTableView.alpha = 1; } completion:^(BOOL finished) {
-            self.mWhiteView.hidden = true;
-        }];
-        
+        [self initScroll];
     }
+}
+
+-(void) initScroll
+{
+    init = true;
+    [self.mTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.mIndex.row] atScrollPosition:UITableViewScrollPositionTop animated:false];
+    [UIView animateWithDuration:.3 animations:^{  self.mTableView.alpha = 1; } completion:^(BOOL finished) {
+        self.mWhiteView.hidden = true;
+    }];
 }
 
 
@@ -112,6 +144,7 @@
 
 -(void) eventJoined:(NSNotification*) notification
 {
+    [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]  makeButtonToast:NSLocalizedString2(@"toast_eventjoined", nil)];
     [self closeDemand:nil];
     [self.mTableView reloadData];
 }
@@ -133,7 +166,7 @@
 
 -(void) profilelistselected:(NSNotification*) notification
 {
-    if(self.mBottomContainer.constant <= 0)
+    if(self.mBottomContainer.constant > -100)
     {
         [self closeDemand:nil];
         return;
@@ -160,8 +193,15 @@
 
 -(void) configure:(NSArray*) data
 {
-    self.mData = [data objectAtIndex:0];
-    self.mIndex =[data objectAtIndex:1];
+    if([data isKindOfClass:[NSString class]])
+    {
+        self.mEventId = (NSString*) data;
+    }
+    else
+    {
+        self.mData = [data objectAtIndex:0];
+        self.mIndex =[data objectAtIndex:1];
+    }
 }
 
 -(void) updateView
@@ -172,11 +212,23 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if(self.mEventId != nil && self.mEvent == nil)
+    {
+        return 0;
+    }
+    else if(self.mEvent != nil)
+    {
+        return 1;
+    }
     return [self.mData.fetchedObjects count];
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if(self.mEvent != nil)
+    {
+        return [NSString stringWithFormat: NSLocalizedString2(@"own_scarlet",nil), self.mEvent.leader.firstName];
+    }
     if([self.mData.fetchedObjects count]> section)
     {
         Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:section inSection:0]];
@@ -231,7 +283,11 @@
     UITableViewCell* cell  = [tableView dequeueReusableCellWithIdentifier:@"EventExpendCell"];
     if([cell respondsToSelector:@selector(configure:)])
     {
-        if([self.mData.fetchedObjects count]> indexPath.section)
+        if(self.mEvent != nil)
+        {
+            [cell performSelector:@selector(configure:) withObject:self.mEvent];
+        }
+        else if([self.mData.fetchedObjects count]> indexPath.section)
         {
             Event* lEvent = [self.mData objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
             [cell performSelector:@selector(configure:) withObject:lEvent];

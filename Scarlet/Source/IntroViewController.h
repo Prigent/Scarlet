@@ -12,6 +12,10 @@
 #import "BaseViewController.h"
 #import "KIImagePager.h"
 @interface IntroViewController : BaseViewController<UIAlertViewDelegate>
+{
+    BOOL willShowTab;
+    BOOL didShowTab;
+}
 @property (weak, nonatomic) IBOutlet UIScrollView *mScrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *mPageIndicateur;
 @property (strong, nonatomic) FBSDKLoginManager * mFBSDKLoginManager;

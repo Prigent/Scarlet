@@ -12,10 +12,16 @@
 
 @class User;
 @interface ShareAppContext : NSObject<CLLocationManagerDelegate, UIAlertViewDelegate>
-
+{
+    NSTimeInterval mLastBackgroundInterval;
+}
 + (ShareAppContext *)sharedInstance;
 
 @property (nonatomic) BOOL firstStarted;
+@property (nonatomic) double lastLatSend;
+@property (nonatomic) double latLongSend;
+
+
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSOperationQueue* queue;

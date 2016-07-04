@@ -31,7 +31,27 @@
     }
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUnread:) name:@"updateUnread" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateWaitingFriend:) name:@"updateWaitingFriend" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateWaitingDemand:) name:@"updateWaitingDemand" object:nil];
+    
+    
+    
 }
+-(void) updateWaitingDemand:(NSNotification*) notification
+{
+    NSNumber * count = [notification object];
+    if([count intValue] == 0)
+    {
+        [[self.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+    }
+    else
+    {
+        [[self.viewControllers objectAtIndex:1] tabBarItem].badgeValue = count.description;
+    }
+}
+
+
+
+
 
 -(void) updateUnread:(NSNotification*) notification
 {

@@ -12,5 +12,6 @@
 
 @interface MyChatsViewController : AutoListViewController
 @property (weak, nonatomic) IBOutlet UISearchBar *mSearchField;
+@property (weak, nonatomic) IBOutlet UILabel *mEmptyLabel;
 
 @end

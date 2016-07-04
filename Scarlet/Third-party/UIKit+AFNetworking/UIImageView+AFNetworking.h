@@ -78,7 +78,7 @@
  @param url The URL used for the image request.
  */
 - (void)setImageWithURL:(NSURL *)url;
-
+- (void)clearImageCacheForURL:(NSURL *)url;
 /**
  Asynchronously downloads an image from the specified URL, and sets it once the request is finished. Any previous image request for the receiver will be cancelled. 
  
@@ -131,7 +131,7 @@
  @return The cached image.
  */
 - (UIImage *)cachedImageForRequest:(NSURLRequest *)request;
-
+- (void)clearCachedRequest:(NSURLRequest *)request;
 /**
  Caches a particular image for the specified request.
  

@@ -47,13 +47,22 @@
     self.mTitle.text = [NSString stringWithFormat:@"%@ %@.", profile.firstName,firstLetter];
 }
 - (IBAction)selectCell:(id)sender {
-   [[NSNotificationCenter defaultCenter] postNotificationName:@"profilelistselected" object:self.mData];
+    if(self.mData != nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"profilelistselected" object:self.mData];
+    }
 }
 - (IBAction)selectEvent:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"eventselected" object:self.mEvent];
+    if(self.mEvent != nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"eventselected" object:self.mEvent];
+    }
 }
 - (IBAction)selectProfile:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectProfile" object:self.mData];
+    if(self.mData != nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"selectProfile" object:self.mData];
+    }
 }
 
 

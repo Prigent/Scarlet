@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *identifier;
 @property (nullable, nonatomic, retain) NSNumber *status;
 @property (nullable, nonatomic, retain) NSNumber *type;
+@property (nullable, nonatomic, retain) NSNumber *order;
 @property (nullable, nonatomic, retain) Profile *profile;
 @property (nullable, nonatomic, retain) User *user;
 

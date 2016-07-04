@@ -140,11 +140,16 @@
     }
     
     [user removeFriendRequest:user.friendRequest];
+    int order = 0;
+    
     if([lArrayFriendsRequest isKindOfClass:[NSArray class]])
     {
-        for(NSDictionary* lFriendRequest in lArrayFriendsRequest)
+        for(NSDictionary* lFriendRequestDic in lArrayFriendsRequest)
         {
-            [user addFriendRequestObject:[self addFriendRequest:lFriendRequest]];
+            FriendRequest * lFriendRequest = [self addFriendRequest:lFriendRequestDic];
+            lFriendRequest.order = @(order);
+            [user addFriendRequestObject:lFriendRequest];
+            order++;
         }
     }
 
@@ -175,6 +180,11 @@
 +(User*) getUser:(NSString*) idUser
 {
     return [WSParser searchIdentifier:idUser andName:@"User"];
+}
+
++(Chat*) getChat:(NSString*) idChat
+{
+    return [WSParser searchIdentifier:idChat andName:@"Chat"];
 }
 
 
@@ -543,12 +553,6 @@
     
     return chat;
 }
-
-+(Chat*) getChat:(NSString*) idChat
-{
-    return [WSParser searchIdentifier:idChat andName:@"Chat"];
-}
-
 +(Picture*) addPicture:(NSString*) filename
 {
     Picture* picture = [NSEntityDescription insertNewObjectForEntityForName:@"Picture" inManagedObjectContext:[ShareAppContext sharedInstance].managedObjectContext];

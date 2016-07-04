@@ -18,6 +18,8 @@
 #import "FriendViewController.h"
 #import "Event.h"
 #import "Address.h"
+#import "AppDelegate.h"
+#import "Toast+UIView.h"
 
 @interface CreateEventViewController ()
 
@@ -32,9 +34,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moodChanged:) name:@"moodChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dateChanged:) name:@"dateChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(locationChanged:) name:@"locationChanged" object:nil];
-    
-    
-    
     
    
     
@@ -165,11 +164,6 @@
     
     NSMutableDictionary * lEventDic = [NSMutableDictionary dictionary];
 
-    if(self.mEvent)
-    {
-        [lEventDic setValue:self.mEvent.identifier forKey:@"event_identifier"];
-    }
-    
     [lEventDic setValue:self.mood forKey:@"mood"];
     [lEventDic setValue:[NSNumber numberWithDouble:self.coordinate.longitude]  forKey:@"long"];
     [lEventDic setValue:[NSNumber numberWithDouble:self.coordinate.latitude] forKey:@"lat"];
@@ -177,9 +171,14 @@
     [lEventDic setValue:[NSNumber numberWithInt:[self.date timeIntervalSince1970]] forKey:@"date"];
     [lEventDic setValue:self.listProfileId forKey:@"partner"];
     
+
     
     if(self.mEvent)
     {
+        [lEventDic setValue:self.mEvent.identifier forKey:@"event_identifier"];
+
+        NSLog(@"%@",lEventDic);
+        
         NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"create_event"  label:nil value:nil] build];
         [[[GAI sharedInstance] defaultTracker]  send:event];
         
@@ -208,6 +207,8 @@
             [hud hide:YES];
             if(error == nil)
             {
+                [[AppDelegate topMostController].tabBarController setSelectedIndex:1];
+                [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]  makeButtonToast:NSLocalizedString2(@"toast_didpublish", nil)];
                 [self popBack];
             }
             else
@@ -230,6 +231,10 @@
     if(section == 0)
     {
         return 3;
+    }
+    if([[ShareAppContext sharedInstance].user.friends count]>0)
+    {
+        return 1;
     }
     return 2;
 }
@@ -346,7 +351,7 @@
     {
         cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
         ProfileListCell* cellList = (ProfileListCell*)cell;
-        [cellList configure:[[ShareAppContext sharedInstance].user.friends allObjects] andSelectedList:self.listProfileId];
+        [cellList configure:[[ShareAppContext sharedInstance].user.friends array] andSelectedList:self.listProfileId];
     }
     else
     {

@@ -17,6 +17,7 @@
 #import "User.h"
 #import <MapKit/MapKit.h>
 #import "ShareAppContext.h"
+#import "Demand.h"
 
 
 @implementation EventExpendCell
@@ -50,6 +51,17 @@
     [listProfile addObject:event.leader];
     [listProfile addObjectsFromArray:[event.partners allObjects]];
     
+    for(Demand * lDemand in event.demands)
+    {
+        if([lDemand.status integerValue] == 1)
+        {
+            [listProfile addObject:lDemand.leader];
+            [listProfile addObjectsFromArray:[lDemand.partners allObjects]];
+        }
+    }
+    
+    
+    
     self.mData = listProfile;
     [self.mCollectionView reloadData];
     
@@ -59,11 +71,7 @@
     NSString* urlImageBase = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"urlBaseImage"];
     
     NSString* url = [NSString stringWithFormat:@"%@/%@.png",urlImageBase,event.identifier];
-    NSLog(@"urlBaseImage %@", url);
     [_mMapImageView setImageWithURL:[NSURL URLWithString:url]];
-    
-    
-
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{

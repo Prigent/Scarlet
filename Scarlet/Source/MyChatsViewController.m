@@ -59,6 +59,45 @@
     return cell;
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == kAlertViewTag_noLocation)
+    {
+        if(buttonIndex == 1)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }
+    }
+}
+
+
+- (IBAction)createEvent:(id)sender {
+    
+    if([CLLocationManager locationServicesEnabled])
+    {
+        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied)
+        {
+            UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString2(@"miss_location_title", @"") message:NSLocalizedString2(@"miss_location_desc", @"") delegate:self cancelButtonTitle:NSLocalizedString2(@"miss_location_cancel", @"") otherButtonTitles:NSLocalizedString2(@"miss_location_ok", @""), nil];
+            lUIAlertView.tag = kAlertViewTag_noLocation;
+            [lUIAlertView show];
+            return;
+        }
+    }
+    
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
+    
+    viewController.hidesBottomBarWhenPushed = true;
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    
+    [self.navigationController pushViewController:viewController animated:NO];
+}
 
 
 -(void) updateData

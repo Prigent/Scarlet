@@ -20,6 +20,7 @@
 #import "WSParser.h"
 #import "MKMapView+ZoomLevel.h"
 #import "MBProgressHUD.h"
+#import "Toast+UIView.h"
 
 
 const int kMaxRadius = 50000;
@@ -40,22 +41,24 @@ const int kDefaultRadius = 7000;
     
     [[WSManager sharedInstance] getUserCompletion:^(NSError *error) {
         [[WSManager sharedInstance] getChatsCompletion:^(NSError *error) {
-            if(error == nil)
-            {
-                [self updateData];
-            }
-            [hud hide:YES];
+            [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
+                if(error == nil)
+                {
+                    [self updateData];
+                }
+                [hud hide:YES];
+            }];
         }];
     }];
-    
-
-    
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    
+
+    
     
     [[ShareAppContext sharedInstance] startLocation];
     
@@ -117,11 +120,6 @@ const int kDefaultRadius = 7000;
     [self showMap:nil];
     
     self.screenName = @"search_event";
-    
-    
-
-
-
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -243,16 +241,39 @@ const int kDefaultRadius = 7000;
     [UIView animateWithDuration:.3 animations:^{ self.mTableViewLocation.alpha = 0.8; }];
 }
 
+- (IBAction)doneChangeRadius:(UISlider*)sender {
+    
+    isInitChangeRadius = false;
+    
+}
 
 
 - (IBAction)changeRadius:(UISlider*)sender {
+    
+    if(isInitChangeRadius == false)
+    {
+        if(_mMapList.alpha  > 0)
+        {
+            CGPoint centerPoint = CGPointMake(self.mMapView.bounds.origin.x+self.mMapView.bounds.size.width/2., self.mMapView.bounds.origin.y + self.mMapView.bounds.size.height/2.);
+            coordinateChangeRadius =[self.mMapView convertPoint:centerPoint toCoordinateFromView:self.mMapView];
+        }
+        else
+        {
+            coordinateChangeRadius = self.mMapView.centerCoordinate;
+        }
+        
+        
+        
+        
+        
+        isInitChangeRadius = true;
+    }
+
+    
     [ShareAppContext sharedInstance].currentRadius = sender.value;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFilterValue" object:nil];
-    
-    CGPoint centerPoint = CGPointMake(self.mMapView.bounds.origin.x+self.mMapView.bounds.size.width/2., self.mMapView.bounds.origin.y + self.mMapView.bounds.size.height/2.);
-    CLLocationCoordinate2D coordinate =[self.mMapView convertPoint:centerPoint toCoordinateFromView:self.mMapView];
-    
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate , [ShareAppContext sharedInstance].currentRadius*2.5, [ShareAppContext sharedInstance].currentRadius*2.5);
+
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinateChangeRadius , [ShareAppContext sharedInstance].currentRadius*2.5, [ShareAppContext sharedInstance].currentRadius*2.5);
     //MKCoordinateRegion adjustedRegion = [self.mMapView regionThatFits:viewRegion];
     [self.mMapView setRegion:viewRegion animated:false];
     
@@ -373,8 +394,31 @@ const int kDefaultRadius = 7000;
     [[[GAI sharedInstance] defaultTracker]  send:event];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == kAlertViewTag_noLocation)
+    {
+        if(buttonIndex == 1)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }
+    }
+}
 
 - (IBAction)createEvent:(id)sender {
+    
+    
+    if([CLLocationManager locationServicesEnabled])
+    {
+        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied)
+        {
+            UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString2(@"miss_location_title", @"") message:NSLocalizedString2(@"miss_location_desc", @"") delegate:self cancelButtonTitle:NSLocalizedString2(@"cancel", @"") otherButtonTitles:NSLocalizedString2(@"ok", @""), nil];
+            lUIAlertView.tag = kAlertViewTag_noLocation;
+            [lUIAlertView show];
+            return;
+        }
+    }
+    
     BaseViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
     

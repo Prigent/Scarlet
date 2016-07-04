@@ -18,6 +18,7 @@
 #import "MBProgressHUD.h"
 #import "Toast+UIView.h"
 #import "WSParser.h"
+#import "Demand.h"
 
 @interface ChatViewController ()
 
@@ -46,19 +47,7 @@
    
     [self updateData];
     
-    NSString * customTitle= self.mChat.event.leader.firstName;
-    for(int i=0 ; i< [self.mChat.event.partners count] ; i++)
-    {
-        Profile* lProfile = [[self.mChat.event.partners allObjects]objectAtIndex:i];
-        if( i == [self.mChat.event.partners count]-1)
-        {
-            customTitle = [NSString stringWithFormat:@"%@ %@ %@",customTitle , NSLocalizedString2(@"and", @"and"), lProfile.firstName ];
-        }
-        else
-        {
-            customTitle = [NSString stringWithFormat:@"%@, %@",customTitle, lProfile.firstName ];
-        }
-    }
+
     
     UIButton *settingButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 23.0f, 23.0f)];
     UIImage *settingImage = [[UIImage imageNamed:@"btnSettings"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 23.0f, 0, 23.0f)];
@@ -66,19 +55,53 @@
     [settingButton setTitle:@"" forState:UIControlStateNormal];
     [settingButton addTarget:self action:@selector(setting) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *settingButtonItem = [[UIBarButtonItem alloc] initWithCustomView:settingButton];
-    self.navigationItem.rightBarButtonItem = settingButtonItem;
+    
+    
+    
+    UIButton *peopleButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 23.0f, 23.0f)];
+    UIImage *peopleImage = [[UIImage imageNamed:@"icnMutualFriend"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 23.0f, 0, 23.0f)];
+    [peopleButton setBackgroundImage:peopleImage  forState:UIControlStateNormal];
+    [peopleButton setTitle:@"" forState:UIControlStateNormal];
+    [peopleButton addTarget:self action:@selector(showListPeople:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *peopleButtonItem = [[UIBarButtonItem alloc] initWithCustomView:peopleButton];
+    
+    
+    NSMutableArray * listProfile = [NSMutableArray array];
+    if(self.mChat.event.leader != nil)
+    {
+        [listProfile addObject:self.mChat.event.leader];
+    }
+    [listProfile addObjectsFromArray:[self.mChat.event.partners allObjects]];
+    for(Demand * lDemand in self.mChat.event.demands)
+    {
+        if([lDemand.status integerValue] == 1)
+        {
+            [listProfile addObject:lDemand.leader];
+            [listProfile addObjectsFromArray:[lDemand.partners allObjects]];
+        }
+    }
+
+    if([listProfile count]>1)
+    {
+        self.navigationItem.rightBarButtonItems = @[settingButtonItem,peopleButtonItem];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItems = @[settingButtonItem];
+    }
 
     
-    
-    self.mCustomTitle = customTitle;
+    self.mCustomTitle = NSLocalizedString2(@"title_chat_detail", nil);
     self.screenName = @"chat_detail";
 }
 
 
 
 
--(void) setting {
-    
+
+
+-(void) setting
+{
     [_mTextField resignFirstResponder];
     [[[UIActionSheet alloc] initWithTitle:NSLocalizedString2(@"setting_chat_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"setting_chat_cancel", nil) destructiveButtonTitle:NSLocalizedString2(@"setting_chat_exit", nil) otherButtonTitles:NSLocalizedString2(@"setting_chat_flagging", nil), nil] showInView:self.view];
 }
@@ -114,6 +137,37 @@
             }
         }];
     }
+}
+- (IBAction)showListPeople:(id)sender
+{
+    BaseViewController* lMain =  [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateViewControllerWithIdentifier:@"ProfileListViewController"];
+  
+    
+    NSMutableArray * listProfile = [NSMutableArray array];
+    if(self.mChat.event.leader != nil)
+    {
+        [listProfile addObject:self.mChat.event.leader];
+    }
+    [listProfile addObjectsFromArray:[self.mChat.event.partners allObjects]];
+    for(Demand * lDemand in self.mChat.event.demands)
+    {
+        if([lDemand.status integerValue] == 1)
+        {
+            [listProfile addObject:lDemand.leader];
+            [listProfile addObjectsFromArray:[lDemand.partners allObjects]];
+        }
+    }
+    [lMain configure:listProfile];
+    
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    [self.navigationController pushViewController:lMain animated:NO];
+    
 }
 
 -(void) viewDidAppear:(BOOL)animated

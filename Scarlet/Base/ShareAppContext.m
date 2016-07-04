@@ -8,6 +8,7 @@
 
 #import "ShareAppContext.h"
 #import "User.h"
+#import "WSManager.h"
 
 @implementation ShareAppContext
 
@@ -30,7 +31,7 @@
 {
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    //self.locationManager.distanceFilter = 100;
+    self.locationManager.distanceFilter = 100;
     self.locationManager.allowsBackgroundLocationUpdates = YES;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     [self.locationManager requestAlwaysAuthorization];
@@ -45,32 +46,74 @@
     CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
     CLLocation * location = [locations firstObject];
     
-    NSLog(@"localisation %f %f",location.coordinate.latitude, location.coordinate.longitude);
     
     if(location)
     {
-        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
-         {
-             if (!(error))
-             {
-                 self.errorLocation = false;
-                 self.placemark = [placemarks firstObject];
-             }
-         }];
+        BOOL isInBackground = NO;
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+        {
+            isInBackground = YES;
+        }
+        if (isInBackground)
+        {
+            [self sendBackgroundLocationToServer:location];
+        }
+        else
+        {
+            NSTimeInterval lNSTimeInterval = [[NSDate date] timeIntervalSince1970];
+            if((lNSTimeInterval - mLastBackgroundInterval)>60)
+            {
+                [[WSManager sharedInstance] geoLocate:location.coordinate.longitude andLat:location.coordinate.latitude];
+                [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+                 {
+                     if (!(error))
+                     {
+                         mLastBackgroundInterval = lNSTimeInterval;
+                         self.errorLocation = false;
+                         self.placemark = [placemarks firstObject];
+                     }
+                 }];
+            }
+        }
     }
 }
 
+
+- (void) sendBackgroundLocationToServer: (CLLocation *) location
+{
+
+    NSTimeInterval lNSTimeInterval = [[NSDate date] timeIntervalSince1970];
+    if((lNSTimeInterval - mLastBackgroundInterval)>60)
+    {
+        if(_lastLatSend != location.coordinate.latitude  && _latLongSend != location.coordinate.longitude)
+        {
+            mLastBackgroundInterval = lNSTimeInterval;
+            _lastLatSend = location.coordinate.latitude;
+            _latLongSend = location.coordinate.longitude;
+            [[WSManager sharedInstance] geoLocate:location.coordinate.longitude andLat:location.coordinate.latitude];
+        }
+    }
+
+
+
+}
+
+
+
 - (void)locationManager:(CLLocationManager *)manager  didFailWithError:(NSError *)error
 {
-    if(self.errorLocation == false)
+    NSLog(@"locationManager %@ %ld", error.localizedDescription, error.code);
+    if( error.code != 0)
     {
-        UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString2(@"localisation_error_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"localisation_error_cancel", nil) otherButtonTitles:NSLocalizedString2(@"localisation_error_ok", nil), nil];
-        [lUIAlertView show];
+        if(self.errorLocation == false)
+        {
+            UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString2(@"localisation_error_title", nil) delegate:self cancelButtonTitle:NSLocalizedString2(@"localisation_error_cancel", nil) otherButtonTitles:NSLocalizedString2(@"localisation_error_ok", nil), nil];
+            [lUIAlertView show];
+        }
+        self.errorLocation = true;
+        
     }
-    self.errorLocation = true;
-    
-    
-    NSLog(@"%@ %ld", error.localizedDescription, error.code);
+
 }
 
 

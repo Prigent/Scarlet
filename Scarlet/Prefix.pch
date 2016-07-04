@@ -38,6 +38,7 @@
 
 #endif*/
 #define NSLocalizedString2(key, comment)   [ShareAppContext customLocalize:key]
-
+#define kAlertViewTag_noPush            13
+#define kAlertViewTag_noLocation        14
 
 

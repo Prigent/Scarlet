@@ -16,13 +16,14 @@
 {
     bool init;
 }
+
+
 @property (weak, nonatomic) IBOutlet UIView *mWhiteView;
-
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
-
-
 @property (strong, nonatomic) NSFetchedResultsController * mData;
-@property (strong, nonatomic) NSIndexPath * mIndex;
 
+@property (strong, nonatomic) Event * mEvent;
+@property (strong, nonatomic) NSIndexPath * mIndex;
+@property (strong, nonatomic) NSString * mEventId;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mBottomContainer;
 @end

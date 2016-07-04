@@ -24,7 +24,10 @@
 
 
 - (IBAction)selectEvent:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"eventselected" object:self.mEvent];
+    if(self.mEvent !=nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"eventselected" object:self.mEvent];
+    }
 }
 
 -(void) configure:(Event*) event

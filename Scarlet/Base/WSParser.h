@@ -12,10 +12,13 @@
 
 +(Message*) addMyMessageTmp:(NSString*) messagetxt;
 +(User*) getUser:(NSString*) idUser;
++(Chat*) addChatObject:(NSString*) chatId;
 +(User*) addUser:(NSDictionary*) dicUser;
 +(Profile*) addProfile:(NSDictionary*) dicProfile;
 +(Event*) addEvent:(NSDictionary*) dicEvent;
 +(Event*) editEvent:(NSDictionary*) dicEvent;
++(Event*) getEvent:(NSString*) idEvent;
+
 
 +(Message*) addMessage:(NSDictionary*) dicMessage;
 +(NSArray*) getProfiles;

@@ -80,6 +80,17 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     [self showToast:toast duration:duration position:position];  
 }
 
+- (void)makeButtonToast:(NSString *)message {
+    [self makeButtonToast:message duration:CSToastDefaultDuration position:CSToastDefaultPosition];
+}
+
+- (void)makeButtonToast:(NSString *)message duration:(NSTimeInterval)duration position:(id)position {
+    UIView *toast = [self viewForMessage:message title:nil image:nil];
+    [self showToast:toast duration:duration position:position button:true];
+}
+
+
+
 - (void)makeToast:(NSString *)message duration:(NSTimeInterval)duration position:(id)position title:(NSString *)title {
     UIView *toast = [self viewForMessage:message title:title image:nil];
     [self showToast:toast duration:duration position:position];  
@@ -99,17 +110,53 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
     [self showToast:toast duration:CSToastDefaultDuration position:CSToastDefaultPosition];
 }
 
+- (void)showButtonToast:(UIView *)toast {
+    [self showToast:toast duration:CSToastDefaultDuration position:CSToastDefaultPosition button:true];
+}
+
 - (void)showToast:(UIView *)toast duration:(NSTimeInterval)duration position:(id)point {
+    [self showToast:toast duration:duration position:point button:false];
+}
+
+- (void)showToast:(UIView *)toast duration:(NSTimeInterval)duration position:(id)point button:(BOOL) button{
     toast.center = [self centerPointForPosition:point withToast:toast];
-    toast.center = CGPointMake(toast.center.x, toast.center.y - CSToastVerticalMarging);
+    if(button)
+    {
+        toast.center = CGPointMake(toast.center.x, toast.center.y - CSToastVerticalMarging+40);
+    }
+    else
+    {
+         toast.center = CGPointMake(toast.center.x, toast.center.y - CSToastVerticalMarging);
+    }
+
     toast.alpha = 0.0;
     
-    if (CSToastHidesOnTap) {
+    if (CSToastHidesOnTap || button) {
         UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:toast action:@selector(handleToastTapped:)];
         [toast addGestureRecognizer:recognizer];
         toast.userInteractionEnabled = YES;
         toast.exclusiveTouch = YES;
     }
+    
+    
+    if(button)
+    {
+        UIButton * lButtonToast = [[UIButton alloc] init];
+        [lButtonToast setBackgroundColor:[UIColor clearColor]];
+        lButtonToast.layer.cornerRadius = 15;
+        [lButtonToast setImage:[UIImage imageNamed:@"croix"] forState:UIControlStateNormal];
+        [lButtonToast addTarget:self action:@selector(hideToastButton:) forControlEvents:UIControlEventTouchUpInside];
+        [lButtonToast setFrame:CGRectMake(toast.frame.size.width-15, -15, 30, 30)];
+        lButtonToast.layer.shadowRadius = 3;
+        lButtonToast.layer.shadowOpacity = 0.2f;
+        
+        toast.clipsToBounds = false;
+        [toast addSubview:lButtonToast];
+    }
+
+    
+    
+    
     
     [self addSubview:toast];
     
@@ -119,11 +166,21 @@ static const NSString * CSToastActivityViewKey  = @"CSToastActivityViewKey";
                      animations:^{
                          toast.alpha = 1.0;
                      } completion:^(BOOL finished) {
-                         NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(toastTimerDidFinish:) userInfo:toast repeats:NO];
-                         // associate the timer with the toast view
-                         objc_setAssociatedObject (toast, &CSToastTimerKey, timer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                         
+                         if(button==false)
+                         {
+                             NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(toastTimerDidFinish:) userInfo:toast repeats:NO];
+                             // associate the timer with the toast view
+                             objc_setAssociatedObject (toast, &CSToastTimerKey, timer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                         }
                      }];
     
+}
+
+
+- (void)hideToastButton:(UIButton *)toastButton
+{
+    [self hideToast:toastButton.superview];
 }
 
 - (void)hideToast:(UIView *)toast {

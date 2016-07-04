@@ -14,5 +14,6 @@
 @interface MyEventsViewController : AutoListViewController
 @property (weak, nonatomic) IBOutlet HMSegmentedControl *mSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *mCreateScarletButton;
+@property (weak, nonatomic) IBOutlet UILabel *mEmptyLabel;
 
 @end

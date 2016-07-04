@@ -14,6 +14,9 @@
 #import "Demand.h"
 #import "ShareAppContext.h"
 #import "WSManager.h"
+#import "User.h"
+#import "WSParser.h"
+#import "Toast+UIView.h"
 
 #import "UIImageView+AFNetworking.h"
 #import <MapKit/MapKit.h>
@@ -29,21 +32,54 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    
-    NSInteger statusEvent = [self.mEvent.mystatus integerValue];
-    
-    if(statusEvent == 1 || statusEvent == 2 || statusEvent == 3 || statusEvent == 4)
-    {
-        UIBarButtonItem *openChatButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnChatOn"] style:UIBarButtonItemStylePlain target:self action:@selector(openChat)];
-        self.navigationItem.rightBarButtonItem = openChatButtonItem;
-    }
     [self.uiRefreshControl removeFromSuperview];
-    [self updateView];
     self.screenName = @"my_event_detail";
 }
 
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self updateData];
+}
+
+
+-(void) updateData
+{
+    if(self.mEvent != nil && [self.mEvent.identifier length]>0)
+    {
+        [self updateView];
+    }
+    else if(self.mEventId != nil)
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading",nil);
+        
+        self.tableView.hidden = true;
+        
+        [[WSManager sharedInstance] getMyEventsCompletion:^(NSError *error) {
+            [hud hide:YES];
+            if(error == nil)
+            {
+                self.mEvent = [WSParser getEvent:self.mEventId];
+                if(self.mEvent  != nil)
+                {
+                    self.tableView.hidden = false;
+                    [self updateView];
+                    return ;
+                }
+            }
+            [self.navigationController popViewControllerAnimated:true];
+        }];
+    }
+    else
+    {
+        [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:NSLocalizedString2(@"error_event_loading", nil)];
+        [self.navigationController popViewControllerAnimated:true];
+    }
+}
 
 -(void) openChat
 {
@@ -95,9 +131,21 @@
 }
 
 
+- (IBAction)topTap:(id)sender {
+    
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    
+}
 
 -(void) updateView
 {
+    NSInteger statusEvent = [self.mEvent.mystatus integerValue];
+    if(statusEvent == 1 || statusEvent == 2 || statusEvent == 3 || statusEvent == 4)
+    {
+        UIBarButtonItem *openChatButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnChatOn"] style:UIBarButtonItemStylePlain target:self action:@selector(openChat)];
+        self.navigationItem.rightBarButtonItem = openChatButtonItem;
+    }
+    
     // Do any additional setup after loading the view.
     NSString *plistFile = [[NSBundle mainBundle] pathForResource:@"Demand" ofType:@"plist"];
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
@@ -113,11 +161,20 @@
         self.title = NSLocalizedString2(@"your_scarlet",nil);//@"Your Scarlet";
         self.cellIdentifier = @"DemandCell";
         
-        if(status == 2)
+        if(status == 2 || [self.mEvent.sort boolValue])
         {
+            _mButtonCancel.hidden = false;
             self.mHeighEditButton.constant = 0;
             CGRect frame = self.tableView.tableHeaderView.frame;
-            frame.size.height = 610;
+            if(status == 2)
+            {
+                frame.size.height = 564;
+            }
+            else
+            {
+                frame.size.height = 610;
+            }
+
             [self.tableView.tableHeaderView setFrame:frame];
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView];
         }
@@ -152,9 +209,6 @@
         self.cellIdentifier = @"ProfileListCell";
     }
     [self.mEventExpendView configure:self.mEvent];
-    
-    
-    
     [self.tableView reloadData];
 }
 
@@ -185,32 +239,89 @@
 
 -(void) configure:(id) event
 {
-    self.mEvent = event;
+    if([event isKindOfClass:[Event class]])
+    {
+        self.mEvent = event;
+    }
+    else
+    {
+        self.mEventId = event;
+    }
 }
 
 
 - (IBAction)cancelScarlet:(id)sender {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString2(@"loading",nil);
     
-    Demand* lMyDemand = nil;
+    NSInteger status = [self.mEvent.mystatus integerValue];
     
-    for(Demand * lDemand in self.mEvent.demands)
+    if(status == 2)
     {
-        if([lDemand.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading",nil);
+        
+        
+        NSMutableDictionary * lEventDic = [NSMutableDictionary dictionary];
+        
+        if(self.mEvent)
         {
-            lMyDemand = lDemand;
+            [lEventDic setValue:self.mEvent.identifier forKey:@"event_identifier"];
         }
+        
+        NSMutableArray * lListPartner = [NSMutableArray arrayWithArray:[[self.mEvent.partners allObjects] valueForKey:@"identifier"]];
+        [lListPartner removeObject:[ShareAppContext sharedInstance].user.identifier];
+        [lEventDic setValue:lListPartner forKey:@"partner"];
+        [lEventDic setValue:self.mEvent.leader.identifier forKey:@"leader_id"];
+        
+        
+        [[WSManager sharedInstance] editEvent:lEventDic completion:^(NSError *error) {
+            if(error == nil)
+            {
+                [hud hide:YES];
+                [self.navigationController popViewControllerAnimated:true];
+            }
+            else
+            {
+                NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+                NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+                [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            }
+        }];
     }
-    
-    NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"cancel_demand"  label:nil value:nil] build];
-    [[[GAI sharedInstance] defaultTracker]  send:event];
-    
-    [[WSManager sharedInstance] removeDemand:lMyDemand.identifier completion:^(NSError *error) {
-        [hud hide:YES];
-        [self.navigationController popViewControllerAnimated:true];
-    }];
+    else
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString2(@"loading",nil);
+        
+        Demand* lMyDemand = nil;
+        
+        for(Demand * lDemand in self.mEvent.demands)
+        {
+            if([lDemand.leader.identifier isEqualToString:[ShareAppContext sharedInstance].userIdentifier])
+            {
+                lMyDemand = lDemand;
+            }
+        }
+        
+        NSMutableDictionary *  event = [[GAIDictionaryBuilder createEventWithCategory:@"ui_action"   action:@"cancel_demand"  label:nil value:nil] build];
+        [[[GAI sharedInstance] defaultTracker]  send:event];
+        
+        [[WSManager sharedInstance] removeDemand:lMyDemand.identifier completion:^(NSError *error) {
+            if(error == nil)
+            {
+                [hud hide:YES];
+                [self.navigationController popViewControllerAnimated:true];
+            }
+            else
+            {
+                NSString * lErrorKey  = [NSString stringWithFormat:@"servor_error_%d",abs((int)error.code)];
+                NSString * lErrorString = NSLocalizedString2( lErrorKey, nil);
+                [[[UIAlertView alloc] initWithTitle:nil message:lErrorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            }
+        }];
+    }
+
 }
 
 

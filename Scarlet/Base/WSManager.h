@@ -35,7 +35,9 @@ typedef enum {
 - (void)getChatsCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getUserCompletion:(void (^)(NSError* error)) onCompletion;
 - (void)getNotificationConfiguration:(void (^)(NSError* error)) onCompletion;
-
+- (void)deleteFriend:(Profile*) friend completion:(void (^)(NSError* error)) onCompletion;
+- (void)geoLocate:(double) longi andLat:(double) lat;
+- (void)geoBackgroundLocate:(double) longi andLat:(double) lat;
 
 - (void)flagging:(NSString*) type identifier:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion;
 - (void)chatOut:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion;
@@ -61,7 +63,7 @@ typedef enum {
 //add message
 //create event
 -(void) updateCountRead;
-
+- (void)syncgeoLocate:(double) longi andLat:(double) lat;
 
 @end
 

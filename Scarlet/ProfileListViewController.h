@@ -10,7 +10,8 @@
 #import "AutoListViewController.h"
 @class Profile;
 @interface ProfileListViewController : AutoListViewController<UISearchBarDelegate, UIAlertViewDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mSearchHeight;
 @property (weak, nonatomic) IBOutlet UISearchBar *mSearchField;
 @property (weak, nonatomic) IBOutlet UILabel *mSearchFriendsLabel;
-
+@property (strong, nonatomic) NSArray * mData;
 @end

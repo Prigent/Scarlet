@@ -14,6 +14,9 @@
 #import "WSManager.h"
 #import "Toast+UIView.h"
 #import "ChatViewController.h"
+#import "FriendViewController.h"
+#import "Chat.h"
+#import "WSParser.h"
 
 @interface AppDelegate ()
 
@@ -43,25 +46,15 @@ static NSString *const kAllowTracking = @"allowTracking";
     
     UIImage *barBackBtnImg = [[UIImage imageNamed:@"btnBack"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
 
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:barBackBtnImg
-                                                      forState:UIControlStateNormal
-                                                    barMetrics:UIBarMetricsDefault];
-    
-    
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:barBackBtnImg forState:UIControlStateNormal  barMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:29/255. blue:76/255. alpha:1]];
     
-// [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
-
 
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                          openURL:url
-                                                sourceApplication:sourceApplication
-                                                       annotation:annotation
-            ];
+    return [[FBSDKApplicationDelegate sharedInstance] application:application  openURL:url  sourceApplication:sourceApplication annotation:annotation];
 }
 
 
@@ -99,8 +92,7 @@ static NSString *const kAllowTracking = @"allowTracking";
     NSNumber * lNumber = [userInfo valueForKey:@"redirection"];
     if([application applicationState] == UIApplicationStateInactive)
     {
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"redirection" object:lNumber];
+        [self redirection:userInfo];
     }
     else
     {
@@ -112,6 +104,93 @@ static NSString *const kAllowTracking = @"allowTracking";
         [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] makeToast:[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]];
     }
 }
+
+
+-(void) redirection:(NSDictionary*) dictionary
+{
+    NSNumber * number = [dictionary valueForKey:@"redirection"];
+    NSString * chatId = [[dictionary valueForKey:@"code_chat"] description];
+    NSString * eventId = [[dictionary valueForKey:@"code_event"] description];
+    NSString * eventIdSearch = [[dictionary valueForKey:@"code_event_search"] description];
+    
+    
+    if([number intValue] < 4)
+    {
+        [[AppDelegate topMostController].tabBarController setSelectedIndex:[number intValue]];
+        UINavigationController * lnav = (UINavigationController *)[[AppDelegate topMostController].tabBarController.viewControllers objectAtIndex:[number intValue]];
+        if( [lnav isKindOfClass:[UINavigationController class]])
+        {
+            [lnav popToRootViewControllerAnimated:false];
+        }
+        
+        if([chatId length]>0)
+        {
+            Chat * lChat = [WSParser addChatObject:chatId];
+            [self performSelector:@selector(showChat:) withObject:lChat afterDelay:1];
+        }
+        else if([eventId length]>0)
+        {
+            [self performSelector:@selector(showEvent:) withObject:eventId afterDelay:1];
+        }
+        else if([eventIdSearch length]>0)
+        {
+            [self performSelector:@selector(showEventSearch:) withObject:eventIdSearch afterDelay:1];
+        }
+    }
+    else if([number intValue] == 4)
+    {
+        [[AppDelegate topMostController].navigationController popToRootViewControllerAnimated:false];
+        [self performSelector:@selector(showFriendController) withObject:nil afterDelay:1];
+    }
+}
+
+-(void) showEventSearch:(id) eventId
+{
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SearchEventDetailViewController"];
+    [viewController configure:eventId];
+    
+    [[AppDelegate topMostController].navigationController pushViewController:viewController animated:true];
+}
+
+-(void) showEvent:(id) eventId
+{
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyEventViewController"];
+    [viewController configure:eventId];
+    [[AppDelegate topMostController].navigationController pushViewController:viewController animated:true];
+}
+
+-(void) showChat:(id) chat
+{
+    BaseViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ChatViewController"];
+    [viewController configure:chat];
+    [[AppDelegate topMostController].navigationController pushViewController:viewController animated:true];
+}
+
+-(void) showFriendController
+{
+    FriendViewController *viewController = nil;
+    viewController = [[UIStoryboard storyboardWithName:@"Friend" bundle:nil] instantiateInitialViewController];
+    viewController.type = 2;
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [[AppDelegate topMostController].navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    [[AppDelegate topMostController].navigationController pushViewController:viewController animated:false];
+}
+
+
+
+
+
+
+
 
 
 + (UIViewController*) topMostController
@@ -154,17 +233,16 @@ static NSString *const kAllowTracking = @"allowTracking";
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[WSManager sharedInstance] getTextCompletion:^(NSError *error) {
         
     }];

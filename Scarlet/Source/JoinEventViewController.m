@@ -49,6 +49,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if([[ShareAppContext sharedInstance].user.friends count]>0)
+    {
+        return 1;
+    }
     return 2;
 }
 
@@ -82,7 +86,7 @@
     ProfileListCell* cellList = (ProfileListCell*)cell;
     
     
-    NSMutableArray* lList = [NSMutableArray arrayWithArray:[[ShareAppContext sharedInstance].user.friends allObjects] ];
+    NSMutableArray* lList = [NSMutableArray arrayWithArray:[[ShareAppContext sharedInstance].user.friends array] ];
     NSMutableArray* lRemoveList = [NSMutableArray array];
     for(Profile * lProfile in lList)
     {

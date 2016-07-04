@@ -109,6 +109,18 @@
     [self setImageWithURL:url placeholderImage:nil];
 }
 
+- (void)clearImageCacheForURL:(NSURL *)url {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    UIImage *cachedImage = [[[self class] sharedImageCache] cachedImageForRequest:request];
+    if (cachedImage)
+    {
+        [[[self class] sharedImageCache] clearCachedRequest:request];
+    }
+}
+
+
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholderImage
 {
@@ -130,6 +142,7 @@
         if (success) {
             success(nil, nil, cachedImage);
         } else {
+            NSLog(@" FROM CACHE %@",urlRequest);
             self.image = cachedImage;
         }
 
@@ -199,6 +212,13 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
         [self setObject:image forKey:AFImageCacheKeyFromURLRequest(request)];
     }
 }
+
+- (void)clearCachedRequest:(NSURLRequest *)request {
+    if (request) {
+        [self removeObjectForKey:AFImageCacheKeyFromURLRequest(request)];
+    }
+}
+
 
 @end
 

@@ -2,8 +2,8 @@
 //  Profile+CoreDataProperties.h
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 18/11/2015.
-//  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
+//  Created by Prigent ROUDAUT on 20/06/2016.
+//  Copyright © 2016 Prigent ROUDAUT. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
 //  to delete and recreate this implementation file for your updated model.
@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, retain) NSString *about;
 @property (nullable, nonatomic, retain) NSDate *birthdate;
+@property (nullable, nonatomic, retain) NSNumber *didUpdate;
 @property (nullable, nonatomic, retain) NSString *fbIdentifier;
 @property (nullable, nonatomic, retain) NSString *firstName;
 @property (nullable, nonatomic, retain) NSString *identifier;
@@ -25,16 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<Event *> *eventLeaders;
 @property (nullable, nonatomic, retain) NSSet<Event *> *eventPartners;
 @property (nullable, nonatomic, retain) NSSet<FriendRequest *> *friendRequests;
-@property (nullable, nonatomic, retain) NSSet<Profile *> *friends;
-@property (nullable, nonatomic, retain) NSSet<Profile *> *friendsOf;
+@property (nullable, nonatomic, retain) NSOrderedSet<Profile *> *friends;
+@property (nullable, nonatomic, retain) NSOrderedSet<Profile *> *friendsOf;
 @property (nullable, nonatomic, retain) NSSet<Interest *> *interests;
 @property (nullable, nonatomic, retain) NSSet<Demand *> *leaderDemands;
 @property (nullable, nonatomic, retain) NSSet<Message *> *messages;
+@property (nullable, nonatomic, retain) NSSet<FacebookProfile *> *mutualFriends;
 @property (nullable, nonatomic, retain) NSSet<Demand *> *partnerDemands;
 @property (nullable, nonatomic, retain) NSOrderedSet<Picture *> *pictures;
 @property (nullable, nonatomic, retain) User *suggest;
-@property (nullable, nonatomic, retain) NSSet<NSManagedObject *> *mutualFriends;
-@property (nullable, nonatomic, retain) NSNumber * didUpdate;
+
 @end
 
 @interface Profile (CoreDataGeneratedAccessors)
@@ -54,15 +55,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addFriendRequests:(NSSet<FriendRequest *> *)values;
 - (void)removeFriendRequests:(NSSet<FriendRequest *> *)values;
 
+- (void)insertObject:(Profile *)value inFriendsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromFriendsAtIndex:(NSUInteger)idx;
+- (void)insertFriends:(NSArray<Profile *> *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeFriendsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInFriendsAtIndex:(NSUInteger)idx withObject:(Profile *)value;
+- (void)replaceFriendsAtIndexes:(NSIndexSet *)indexes withFriends:(NSArray<Profile *> *)values;
 - (void)addFriendsObject:(Profile *)value;
 - (void)removeFriendsObject:(Profile *)value;
-- (void)addFriends:(NSSet<Profile *> *)values;
-- (void)removeFriends:(NSSet<Profile *> *)values;
+- (void)addFriends:(NSOrderedSet<Profile *> *)values;
+- (void)removeFriends:(NSOrderedSet<Profile *> *)values;
 
+- (void)insertObject:(Profile *)value inFriendsOfAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromFriendsOfAtIndex:(NSUInteger)idx;
+- (void)insertFriendsOf:(NSArray<Profile *> *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeFriendsOfAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInFriendsOfAtIndex:(NSUInteger)idx withObject:(Profile *)value;
+- (void)replaceFriendsOfAtIndexes:(NSIndexSet *)indexes withFriendsOf:(NSArray<Profile *> *)values;
 - (void)addFriendsOfObject:(Profile *)value;
 - (void)removeFriendsOfObject:(Profile *)value;
-- (void)addFriendsOf:(NSSet<Profile *> *)values;
-- (void)removeFriendsOf:(NSSet<Profile *> *)values;
+- (void)addFriendsOf:(NSOrderedSet<Profile *> *)values;
+- (void)removeFriendsOf:(NSOrderedSet<Profile *> *)values;
 
 - (void)addInterestsObject:(Interest *)value;
 - (void)removeInterestsObject:(Interest *)value;
@@ -79,6 +92,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addMessages:(NSSet<Message *> *)values;
 - (void)removeMessages:(NSSet<Message *> *)values;
 
+- (void)addMutualFriendsObject:(FacebookProfile *)value;
+- (void)removeMutualFriendsObject:(FacebookProfile *)value;
+- (void)addMutualFriends:(NSSet<FacebookProfile *> *)values;
+- (void)removeMutualFriends:(NSSet<FacebookProfile *> *)values;
+
 - (void)addPartnerDemandsObject:(Demand *)value;
 - (void)removePartnerDemandsObject:(Demand *)value;
 - (void)addPartnerDemands:(NSSet<Demand *> *)values;
@@ -94,11 +112,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removePicturesObject:(Picture *)value;
 - (void)addPictures:(NSOrderedSet<Picture *> *)values;
 - (void)removePictures:(NSOrderedSet<Picture *> *)values;
-
-- (void)addMutualFriendsObject:(NSManagedObject *)value;
-- (void)removeMutualFriendsObject:(NSManagedObject *)value;
-- (void)addMutualFriends:(NSSet<NSManagedObject *> *)values;
-- (void)removeMutualFriends:(NSSet<NSManagedObject *> *)values;
 
 @end
 

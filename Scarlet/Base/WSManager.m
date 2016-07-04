@@ -20,14 +20,13 @@
 #import "Message.h"
 #import "Toast+UIView.h"
 #import "NSData+Base64.h"
-
 #import <sys/utsname.h>
 #import "Toast+UIView.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <AdSupport/ASIdentifierManager.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonHMAC.h>
-
+#import "NSData+Base64.h"
 @implementation WSManager
 
 - (id)init
@@ -66,6 +65,20 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"scarletiOSapp" password:@"5lj6c6SK4CexS7RgFiK"];
+    
+    [manager.requestSerializer setValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] forHTTPHeaderField:@"version"];
+    [manager.requestSerializer setValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forHTTPHeaderField:@"build"];
+    [manager.requestSerializer setValue:[[UIDevice currentDevice] name] forHTTPHeaderField:@"name"];
+    [manager.requestSerializer setValue:[[UIDevice currentDevice] model] forHTTPHeaderField:@"model"];
+    [manager.requestSerializer setValue:[[UIDevice currentDevice] localizedModel] forHTTPHeaderField:@"localizedModel"];
+    [manager.requestSerializer setValue:[[UIDevice currentDevice] systemName] forHTTPHeaderField:@"systemName"];
+    [manager.requestSerializer setValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"systemVersion"];
+    [manager.requestSerializer setValue:[[NSLocale currentLocale] objectForKey:NSLocaleIdentifier] forHTTPHeaderField:@"local"];
+    if([[ShareAppContext sharedInstance].userIdentifier length]>0)
+    {
+        [manager.requestSerializer setValue:[ShareAppContext sharedInstance].userIdentifier forHTTPHeaderField:@"userIdentifier"];
+    }
+    
     return manager;
 }
 
@@ -84,7 +97,17 @@
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/flagging"];
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil || identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:type forKey:@"subject"];
     [param setObject:identifier forKey:@"id"];
     
@@ -109,12 +132,195 @@
 }
 
 
+- (void)deleteFriend:(Profile*) friend completion:(void (^)(NSError* error)) onCompletion
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/friend"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil || friend.identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
+    [param setObject:friend.identifier forKey:@"code_profile"];
+    [manager DELETE:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"deleteFriend %@",responseObject);
+         NSError * error  =  [self checkResponse:responseObject];
+         if(error == nil)
+         {
+             [[ShareAppContext sharedInstance].user removeFriendsObject:friend];
+         }
+         [self manageError:error];
+         onCompletion(error);
+     }
+            failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"deleteFriend %@",error);
+         [self manageError:error];
+         onCompletion(error);
+     }];
+}
+
+
+
+- (void)syncgeoLocate:(double) longi andLat:(double) lat
+{
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/geoloc"];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:base]];
+    
+    
+    
+    NSString *authStr = [NSString stringWithFormat:@"%@:%@", @"scarletiOSapp", @"5lj6c6SK4CexS7RgFiK"];
+    NSData *authData = [authStr dataUsingEncoding:NSASCIIStringEncoding];
+    NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64EncodedString]];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    
+    
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
+    [param setObject:[NSNumber numberWithDouble:lat] forKey:@"lat"];
+    [param setObject:[NSNumber numberWithDouble:longi] forKey:@"lng"];
+    
+    NSError *error;
+    NSData *postdata = [NSJSONSerialization dataWithJSONObject:param options:0 error:&error];
+    [request setHTTPBody:postdata];
+    
+    NSURLResponse* response;
+    NSData* result = [NSURLConnection sendSynchronousRequest:request  returningResponse:&response error:&error];
+    NSString *myString = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+    NSLog(@"syncgeoLocate : %@", myString);
+}
+
+
+- (void)geoLocate:(double) longi andLat:(double) lat
+{
+    if([[ShareAppContext sharedInstance].accessToken length]<=0)
+    {
+        return;
+    }
+    
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/geoloc"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
+    [param setObject:[NSNumber numberWithDouble:lat] forKey:@"lat"];
+    [param setObject:[NSNumber numberWithDouble:longi] forKey:@"lng"];
+    [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"geoLocate : %@", responseObject);
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+     }];
+}
+
+- (void)geoBackgroundLocate:(double) longi andLat:(double) lat
+{
+    
+    
+    
+    if([[ShareAppContext sharedInstance].accessToken length]<=0)
+    {
+        return;
+    }
+    
+    
+    
+    UIBackgroundTaskIdentifier bgTask = UIBackgroundTaskInvalid;
+    bgTask = [[UIApplication sharedApplication]
+              beginBackgroundTaskWithExpirationHandler:^{
+                  [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+              }];
+    
+    
+ 
+    
+    
+    NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/geoloc"];
+    
+    AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
+    [param setObject:[NSNumber numberWithDouble:lat] forKey:@"lat"];
+    [param setObject:[NSNumber numberWithDouble:longi] forKey:@"lng"];
+    [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"geoLocate : %@", responseObject);
+         // AFTER ALL THE UPDATES, close the task
+         if (bgTask != UIBackgroundTaskInvalid)
+         {
+             [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+         }
+         
+     }
+    failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         // AFTER ALL THE UPDATES, close the task
+         if (bgTask != UIBackgroundTaskInvalid)
+         {
+             [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+         }
+         
+     }];
+}
+
 - (void)chatOut:(NSString*) identifier completion:(void (^)(NSError* error)) onCompletion
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/chatOut"];
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil || identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:identifier forKey:@"chat_identifier"];
     
     
@@ -141,7 +347,17 @@
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/event"];
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:eventDic];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
@@ -166,7 +382,21 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:eventDic];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    
+    NSLog(@"%@",param);
+    
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
          NSError * error  =  [self checkResponse:responseObject];
@@ -190,7 +420,17 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil || event.identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setValue:event.identifier forKey:@"event_identifier"];
     [param setValue:status forKey:@"status"];
     
@@ -288,7 +528,17 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:position forKey:@"picture_id"];
     [manager DELETE:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -313,11 +563,23 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
-    NSString* stringImage =  [NSString stringWithFormat:@"%@%@",@"data:image/jpg;base64,/9j/",[self encodeToBase64String:picture]];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
+    NSString* stringImage =  [NSString stringWithFormat:@"%@%@",@"data:image/jpeg;base64,",[self encodeToBase64String:picture]];
     [param setObject:stringImage forKey:@"picture_data"];
     [param setObject:position forKey:@"position"];
     
+    
+    NSLog(@"%@",stringImage );
 
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -345,9 +607,20 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil || event.identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
+    
     [param setObject:event.identifier forKey:@"event_identifier"];
     [param setObject:partnerIdentifier forKey:@"partner"];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -377,11 +650,21 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil || chat.identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:chat.identifier forKey:@"chat_request_identifier"];
     
     NSData *msgData = [message dataUsingEncoding:NSNonLossyASCIIStringEncoding];
     [param setObject:[msgData base64EncodedString] forKey:@"message"];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
 
     
@@ -410,7 +693,17 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil || demandID == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:demandID forKey:@"demand_id"];
     
     
@@ -437,9 +730,19 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil || identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:identifier forKey:@"demand_identifier"];
     [param setObject:status forKey:@"status"];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -467,8 +770,18 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    if([ShareAppContext sharedInstance].accessToken == nil || identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:identifier forKey:@"profile_identifier"];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager POST:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -494,16 +807,19 @@
     
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    if(identifier == nil)
+
+    if([ShareAppContext sharedInstance].accessToken == nil || identifier == nil)
     {
-        NSLog(@"IDENTIFIER NIL");
-        onCompletion([NSError errorWithDomain:nil code:0 userInfo:nil] );
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
         return;
     }
-    
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
     [param setObject:identifier forKey:@"friend_request_identifier"];
     [param setObject:status forKey:@"status"];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
     
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -523,7 +839,7 @@
 }
 
 - (NSString *)encodeToBase64String:(UIImage *)image {
-    return [UIImageJPEGRepresentation(image, 0.9) base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
+    return [UIImageJPEGRepresentation(image, 0.9) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
 
@@ -535,7 +851,17 @@
     
     
     NSMutableDictionary * param = [NSMutableDictionary dictionaryWithDictionary:[[ShareAppContext sharedInstance].user getDictionary]];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
 
     [manager PUT:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -564,7 +890,17 @@
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
@@ -657,7 +993,17 @@
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/event"];
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     
     
     
@@ -677,6 +1023,8 @@
         {
             
             NSArray* lAllProfiles= [responseObject valueForKey:@"profile"];
+            NSLog(@"%@",lAllProfiles);
+            
             for(NSDictionary * lDicProfile in lAllProfiles)
             {
                 [WSParser addProfile:lDicProfile];
@@ -709,7 +1057,17 @@
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
 
     [manager GET:base parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
@@ -739,7 +1097,17 @@
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/message"];
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil || chat.identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:chat.identifier forKey:@"chat_identifier"];
 
     
@@ -786,7 +1154,17 @@
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/myevent"];
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     
     
     
@@ -807,7 +1185,7 @@
             
             
             NSInteger index = 0;
-
+            int countWaiting = 0;
             
             for(NSDictionary * lDicEvent in lAllEvents)
             {
@@ -815,7 +1193,23 @@
                 Event* lEvent = [WSParser addEvent:lDicEvent];
                 lEvent.isMine = [NSNumber numberWithBool:true];
                 lEvent.index = [NSNumber numberWithInteger:index];
+                
+                
+                if([lEvent.sort intValue] == 0)
+                {
+                    countWaiting += [lEvent getWaitingDemand];
+                }
+
+                
             }
+            
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateWaitingDemand" object:[NSNumber numberWithInt:countWaiting]];
+            
+
+            
+            
+            
         }
         [self manageError:error];
         onCompletion(error);
@@ -831,7 +1225,18 @@
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/chat"];
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     
     
     
@@ -905,7 +1310,17 @@
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/notification"];
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     
     
     
@@ -932,7 +1347,17 @@
 {
     NSString* base= [NSString stringWithFormat:@"%@/%@", self.mBaseURL, @"rest/services/v1/notification"];
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:value forKey:key];
     
     
@@ -963,7 +1388,17 @@
     AFHTTPRequestOperationManager *manager = [self createConfiguredManager];
     
     NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    if([ShareAppContext sharedInstance].accessToken == nil || profile.identifier == nil)
+    {
+        onCompletion([NSError errorWithDomain:@"" code:0 userInfo:nil] );
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"disconnect" object:nil];
+        return;
+    }
+    else
+    {
+        [param setObject:[ShareAppContext sharedInstance].accessToken forKey:@"access_token"];
+    }
+
     [param setObject:profile.identifier forKey:@"profile_identifier"];
     
     
@@ -977,7 +1412,8 @@
              
              for(NSDictionary * lDicProfile in lAllProfiles)
              {
-                 [profile addMutualFriendsObject:[WSParser addFacebookProfile:lDicProfile]];
+                 FacebookProfile * lFacebookProfile = [WSParser addFacebookProfile:lDicProfile];
+                 [profile addMutualFriendsObject:lFacebookProfile];
              }
          }
          [self manageError:error];
@@ -993,6 +1429,7 @@
 
 -(void) manageError:(NSError*) error
 {
+    NSLog(@"manageError %@", error);
     [[ShareAppContext sharedInstance].managedObjectContext save:nil];
     if(error.code == -2)
     {

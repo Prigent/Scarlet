@@ -33,7 +33,7 @@
     self.mSegmentedControl.segmentWidthStyle = HMSegmentedControlSegmentWidthStyleDynamic;
     self.mSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
     self.mSegmentedControl.segmentEdgeInset = UIEdgeInsetsMake(0, 0, 0, 24);
-    
+    self.mSegmentedControl.selectedSegmentIndex = 0;
     
     
     // Do any additional setup after loading the view.
@@ -87,11 +87,15 @@
         NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"isMine == 1 AND sort == 0"];
         [self updateWithPredicate:lNSPredicate];
         
+        self.mEmptyLabel.text = NSLocalizedString2(@"no_event_incomming", nil);
+        
     }
     else
     {
         NSPredicate * lNSPredicate = [NSPredicate predicateWithFormat:@"isMine == 1 AND sort == 1"];
         [self updateWithPredicate:lNSPredicate];
+        
+        self.mEmptyLabel.text = NSLocalizedString2(@"no_event_history", nil);
     }
 }
 
@@ -125,23 +129,44 @@
     
     [self updateData];
     
+    
+
+    [self changeSegment:nil];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == kAlertViewTag_noLocation)
+    {
+        if(buttonIndex == 1)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }
+    }
 }
-*/
+
 
 - (IBAction)createEvent:(id)sender {
+    
+
+    if([CLLocationManager locationServicesEnabled])
+    {
+        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied)
+        {
+            UIAlertView * lUIAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString2(@"miss_location_title", @"") message:NSLocalizedString2(@"miss_location_desc", @"") delegate:self cancelButtonTitle:NSLocalizedString2(@"miss_location_cancel", @"") otherButtonTitles:NSLocalizedString2(@"miss_location_ok", @""), nil];
+            lUIAlertView.tag = kAlertViewTag_noLocation;
+            [lUIAlertView show];
+            return;
+        }
+    }
+
+    self.mSegmentedControl.selectedSegmentIndex = 0;
+    
     BaseViewController *viewController = nil;
     viewController = [[UIStoryboard storyboardWithName:@"Event" bundle:nil] instantiateInitialViewController];
     

@@ -14,6 +14,8 @@
 @interface MyEventViewController : AutoListViewController
 
 @property (strong, nonatomic) Event* mEvent;
+@property (strong, nonatomic) NSString* mEventId;
+
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mHeighEditButton;
 @property (weak, nonatomic) IBOutlet EventExpendView *mEventExpendView;

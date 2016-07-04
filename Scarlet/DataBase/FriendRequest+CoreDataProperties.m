@@ -19,5 +19,5 @@
 @dynamic type;
 @dynamic profile;
 @dynamic user;
-
+@dynamic order;
 @end

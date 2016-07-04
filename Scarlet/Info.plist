@@ -29,7 +29,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>97</string>
+	<string>124</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -95,7 +95,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>Cette application nécessite l'utilisation des services de localisation pour fonctionner.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

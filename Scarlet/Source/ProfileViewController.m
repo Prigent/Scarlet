@@ -116,11 +116,10 @@
         hud.labelText = NSLocalizedString2(@"loading", nil);
         
         
-        [[WSManager sharedInstance] flagging:@"profile" identifier:self.mProfile.identifier completion:^(NSError *error) {
-            [hud hide:YES];
+        [[WSManager sharedInstance] deleteFriend:self.mProfile completion:^(NSError *error) {
             if(error == nil)
             {
-                [self.view makeToast:NSLocalizedString2(@"profile_flagging_toast", nil)];
+                [self popBack];
             }
         }];
     }
@@ -166,7 +165,7 @@
 {
     if(isUser == true)
     {
-        if(  indexPath.section == 2) // (indexPath.section == 1 && indexPath.row == 1) ||
+        if(  indexPath.section == 2 || indexPath.section == 3) // (indexPath.section == 1 && indexPath.row == 1) ||
         {
             return true;
         }
@@ -288,6 +287,9 @@
             case 2:
                 return 1;
                 break;
+            case 3:
+                return 1;
+                break;
             default:
                 break;
         }
@@ -300,7 +302,7 @@
 {
     if(isUser)
     {
-        return 3;
+        return 4;
     }
     return 1;
 }
@@ -328,7 +330,7 @@
                 UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileListCell"];
                 if([cell respondsToSelector:@selector(configure:)])
                 {
-                    [cell performSelector:@selector(configure:) withObject:[[ShareAppContext sharedInstance].user.friends allObjects]];
+                    [cell performSelector:@selector(configure:) withObject:[[ShareAppContext sharedInstance].user.friends array]];
                 }
                 return cell;
             }
@@ -337,6 +339,8 @@
                 AddFriendCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AddMoreFriend"];
                 NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
                 NSArray* lFriendRequestArray = [[[ShareAppContext sharedInstance].user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
+                lFriendRequestArray = [lFriendRequestArray sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:true]]];
+                
                 NSInteger countWaiting = [lFriendRequestArray count];
                 cell.mFriendRequest.text = [NSString stringWithFormat:@"%ld %@",(long)countWaiting,NSLocalizedString2(@"profile_friends_requests", nil)];
                 return cell;
@@ -346,9 +350,17 @@
         {
 
                 ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
-            cell.mTitleLabel.text = NSLocalizedString2(@"parameters",nil);//@"Parameters";
-            cell.mSubTitle.text = NSLocalizedString2(@"parameters_detail",nil); //@"Notifications, account and others";
+                cell.mTitleLabel.text = NSLocalizedString2(@"parameters",nil);//@"Parameters";
+                cell.mSubTitle.text = NSLocalizedString2(@"parameters_detail",nil); //@"Notifications, account and others";
                 return cell;
+        }
+        if(indexPath.section == 3)
+        {
+            
+            ProfileMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileMenuCell"];
+            cell.mTitleLabel.text = NSLocalizedString2(@"tutorial_cell",nil);//@"Parameters";
+            cell.mSubTitle.text = NSLocalizedString2(@"tutorial_cell_detail",nil); //@"Notifications, account and others";
+            return cell;
         }
     }
     else
@@ -395,10 +407,17 @@
     {
         if(indexPath.section == 2)
         {
-        UIViewController *viewController = nil;
-        viewController = [[UIStoryboard storyboardWithName:@"Parameter" bundle:nil] instantiateInitialViewController];
-        viewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:viewController animated:true];
+            UIViewController *viewController = nil;
+            viewController = [[UIStoryboard storyboardWithName:@"Parameter" bundle:nil] instantiateInitialViewController];
+            viewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:viewController animated:true];
+        }
+        if(indexPath.section == 3)
+        {
+            BaseViewController *viewController = [[UIStoryboard storyboardWithName:@"Tutorial" bundle:nil] instantiateInitialViewController];
+            [self presentViewController:viewController animated:true completion:^{
+                
+            }];
         }
     }
 }

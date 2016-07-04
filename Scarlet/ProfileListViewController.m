@@ -13,6 +13,7 @@
 #import "FriendRequest.h"
 #import "User.h"
 #import "MBProgressHUD.h"
+#import "Toast+UIView.h"
 @interface ProfileListViewController ()
 
 @end
@@ -26,27 +27,79 @@
     [super configure:[[[NSArray alloc] initWithContentsOfFile:plistFile] firstObject]];
     
     
-    NSMutableArray* array = [NSMutableArray array];
-    for(Profile* lProfile in [ShareAppContext sharedInstance].user.friends)
+    if(self.mData != nil)
     {
-        [array addObject:lProfile.identifier];
-    }
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND ((ANY friendRequests.type == 0) OR friendRequests.@count == 0) AND NOT (identifier IN %@)", [ShareAppContext sharedInstance].userIdentifier,array];
-    
-    self.tableView.hidden = true;
-    [self updateWithPredicate:predicate];
-    [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
-        if(error==nil)
+        NSMutableArray* array = [NSMutableArray array];
+        for(Profile* lProfile in self.mData)
         {
+            [array addObject:lProfile.identifier];
         }
-    }];
-  
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND (ANY identifier IN %@)",[ShareAppContext sharedInstance].userIdentifier,array];
+        [self updateWithPredicate:predicate];
+        _mSearchFriendsLabel.hidden = true;
+        self.tableView.hidden = false;
+        
+        
+        UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 25.0f, 25.0f)];
+        UIImage *backImage = [[UIImage imageNamed:@"btnClose"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25.0f, 0, 25.0f)];
+        [backButton setBackgroundImage:backImage  forState:UIControlStateNormal];
+        [backButton setTitle:@"" forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(popBack) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = backButtonItem;
+
+        self.cellIdentifier = @"ProfileCell2";
+        self.mSearchHeight.constant = 0;
+        
+        self.screenName = @"chat_profile";
+        self.mCustomTitle = NSLocalizedString2(@"chat_profile", nil);
+    }
+    else
+    {
+        NSMutableArray* array = [NSMutableArray array];
+        for(Profile* lProfile in [ShareAppContext sharedInstance].user.friends)
+        {
+            [array addObject:lProfile.identifier];
+        }
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND ((ANY friendRequests.type == 0) OR friendRequests.@count == 0) AND NOT (identifier IN %@)", [ShareAppContext sharedInstance].userIdentifier,array];
+        [self updateWithPredicate:predicate];
+        
+        
+        self.tableView.hidden = true;
+        [[WSManager sharedInstance] getProfilsCompletion:^(NSError *error) {
+            if(error==nil)
+            {
+            }
+        }];
+        
+        self.screenName = @"search_profile";
+    }
+
     [self.mSearchField setBackgroundImage:[[UIImage alloc]init]];
     self.mSearchField.layer.borderWidth = 1;
     self.mSearchField.layer.borderColor = [[UIColor whiteColor] CGColor];
     
-    self.screenName = @"search_profile";
+
+}
+
+-(void) configure:(NSArray*) data
+{
+    self.mData = data;
+}
+
+-(void) popBack {
+    
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.5;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionReveal; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+    transition.subtype = kCATransitionFromBottom; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    
+    [self.navigationController popViewControllerAnimated:NO];
+    
 }
 
 
@@ -54,11 +107,13 @@
 {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectProfile:) name:@"didSelectProfile" object:nil];
+    self.fetchedResultsController.delegate = self;
 }
 
 -(void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    self.fetchedResultsController.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -80,6 +135,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     _mSearchFriendsLabel.hidden = true;
@@ -90,8 +146,22 @@
     else
     {
         self.tableView.hidden = false;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND (name BEGINSWITH[c] %@  OR firstName BEGINSWITH[c] %@)", [ShareAppContext sharedInstance].userIdentifier, searchText , searchText];
-        [self updateWithPredicate:predicate];
+        if(self.mData != nil)
+        {
+            NSMutableArray* array = [NSMutableArray array];
+            for(Profile* lProfile in self.mData)
+            {
+                [array addObject:lProfile.identifier];
+            }
+            
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND  (ANY identifier IN %@) AND (name BEGINSWITH[c] %@  OR firstName BEGINSWITH[c] %@)",[ShareAppContext sharedInstance].userIdentifier, array, searchText , searchText];
+            [self updateWithPredicate:predicate];
+        }
+        else
+        {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier != %@ AND (name BEGINSWITH[c] %@  OR firstName BEGINSWITH[c] %@)", [ShareAppContext sharedInstance].userIdentifier, searchText , searchText];
+            [self updateWithPredicate:predicate];
+        }
     }
 }
 
@@ -108,31 +178,39 @@
 -(void) didSelectProfile:(NSNotification* ) notification
 {
     Profile* lProfile = notification.object;
-    
-    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
-    
-    NSArray * friend = [[lProfile.friends allObjects] filteredArrayUsingPredicate:bPredicate];
-    
-    FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
-    
-    if( [friend count]> 0)
+    if(self.mData != nil)
     {
-        //@"remove from friends"
-    }
-    else if (friendRequest)
-    {
-        if([friendRequest.type intValue] == 0)
-        {
-            //@"remove friend request for response"
-           // [self removeFriendRequest:friendRequest];
-        }
-        else
-        {
-        }
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        BaseViewController* lMain =  [storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        
+        [lMain configure:lProfile];
+        
+        CATransition* transition = [CATransition animation];
+        transition.duration = 0.5;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionMoveIn; //kCATransitionMoveIn; //, kCATransitionPush, kCATransitionReveal, kCATransitionFade
+        transition.subtype = kCATransitionFromTop; //kCATransitionFromLeft, kCATransitionFromRight, kCATransitionFromTop, kCATransitionFromBottom
+        [self.navigationController.view.layer addAnimation:transition forKey:nil];
+        [self.navigationController pushViewController:lMain animated:NO];
     }
     else
     {
-        [self addFriend:lProfile];
+        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
+        NSArray * friend = [[lProfile.friends array] filteredArrayUsingPredicate:bPredicate];
+        FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
+        if( [friend count]> 0)//@"remove from friends"
+        {
+        }
+        else if (friendRequest)
+        {
+            if([friendRequest.type intValue] == 0)//@"remove friend request for response"
+            {
+            }
+        }
+        else
+        {
+            [self addFriend:lProfile];
+        }
     }
 }
 
@@ -151,6 +229,7 @@
         [hud hide:YES];
         if(error == nil)
         {
+            [[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]  makeButtonToast:NSLocalizedString2(@"toast_friendinvited", nil)];
             [self.tableView reloadData];
         }
         else

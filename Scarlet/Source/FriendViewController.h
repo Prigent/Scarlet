@@ -24,5 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (weak, nonatomic) IBOutlet UIButton *mButtonBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mFooterBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mHeightFooter;
 
 @end

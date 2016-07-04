@@ -92,6 +92,17 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+    
+    
+    if([self.mData count]>1)
+    {
+        MKMapItem * lItem = [self.mData objectAtIndex:1];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:lItem.placemark];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"locationChanged" object:[ShareAppContext sharedInstance].placemark];
+    }
 }
 
 -(void) searchLocation

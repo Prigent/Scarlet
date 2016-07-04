@@ -2,14 +2,14 @@
 //  Profile.h
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 22/10/2015.
-//  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
+//  Created by Prigent ROUDAUT on 20/06/2016.
+//  Copyright © 2016 Prigent ROUDAUT. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Demand, Event, FriendRequest, Interest, Message, Picture, User;
+@class Demand, Event, FacebookProfile, FriendRequest, Interest, Message, Picture, User;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -2,8 +2,8 @@
 //  Profile+CoreDataProperties.m
 //  Scarlet
 //
-//  Created by Prigent ROUDAUT on 18/11/2015.
-//  Copyright © 2015 Prigent ROUDAUT. All rights reserved.
+//  Created by Prigent ROUDAUT on 20/06/2016.
+//  Copyright © 2016 Prigent ROUDAUT. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
 //  to delete and recreate this implementation file for your updated model.
@@ -15,6 +15,7 @@
 
 @dynamic about;
 @dynamic birthdate;
+@dynamic didUpdate;
 @dynamic fbIdentifier;
 @dynamic firstName;
 @dynamic identifier;
@@ -28,9 +29,9 @@
 @dynamic interests;
 @dynamic leaderDemands;
 @dynamic messages;
+@dynamic mutualFriends;
 @dynamic partnerDemands;
 @dynamic pictures;
 @dynamic suggest;
-@dynamic mutualFriends;
-@dynamic didUpdate;
+
 @end

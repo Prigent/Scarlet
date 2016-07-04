@@ -147,6 +147,7 @@
     {
         NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"type  == 1 AND status != 1  AND status != 2" ];
         self.mFriendRequestData = [[[ShareAppContext sharedInstance].user.friendRequest allObjects] filteredArrayUsingPredicate:bPredicate];
+        self.mFriendRequestData = [self.mFriendRequestData sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:true]]];
     }
     
     
@@ -162,15 +163,30 @@
     {
         [_mTitleLabel setText:NSLocalizedString2(@"welcome_scarlet",nil)]; //@"Welcome to scarlet"
         [_mSubTitleLabel setText:NSLocalizedString2(@"welcome_scarlet2",nil)]; // @"Few of your friends are already on Scarlet. Invite them now."
+        
+        self.mFooterBottom.constant = -200;
+        
     }
     else if(self.type == 1)
     {
         [_mTitleLabel setText:NSLocalizedString2(@"welcome_scarlet3",nil)];//@"More friends is more fun!"
         [_mSubTitleLabel setText:NSLocalizedString2(@"welcome_scarlet4",nil)];//@"Add few friends to have the best scarlet's experience."
+        
+        self.mHeightFooter.constant = self.view.frame.size.height - self.mTableView.tableHeaderView.frame.size.height;
+        self.mFooterBottom.constant = 0;
     }
     else
     {
         [self.mTableView setTableHeaderView:[[UIView alloc] init]];
+        self.mFooterBottom.constant = 0;
+        
+        
+        
+        
+        if([self.mFriendRequestData count] == 0 && [self.mSuggestData count] == 0)
+        {
+            self.mHeightFooter.constant = self.view.frame.size.height - 70;
+        }
     }
     
     [self.mTableView reloadData];
@@ -222,15 +238,15 @@
     {
         return [self.mFriendRequestData count];
     }
-    if(section == 1)
+    if(section == 2)
     {
-        if(self.type == 0)
+        if(self.type == 0 || self.type == 1 )
         {
             return 0;
         }
-        return 2;
+        return 1;
     }
-    if(section == 2)
+    if(section == 1)
     {
         if(self.type == 1)
         {
@@ -256,21 +272,11 @@
     
     switch (section) {
         case 0:
-            if([self.mFriendRequestData count] == 0)
+            if([self.mFriendRequestData count]>0)
             {
-                return nil;
+                  return NSLocalizedString2(@"invitation",nil);
             }
-            
-            
-            
-            return NSLocalizedString2(@"invitation",nil);
-        case 1:return nil;
-        case 2:
-            if([self.mSuggestData count] == 0)
-            {
-                return nil;
-            }
-            return NSLocalizedString2(@"facebook_friend",nil);//@"Facebook friend already on Scarlet";
+
         default:return nil;
     }
 }
@@ -283,22 +289,19 @@
     {
         return 92;
     }
-    if(indexPath.section == 1)
-    {
-        switch (indexPath.row)
-        {
-            case 0:
-                return 55;
-                break;
-            case 1:
-                return 142;
-                break;
-        }
-    }
-    else
+    else if(indexPath.section == 1)
     {
         return 50;
     }
+    else if(indexPath.section == 2)
+    {
+        return 50;
+    }
+    else
+    {
+        return 142;
+    }
+
     return 0;
 }
 
@@ -313,23 +316,7 @@
         cell.contentView.backgroundColor = [UIColor whiteColor];
         return cell;
     }
-    if(indexPath.section == 1)
-    {
-        UITableViewCell* cell = nil;
-        switch (indexPath.row)
-        {
-            case 0:
-                cell = [tableView dequeueReusableCellWithIdentifier:@"browseScarlet"];
-                break;
-            case 1:
-                cell = [tableView dequeueReusableCellWithIdentifier:@"InviteMoreCell"];
-                break;
-            default:
-                break;
-        }
-        return cell;
-    }
-    else
+    else if(indexPath.section == 1)
     {
         ProfileCell * cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
         [cell configure:[self.mSuggestData objectAtIndex:indexPath.row]];
@@ -341,6 +328,10 @@
         }
         
         return cell;
+    }
+    else
+    {
+        return [tableView dequeueReusableCellWithIdentifier:@"browseScarlet"];
     }
 }
 
@@ -370,12 +361,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 
-    if( indexPath.section == 1 && indexPath.row == 0)
+    if( indexPath.section == 2)
     {
         [tableView deselectRowAtIndexPath:indexPath animated:true];
         [self performSegueWithIdentifier:@"showProfileList" sender:self];
     }
-    else if (indexPath.section == 2)
+    else if (indexPath.section == 1)
     {
         if(self.type == 0)
         {
@@ -392,7 +383,7 @@
     Profile* lProfile = notification.object;
     
     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"identifier  == %@",lProfile.identifier];
-    NSArray * friend = [[lProfile.friends allObjects] filteredArrayUsingPredicate:bPredicate];
+    NSArray * friend = [[lProfile.friends array] filteredArrayUsingPredicate:bPredicate];
     FriendRequest* friendRequest = [lProfile.friendRequests anyObject];
     
     if( [friend count]> 0)
@@ -419,10 +410,6 @@
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if( indexPath.section == 0)
-    {
-        return false;
-    }
-    if( indexPath.section == 1 && indexPath.row != 0)
     {
         return false;
     }
@@ -455,26 +442,31 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UILabel *myLabel = [[UILabel alloc] init];
-    myLabel.frame = CGRectMake(8, 0, tableView.frame.size.width-16, 34);
-    myLabel.font = [UIFont systemFontOfSize:15];
-    myLabel.textColor = [UIColor colorWithWhite:68/255. alpha:1];
-    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
-    
-    UIView *headerView = [[UIView alloc] init];
-    [headerView addSubview:myLabel];
-    headerView.backgroundColor =  [UIColor colorWithWhite:245/255. alpha:1];
-    return headerView;
+        UILabel *myLabel = [[UILabel alloc] init];
+        myLabel.frame = CGRectMake(8, 0, tableView.frame.size.width-16, 34);
+        myLabel.font = [UIFont boldSystemFontOfSize:15];
+        myLabel.textColor = [UIColor colorWithWhite:68/255. alpha:1];
+        myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+        
+        UIView *headerView = [[UIView alloc] init];
+        [headerView addSubview:myLabel];
+        headerView.backgroundColor =  [UIColor colorWithWhite:245/255. alpha:1];
+        return headerView;
+ 
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
     NSString* lTitle = [self tableView:tableView titleForHeaderInSection:section];
     if([lTitle length]>0)
     {
+        if(section == 3)
+        {
+            return 100;
+        }
         return 34;
     }
     
-    return 8;
+    return 1;
 }
 -(void) addFriend:(Profile*) profile
 {
@@ -524,6 +516,8 @@
     
     NSLog(@"facebook %@ %@", NSLocalizedString2(@"facebook_app_url", nil), NSLocalizedString2(@"facebook_image_url", nil));
     FBSDKAppInviteContent *content =[[FBSDKAppInviteContent alloc] init];
+
+    
     content.appLinkURL = [NSURL URLWithString:NSLocalizedString2(@"facebook_app_url", nil)];
     //optionally set previewImageURL
     content.appInvitePreviewImageURL = [NSURL URLWithString:NSLocalizedString2(@"facebook_image_url", nil)];

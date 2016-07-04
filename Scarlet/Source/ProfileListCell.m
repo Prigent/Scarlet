@@ -40,8 +40,6 @@
         self.mData = lArray;
     }
     
-    
-    [_mCollectionView reloadData];
     self.mEmptyLabel.hidden = ([self.mData count]>0);
     [self.mCollectionView reloadData];
 }
